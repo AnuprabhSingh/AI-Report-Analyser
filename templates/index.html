@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Report Interpreter - AI-Powered Clinical Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.98);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
+            animation: fadeInUp 0.8s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 35px;
+            border-bottom: 2px solid #e8ebff;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .tab::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .tab.active {
+            color: #667eea;
+        }
+
+        .tab.active::before {
+            width: 100%;
+        }
+
+        .tab:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 80px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8ebff 100%);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(102,126,234,0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease;
+        }
+
+        .upload-area:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .upload-area:hover {
+            background: linear-gradient(135deg, #e8ebff 0%, #d8dbff 100%);
+            border-color: #764ba2;
+            transform: scale(1.02);
+            box-shadow: 0 10px 40px rgba(102,126,234,0.2);
+        }
+
+        .upload-area.dragover {
+            background: linear-gradient(135deg, #d8dbff 0%, #c8cbff 100%);
+            border-color: #764ba2;
+            transform: scale(1.03);
+            box-shadow: 0 15px 50px rgba(102,126,234,0.3);
+        }
+
+        .upload-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 5px 15px rgba(102,126,234,0.3));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .upload-text {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            padding: 14px 35px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #e8ebff 0%, #d8dbff 100%);
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #d8dbff 0%, #c8cbff 100%);
+            transform: translateY(-2px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .result-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .measurement-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .measurement-item:last-child {
+            border-bottom: none;
+        }
+
+        .measurement-name {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .measurement-value {
+            color: #333;
+            font-weight: 700;
+        }
+
+        .interpretation-item {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            border-left: 5px solid #4caf50;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interpretation-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76,175,80,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .interpretation-item:hover::before {
+            left: 100%;
+        }
+
+        .interpretation-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 25px rgba(76,175,80,0.2);
+            border-left-width: 7px;
+        }
+
+        /* Severity color coding */
+        .severity-normal {
+            border-left-color: #4caf50; /* Green */
+        }
+        .severity-normal:hover {
+            box-shadow: 0 8px 25px rgba(76,175,80,0.2);
+        }
+        .severity-mild {
+            border-left-color: #ffca28; /* Amber */
+        }
+        .severity-mild:hover {
+            box-shadow: 0 8px 25px rgba(255,202,40,0.25);
+        }
+        .severity-moderate {
+            border-left-color: #ff9800; /* Orange */
+        }
+        .severity-moderate:hover {
+            box-shadow: 0 8px 25px rgba(255,152,0,0.25);
+        }
+        .severity-severe {
+            border-left-color: #f44336; /* Red */
+        }
+        .severity-severe:hover {
+            box-shadow: 0 8px 25px rgba(244,67,54,0.25);
+        }
+
+        .interpretation-category {
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.15rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+        }
+
+        .interpretation-text {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        /* Source badges (ML vs Rule) */
+        .source-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            vertical-align: middle;
+        }
+        .source-ml {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+        .source-rule {
+            background: #f1f8e9;
+            color: #2e7d32;
+            border: 1px solid #aed581;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            margin: 0 auto 25px;
+            box-shadow: 0 5px 20px rgba(102,126,234,0.3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 18px 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            animation: slideIn 0.4s ease-out;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .patient-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(102,126,234,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .patient-info::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .patient-info h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .patient-detail {
+            display: inline-block;
+            margin-right: 35px;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            font-size: 1.05rem;
+        }
+
+        .patient-detail strong {
+            display: inline-block;
+            margin-right: 8px;
+            opacity: 0.9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status-normal {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-abnormal {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .json-viewer {
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+            color: #f8f8f2;
+            padding: 30px;
+            border-radius: 15px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid rgba(102,126,234,0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .json-viewer::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        .json-viewer::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .json-viewer::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        .json-viewer::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .copy-btn {
+            float: right;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 25px;
+                border-radius: 15px;
+            }
+
+            .tabs {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .tab {
+                padding: 15px;
+                font-size: 1rem;
+            }
+
+            .upload-area {
+                padding: 50px 20px;
+            }
+
+            .upload-icon {
+                font-size: 3.5rem;
+            }
+
+            .upload-text {
+                font-size: 1.1rem;
+            }
+
+            .patient-detail {
+                display: block;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .result-card {
+                padding: 20px;
+            }
+
+            .json-viewer {
+                font-size: 0.8rem;
+                padding: 20px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .tabs, .btn, .upload-area {
+                display: none;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 Medical Report Interpreter</h1>
+            <p>AI-Powered Echocardiography Analysis System</p>
+        </header>
+
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('upload')">📤 Upload PDF</button>
+                <button class="tab" onclick="switchTab('manual')">⌨️ Manual Entry</button>
+                <button class="tab" onclick="switchTab('batch')">📚 Batch Upload</button>
+                <button class="tab" onclick="switchTab('metrics')">📊 Model Comparison</button>
+            </div>
+
+            <!-- Upload Tab -->
+            <div id="upload-tab" class="tab-content active">
+                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">Click to upload or drag and drop</div>
+                    <div class="upload-hint">PDF medical reports (Max 16MB)</div>
+                    <input type="file" id="fileInput" accept=".pdf" onchange="handleFileSelect(event)">
+                </div>
+
+                <div id="uploadLoading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Processing your report...</p>
+                </div>
+
+                <div id="uploadAlert" class="hidden"></div>
+            </div>
+
+            <!-- Manual Entry Tab -->
+            <div id="manual-tab" class="tab-content">
+                <form id="manualForm">
+                    <h3 style="margin-bottom: 20px; color: #333;">Patient Information</h3>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label>Age</label>
+                            <input type="number" id="age" placeholder="45" min="1" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Sex</label>
+                            <select id="sex" required>
+                                <option value="">Select...</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 30px 0 20px; color: #333;">Measurements</h3>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label>EF (Ejection Fraction) %</label>
+                            <input type="number" id="ef" placeholder="64.8" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>LVIDd (cm)</label>
+                            <input type="number" id="lvid_d" placeholder="4.65" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>LVIDs (cm)</label>
+                            <input type="number" id="lvid_s" placeholder="3.00" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>IVSd (cm)</label>
+                            <input type="number" id="ivs_d" placeholder="1.13" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>LVPWd (cm)</label>
+                            <input type="number" id="lvpw_d" placeholder="1.02" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>LA Dimension (cm)</label>
+                            <input type="number" id="la_dim" placeholder="2.38" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>MV E/A Ratio</label>
+                            <input type="number" id="mv_ea" placeholder="1.75" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>FS (Fractional Shortening) %</label>
+                            <input type="number" id="fs" placeholder="35.4" step="0.1">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; text-align: center;">
+                        <button type="submit" class="btn btn-primary">🔍 Analyze Measurements</button>
+                    </div>
+                </form>
+
+                <div id="manualLoading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing measurements...</p>
+                </div>
+
+                <div id="manualAlert" class="hidden"></div>
+            </div>
+
+            <!-- Batch Upload Tab -->
+            <div id="batch-tab" class="tab-content">
+                <div class="upload-area" id="batchUploadArea" onclick="document.getElementById('batchFileInput').click()">
+                    <div class="upload-icon">📚</div>
+                    <div class="upload-text">Click to upload multiple PDFs</div>
+                    <div class="upload-hint">Select multiple PDF files to process in batch</div>
+                    <input type="file" id="batchFileInput" accept=".pdf" multiple onchange="handleBatchFileSelect(event)">
+                </div>
+
+                <div id="batchLoading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Processing batch reports...</p>
+                </div>
+
+                <div id="batchAlert" class="hidden"></div>
+
+                <div id="batchResults" class="hidden" style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 20px;">Batch Processing Results</h3>
+                    <div id="batchResultsList"></div>
+                    <div id="batchCharts" style="margin-top:40px;"></div>
+                </div>
+            </div>
+
+            <!-- Model Comparison Tab -->
+            <div id="metrics-tab" class="tab-content">
+                <div class="alert alert-info" id="metricsInfo" style="margin-bottom: 20px;">
+                    Fetching model performance metrics (accuracy, F1, confusion matrices)...
+                </div>
+
+                <!-- Overall Performance Summary -->
+                <div class="card" style="margin-bottom: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <div class="result-title" style="color: white; margin-bottom: 15px;">📊 Overall Model Performance</div>
+                    <div id="overallMetricsSummary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; backdrop-filter: blur(10px);">
+                            <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 5px;">📈 Avg Accuracy</div>
+                            <div style="font-size: 1.8rem; font-weight: 700;" id="overallAccuracy">—</div>
+                        </div>
+                        <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; backdrop-filter: blur(10px);">
+                            <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 5px;">🎯 Avg Precision</div>
+                            <div style="font-size: 1.8rem; font-weight: 700;" id="overallPrecision">—</div>
+                        </div>
+                        <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; backdrop-filter: blur(10px);">
+                            <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 5px;">🔍 Avg Recall</div>
+                            <div style="font-size: 1.8rem; font-weight: 700;" id="overallRecall">—</div>
+                        </div>
+                        <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; backdrop-filter: blur(10px);">
+                            <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 5px;">⚡ Avg F1-Score</div>
+                            <div style="font-size: 1.8rem; font-weight: 700;" id="overallF1Score">—</div>
+                        </div>
+                    </div>
+                    <div id="overallStats" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.9rem; opacity: 0.9;"></div>
+                </div>
+
+                <!-- Category & Algorithm Selection -->
+                <div class="grid" style="align-items: end; margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label for="metricsCategory">Category</label>
+                        <select id="metricsCategory"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="metricsAlgorithm">Algorithm</label>
+                        <select id="metricsAlgorithm"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button class="btn btn-secondary" onclick="refreshMetrics(true)">🔄 Recompute</button>
+                    </div>
+                </div>
+
+                <div id="metricsError" class="alert alert-error hidden" style="margin-bottom: 20px;"></div>
+
+                <div class="grid">
+                    <div class="result-card">
+                        <div class="result-title">📈 Accuracy by Algorithm (with CV)</div>
+                        <canvas id="accChart" height="120"></canvas>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-title">🎯 F1-Score by Algorithm</div>
+                        <canvas id="f1Chart" height="120"></canvas>
+                    </div>
+                </div>
+                
+                <div class="grid" style="margin-top: 20px;">
+                    <div class="result-card">
+                        <div class="result-title">🎯 Precision & Recall</div>
+                        <canvas id="prChart" height="120"></canvas>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-title">⏱ Training & Inference Time (ms)</div>
+                        <canvas id="timeChart" height="120"></canvas>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 20px;">
+                    <div class="result-title">🧩 Confusion Matrix (<span id="cmTitle">—</span>)</div>
+                    <div id="cmContainer" style="overflow-x:auto; margin-top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Card -->
+        <div id="resultsCard" class="card hidden">
+            <h2 style="margin-bottom: 20px; color: #333;">📊 Analysis Results</h2>
+            
+            <div id="patientInfo"></div>
+
+            <div class="grid">
+                <div class="result-card">
+                    <div class="result-title">📈 Measurements</div>
+                    <div id="measurementsList"></div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-title">🩺 Clinical Interpretation</div>
+                    <div id="interpretationsList"></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="margin-bottom: 15px;">📋 JSON Response</h3>
+                <button class="btn btn-secondary copy-btn" onclick="copyJSON()">📋 Copy JSON</button>
+                <div class="json-viewer" id="jsonViewer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000';
+        let currentResults = null;
+        let metricsData = null;
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+
+            // Hide results
+            document.getElementById('resultsCard').classList.add('hidden');
+        }
+
+        // Drag and drop for upload area
+        const uploadArea = document.getElementById('uploadArea');
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type === 'application/pdf') {
+                uploadFile(files[0]);
+            } else {
+                showAlert('uploadAlert', 'error', 'Please upload a PDF file');
+            }
+        });
+
+        // Single file upload
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadFile(file);
+            }
+        }
+
+        async function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            document.getElementById('uploadLoading').classList.add('active');
+            hideAlert('uploadAlert');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/interpret`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    currentResults = data;
+                    displayResults(data);
+                    showAlert('uploadAlert', 'success', '✅ Report processed successfully!');
+                } else {
+                    showAlert('uploadAlert', 'error', `❌ Error: ${data.error || 'Failed to process report'}`);
+                }
+            } catch (error) {
+                showAlert('uploadAlert', 'error', `❌ Network error: ${error.message}`);
+            } finally {
+                document.getElementById('uploadLoading').classList.remove('active');
+            }
+        }
+
+        // Manual form submission
+        document.getElementById('manualForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                patient: {
+                    age: parseInt(document.getElementById('age').value),
+                    sex: document.getElementById('sex').value
+                },
+                measurements: {}
+            };
+
+            // Collect measurements
+            const measurements = {
+                'EF': 'ef',
+                'LVID_D': 'lvid_d',
+                'LVID_S': 'lvid_s',
+                'IVS_D': 'ivs_d',
+                'LVPW_D': 'lvpw_d',
+                'LA_DIMENSION': 'la_dim',
+                'MV_E_A': 'mv_ea',
+                'FS': 'fs'
+            };
+
+            for (const [key, id] of Object.entries(measurements)) {
+                const value = document.getElementById(id).value;
+                if (value) {
+                    data.measurements[key] = parseFloat(value);
+                }
+            }
+
+            if (Object.keys(data.measurements).length === 0) {
+                showAlert('manualAlert', 'error', '❌ Please enter at least one measurement');
+                return;
+            }
+
+            document.getElementById('manualLoading').classList.add('active');
+            hideAlert('manualAlert');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/interpret/json`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    currentResults = result;
+                    displayResults(result);
+                    showAlert('manualAlert', 'success', '✅ Analysis completed successfully!');
+                } else {
+                    showAlert('manualAlert', 'error', `❌ Error: ${result.error || 'Failed to analyze'}`);
+                }
+            } catch (error) {
+                showAlert('manualAlert', 'error', `❌ Network error: ${error.message}`);
+            } finally {
+                document.getElementById('manualLoading').classList.remove('active');
+            }
+        });
+
+        // Batch upload
+        function handleBatchFileSelect(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                uploadBatchFiles(files);
+            }
+        }
+
+        async function uploadBatchFiles(files) {
+            const formData = new FormData();
+            
+            for (let file of files) {
+                if (file.type === 'application/pdf') {
+                    formData.append('files', file);
+                }
+            }
+
+            document.getElementById('batchLoading').classList.add('active');
+            hideAlert('batchAlert');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/batch`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayBatchResults(data);
+                    showAlert('batchAlert', 'success', `✅ Processed ${data.success} files successfully! ${data.failed > 0 ? `(${data.failed} failed)` : ''}`);
+                } else {
+                    showAlert('batchAlert', 'error', `❌ Error: ${data.error || 'Failed to process batch'}`);
+                }
+            } catch (error) {
+                showAlert('batchAlert', 'error', `❌ Network error: ${error.message}`);
+            } finally {
+                document.getElementById('batchLoading').classList.remove('active');
+            }
+        }
+
+        function displayBatchResults(data) {
+            const container = document.getElementById('batchResultsList');
+            container.innerHTML = '';
+
+            // Collect feature distributions
+            let ages = [], efs = [], la_dims = [], categories = { 'LV_HYPERTROPHY': {}, 'LA_SIZE': {}, 'DIASTOLIC_FUNCTION': {} };
+
+            if (data.results && data.results.length > 0) {
+                data.results.forEach((result, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'result-card';
+                    card.style.marginBottom = '15px';
+                    
+                    card.innerHTML = `
+                        <h4 style="margin-bottom: 10px;">${index + 1}. ${result.file_name}</h4>
+                        <div><strong>Patient:</strong> Age ${result.patient?.age || 'N/A'}, Sex ${result.patient?.sex || 'N/A'}</div>
+                        <div><strong>Measurements:</strong> ${Object.keys(result.measurements || {}).length} parameters extracted</div>
+                        <div><strong>Status:</strong> <span class="status-badge status-normal">${result.status || 'processed'}</span></div>
+                    `;
+                    container.appendChild(card);
+
+                    // Collect for charts
+                    if (result.patient?.age) ages.push(result.patient.age);
+                    if (result.measurements?.EF) efs.push(result.measurements.EF);
+                    if (result.measurements?.LA_DIMENSION) la_dims.push(result.measurements.LA_DIMENSION);
+                    
+                    // Use class_labels from backend (if available)
+                    if (result.class_labels) {
+                        for (let cat of Object.keys(categories)) {
+                            let label = result.class_labels[cat] || 'Unknown';
+                            categories[cat][label] = (categories[cat][label] || 0) + 1;
+                        }
+                    } else if (result.interpretations) {
+                        // Fallback: Use regex to extract clinical class label
+                        for (let cat of Object.keys(categories)) {
+                            let val = result.interpretations[cat];
+                            if (val) {
+                                let match = val.match(/\b(Normal|Mild|Moderate|Severe|Enlarged|Abnormal|Dilated|None)\b/i);
+                                let label = match ? match[0] : 'Unknown';
+                                categories[cat][label] = (categories[cat][label] || 0) + 1;
+                            } else {
+                                categories[cat]['Unknown'] = (categories[cat]['Unknown'] || 0) + 1;
+                            }
+                        }
+                    }
+                });
+
+                document.getElementById('batchResults').classList.remove('hidden');
+            }
+
+            // Draw charts
+            drawBatchCharts(ages, efs, la_dims, categories);
+        }
+
+        // Chart.js loader
+        if (!window.Chart) {
+            let script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            document.head.appendChild(script);
+        }
+
+        function drawBatchCharts(ages, efs, la_dims, categories) {
+            const chartsDiv = document.getElementById('batchCharts');
+            chartsDiv.innerHTML = '';
+
+            // Age distribution
+            if (ages.length > 0) {
+                chartsDiv.innerHTML += '<h4>Age Distribution</h4><canvas id="ageChart" height="80"></canvas>';
+                setTimeout(() => {
+                    new Chart(document.getElementById('ageChart').getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: ages.map((_,i)=>i+1),
+                            datasets: [{ label: 'Age', data: ages, backgroundColor: '#667eea' }]
+                        },
+                        options: { scales: { x: { title: { display: true, text: 'Sample' } }, y: { title: { display: true, text: 'Age' } } } }
+                    });
+                }, 500);
+            }
+
+            // EF distribution
+            if (efs.length > 0) {
+                chartsDiv.innerHTML += '<h4>Ejection Fraction (EF) Distribution</h4><canvas id="efChart" height="80"></canvas>';
+                setTimeout(() => {
+                    new Chart(document.getElementById('efChart').getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: efs.map((_,i)=>i+1),
+                            datasets: [{ label: 'EF (%)', data: efs, backgroundColor: '#764ba2' }]
+                        },
+                        options: { scales: { x: { title: { display: true, text: 'Sample' } }, y: { title: { display: true, text: 'EF (%)' } } } }
+                    });
+                }, 500);
+            }
+
+            // LA Dimension distribution
+            if (la_dims.length > 0) {
+                chartsDiv.innerHTML += '<h4>LA Dimension Distribution</h4><canvas id="laChart" height="80"></canvas>';
+                setTimeout(() => {
+                    new Chart(document.getElementById('laChart').getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: la_dims.map((_,i)=>i+1),
+                            datasets: [{ label: 'LA Dimension (cm)', data: la_dims, backgroundColor: '#4caf50' }]
+                        },
+                        options: { scales: { x: { title: { display: true, text: 'Sample' } }, y: { title: { display: true, text: 'LA Dimension (cm)' } } } }
+                    });
+                }, 500);
+            }
+
+            // Interpretation category distributions
+            for (let cat in categories) {
+                let dist = categories[cat];
+                let labels = Object.keys(dist);
+                let values = labels.map(l=>dist[l]);
+                chartsDiv.innerHTML += `<h4>${cat} Distribution</h4><canvas id="${cat}Chart" height="80"></canvas>`;
+                setTimeout(() => {
+                    new Chart(document.getElementById(`${cat}Chart`).getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{ label: cat, data: values, backgroundColor: '#ff9800' }]
+                        },
+                        options: { scales: { x: { title: { display: true, text: cat } }, y: { title: { display: true, text: 'Count' } } } }
+                    });
+                }, 500);
+            }
+        }
+
+        // Display results
+        function displayResults(data) {
+            // Patient info
+            const patientInfo = document.getElementById('patientInfo');
+            if (data.patient) {
+                patientInfo.innerHTML = `
+                    <div class="patient-info">
+                        <h3>👤 Patient Information</h3>
+                        <div class="patient-detail"><strong>Name:</strong> ${data.patient.name || 'N/A'}</div>
+                        <div class="patient-detail"><strong>Age:</strong> ${data.patient.age || 'N/A'} years</div>
+                        <div class="patient-detail"><strong>Sex:</strong> ${data.patient.sex || 'N/A'}</div>
+                    </div>
+                `;
+            }
+
+            // Measurements
+            const measurementsList = document.getElementById('measurementsList');
+            measurementsList.innerHTML = '';
+            
+            if (data.measurements) {
+                for (const [key, value] of Object.entries(data.measurements)) {
+                    measurementsList.innerHTML += `
+                        <div class="measurement-item">
+                            <span class="measurement-name">${key}</span>
+                            <span class="measurement-value">${value.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            // Interpretations
+            const interpretationsList = document.getElementById('interpretationsList');
+            interpretationsList.innerHTML = '';
+            
+            if (data.interpretations) {
+                for (const [category, text] of Object.entries(data.interpretations)) {
+                    const sev = classifySeverity(text);
+                    const src = (data.sources && data.sources[category]) ? data.sources[category] : ((data.method || '').includes('ML') ? 'ML' : 'Rule');
+                    const srcClass = src === 'ML' ? 'source-ml' : 'source-rule';
+                    interpretationsList.innerHTML += `
+                        <div class="interpretation-item severity-${sev}">
+                            <div class="interpretation-category">${category}
+                                <span class="source-badge ${srcClass}" title="Generated by ${src}">${src}</span>
+                            </div>
+                            <div class="interpretation-text">${text}</div>
+                        </div>
+                    `;
+                }
+            }
+
+            // JSON viewer
+            document.getElementById('jsonViewer').textContent = JSON.stringify(data, null, 2);
+
+            // Show results card
+            document.getElementById('resultsCard').classList.remove('hidden');
+            document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Map interpretation text to a severity level for color coding
+        function classifySeverity(text) {
+            const t = (text || '').toLowerCase();
+            // Highest priority first
+            if (t.includes('severe') || t.includes('restrictive')) return 'severe';
+            if (t.includes('moderate')) return 'moderate';
+            if (t.includes('mild') || t.includes('borderline') || t.includes('impaired relaxation')) return 'mild';
+            if (t.includes('normal')) return 'normal';
+            // Generic abnormal hints when explicit level not present
+            if (t.includes('dysfunction') || t.includes('dilat') || t.includes('enlarg') || t.includes('abnormal')) return 'moderate';
+            return 'normal';
+        }
+
+        // Alert functions
+        function showAlert(elementId, type, message) {
+            const alert = document.getElementById(elementId);
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.classList.remove('hidden');
+        }
+
+        function hideAlert(elementId) {
+            document.getElementById(elementId).classList.add('hidden');
+        }
+
+        // Copy JSON
+        function copyJSON() {
+            const jsonText = document.getElementById('jsonViewer').textContent;
+            navigator.clipboard.writeText(jsonText).then(() => {
+                alert('JSON copied to clipboard!');
+            });
+        }
+
+        // Check API health on load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                console.log('API Status:', data);
+            } catch (error) {
+                console.error('API is not running. Please start the server with: python src/api.py');
+            }
+
+            // Load model metrics lazily after health check
+            refreshMetrics(false);
+        });
+
+        async function refreshMetrics(force = false) {
+            // Only fetch when metrics tab is visited or on first load
+            document.getElementById('metricsInfo').classList.remove('hidden');
+            document.getElementById('metricsInfo').textContent = 'Fetching model performance metrics...';
+            document.getElementById('metricsError').classList.add('hidden');
+            try {
+                const url = `${API_BASE}/api/model-metrics${force ? '?force=true' : ''}`;
+                const res = await fetch(url);
+                const json = await res.json();
+                if (!res.ok) {
+                    throw new Error(json.error || 'Failed to load metrics');
+                }
+                metricsData = json;
+                document.getElementById('metricsInfo').textContent = `Metrics generated at ${new Date((metricsData.generated_at||Date.now())*1000).toLocaleString()}`;
+                setupMetricsSelectors();
+                renderMetrics();
+            } catch (e) {
+                document.getElementById('metricsError').classList.remove('hidden');
+                document.getElementById('metricsError').textContent = `❌ ${e.message}`;
+                document.getElementById('metricsInfo').classList.add('hidden');
+            }
+        }
+
+        function setupMetricsSelectors() {
+            const catSel = document.getElementById('metricsCategory');
+            const algoSel = document.getElementById('metricsAlgorithm');
+            const categories = Object.keys(metricsData?.categories || {});
+
+            // Populate categories
+            catSel.innerHTML = '';
+            
+            // Add "Overall" option first
+            const optOverall = document.createElement('option');
+            optOverall.value = 'OVERALL';
+            optOverall.textContent = '📊 Overall Results';
+            catSel.appendChild(optOverall);
+            
+            categories.forEach((c) => {
+                const opt = document.createElement('option');
+                opt.value = c; opt.textContent = c;
+                catSel.appendChild(opt);
+            });
+
+            // Update algorithms on category change
+            catSel.onchange = () => {
+                populateAlgorithms();
+                renderMetrics();
+            };
+
+            // Algorithm change
+            algoSel.onchange = () => renderMetrics();
+
+            populateAlgorithms();
+        }
+
+        function populateAlgorithms() {
+            const catSel = document.getElementById('metricsCategory');
+            const algoSel = document.getElementById('metricsAlgorithm');
+            const cat = catSel.value;
+            
+            let algos = [];
+            if (cat === 'OVERALL') {
+                // Collect all unique algorithms across all categories
+                const algoSet = new Set();
+                for (const category in metricsData?.categories || {}) {
+                    Object.keys(metricsData.categories[category].algorithms || {}).forEach(a => algoSet.add(a));
+                }
+                algos = Array.from(algoSet);
+            } else {
+                algos = Object.keys(metricsData?.categories?.[cat]?.algorithms || {});
+            }
+            
+            const best = metricsData?.categories?.[cat]?.best_algorithm || '';
+
+            algoSel.innerHTML = '';
+            // Add an option to view all algorithms
+            const optAll = document.createElement('option');
+            optAll.value = 'ALL';
+            optAll.textContent = 'All algorithms';
+            algoSel.appendChild(optAll);
+            
+            algos.forEach((a) => {
+                const opt = document.createElement('option');
+                opt.value = a; 
+                opt.textContent = a + (a === best ? ' 🏆' : '');
+                algoSel.appendChild(opt);
+            });
+            
+            // Default to All on first load for a category
+            algoSel.value = 'ALL';
+        }
+
+        let accChartInstance = null;
+        let f1ChartInstance = null;
+        let prChartInstance = null;
+        let timeChartInstance = null;
+
+        function displayOverallMetrics() {
+            // Calculate and display overall metrics based on current selections
+            if (!metricsData?.categories) return;
+
+            const selectedCat = document.getElementById('metricsCategory').value;
+            const selectedAlgo = document.getElementById('metricsAlgorithm').value;
+
+            let totalAccuracy = 0;
+            let totalPrecision = 0;
+            let totalRecall = 0;
+            let totalF1Score = 0;
+            let metricCount = 0;
+            let totalTrainTime = 0;
+            let totalPredictTime = 0;
+
+            // Track metrics per algorithm
+            let algoMetrics = {};
+
+            // Collect metrics based on filters
+            for (const category in metricsData.categories) {
+                // If "Overall Results" not selected, filter by category
+                if (selectedCat !== 'OVERALL' && category !== selectedCat) {
+                    continue;
+                }
+
+                const catData = metricsData.categories[category];
+                for (const algo in catData.algorithms) {
+                    // If specific algorithm selected and not "ALL", filter by algorithm
+                    if (selectedAlgo !== 'ALL' && selectedAlgo !== 'OVERALL' && algo !== selectedAlgo) {
+                        continue;
+                    }
+
+                    const algoData = catData.algorithms[algo];
+                    
+                    const acc = parseFloat(algoData.accuracy) || 0;
+                    const prec = parseFloat(algoData.precision) || 0;
+                    const rec = parseFloat(algoData.recall) || 0;
+                    const f1 = parseFloat(algoData.f1_score) || 0;
+                    const train = parseFloat(algoData.train_time) || 0;
+                    const predict = parseFloat(algoData.predict_time) || 0;
+                    
+                    totalAccuracy += acc;
+                    totalPrecision += prec;
+                    totalRecall += rec;
+                    totalF1Score += f1;
+                    totalTrainTime += train;
+                    totalPredictTime += predict;
+                    metricCount++;
+
+                    // Track per algorithm
+                    if (!algoMetrics[algo]) {
+                        algoMetrics[algo] = {
+                            accuracy: 0, precision: 0, recall: 0, f1: 0, train: 0, predict: 0, count: 0
+                        };
+                    }
+                    algoMetrics[algo].accuracy += acc;
+                    algoMetrics[algo].precision += prec;
+                    algoMetrics[algo].recall += rec;
+                    algoMetrics[algo].f1 += f1;
+                    algoMetrics[algo].train += train;
+                    algoMetrics[algo].predict += predict;
+                    algoMetrics[algo].count += 1;
+                }
+            }
+
+            // Calculate averages
+            const avgAccuracy = metricCount > 0 ? (totalAccuracy / metricCount) : 0;
+            const avgPrecision = metricCount > 0 ? (totalPrecision / metricCount) : 0;
+            const avgRecall = metricCount > 0 ? (totalRecall / metricCount) : 0;
+            const avgF1Score = metricCount > 0 ? (totalF1Score / metricCount) : 0;
+            const avgTrainTime = metricCount > 0 ? (totalTrainTime / metricCount) : 0;
+            const avgPredictTime = metricCount > 0 ? (totalPredictTime / metricCount) : 0;
+
+            // Determine performance rating
+            let ratingBadge = '';
+            let ratingText = '';
+            if (avgAccuracy >= 0.95) {
+                ratingBadge = '🌟';
+                ratingText = 'Excellent (≥95%)';
+            } else if (avgAccuracy >= 0.90) {
+                ratingBadge = '⭐';
+                ratingText = 'Very Good (90-95%)';
+            } else if (avgAccuracy >= 0.85) {
+                ratingBadge = '👍';
+                ratingText = 'Good (85-90%)';
+            } else if (avgAccuracy >= 0.80) {
+                ratingBadge = '✓';
+                ratingText = 'Acceptable (80-85%)';
+            } else {
+                ratingBadge = '⚠️';
+                ratingText = 'Needs Improvement (<80%)';
+            }
+
+            // Build filter description
+            let filterDesc = 'All Categories & Algorithms';
+            if (selectedCat !== 'OVERALL') {
+                filterDesc = `${selectedCat} Category`;
+                if (selectedAlgo !== 'ALL') {
+                    filterDesc += ` • ${selectedAlgo}`;
+                }
+            } else if (selectedAlgo !== 'ALL') {
+                filterDesc = `All Categories • ${selectedAlgo}`;
+            }
+
+            // Update overall display
+            document.getElementById('overallAccuracy').textContent = (avgAccuracy * 100).toFixed(1) + '%';
+            document.getElementById('overallPrecision').textContent = (avgPrecision * 100).toFixed(1) + '%';
+            document.getElementById('overallRecall').textContent = (avgRecall * 100).toFixed(1) + '%';
+            document.getElementById('overallF1Score').textContent = avgF1Score.toFixed(3);
+
+            // Overall stats details
+            const statsHtml = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; font-size: 0.85rem;">
+                    <div>
+                        <strong>🏷️ Filter:</strong> ${filterDesc}
+                    </div>
+                    <div>
+                        <strong>📊 Rating:</strong> ${ratingBadge} ${ratingText}
+                    </div>
+                    <div>
+                        <strong>⏱ Avg Training:</strong> ${(avgTrainTime * 1000).toFixed(1)} ms
+                    </div>
+                    <div>
+                        <strong>⚡ Avg Inference:</strong> ${(avgPredictTime * 1000).toFixed(2)} ms
+                    </div>
+                </div>
+            `;
+            document.getElementById('overallStats').innerHTML = statsHtml;
+        }
+
+        function renderMetrics() {
+            // Display overall metrics first
+            displayOverallMetrics();
+
+            const cat = document.getElementById('metricsCategory').value;
+            
+            // If "Overall" is selected, hide category-specific charts and show summary
+            if (cat === 'OVERALL') {
+                document.getElementById('accChart').parentElement.parentElement.style.display = 'none';
+                document.getElementById('f1Chart').parentElement.parentElement.style.display = 'none';
+                document.getElementById('prChart').parentElement.parentElement.style.display = 'none';
+                document.getElementById('timeChart').parentElement.parentElement.style.display = 'none';
+                document.getElementById('cmContainer').parentElement.style.display = 'none';
+                return;
+            }
+            
+            // Show charts for category-specific view
+            document.getElementById('accChart').parentElement.parentElement.style.display = 'grid';
+            document.getElementById('f1Chart').parentElement.parentElement.style.display = 'grid';
+            document.getElementById('prChart').parentElement.parentElement.style.display = 'grid';
+            document.getElementById('timeChart').parentElement.parentElement.style.display = 'grid';
+            document.getElementById('cmContainer').parentElement.style.display = 'block';
+
+            const algoSel = document.getElementById('metricsAlgorithm');
+            const chosenAlgo = algoSel.value;
+
+            const catData = metricsData?.categories?.[cat];
+            if (!catData) return;
+
+            // Build metrics data (filter to selected algorithm or show all)
+            const allAlgoNames = Object.keys(catData.algorithms);
+            const showAll = !chosenAlgo || chosenAlgo === 'ALL';
+            const algoNames = showAll ? allAlgoNames : (allAlgoNames.includes(chosenAlgo) ? [chosenAlgo] : allAlgoNames);
+            const accs = algoNames.map(a => (catData.algorithms[a]?.accuracy ?? 0));
+            const f1s = algoNames.map(a => (catData.algorithms[a]?.f1_score ?? 0));
+            const cvMeans = algoNames.map(a => (catData.algorithms[a]?.cv_mean ?? 0));
+            const cvStds = algoNames.map(a => (catData.algorithms[a]?.cv_std ?? 0));
+            const precisions = algoNames.map(a => (catData.algorithms[a]?.precision ?? 0));
+            const recalls = algoNames.map(a => (catData.algorithms[a]?.recall ?? 0));
+            const trainTimes = algoNames.map(a => ((catData.algorithms[a]?.train_time ?? 0) * 1000)); // ms
+            const predictTimes = algoNames.map(a => ((catData.algorithms[a]?.predict_time ?? 0) * 1000)); // ms
+
+            // Draw accuracy with CV error bars
+            const accCtx = document.getElementById('accChart').getContext('2d');
+            if (accChartInstance) accChartInstance.destroy();
+            accChartInstance = new Chart(accCtx, {
+                type: 'bar',
+                data: {
+                    labels: algoNames,
+                    datasets: [{
+                        label: `${cat} Accuracy`,
+                        data: accs,
+                        backgroundColor: '#667eea',
+                        borderColor: '#667eea',
+                        borderWidth: 1
+                    }, {
+                        label: 'CV Score',
+                        data: cvMeans,
+                        backgroundColor: 'transparent',
+                        borderColor: '#000',
+                        borderWidth: 2,
+                        type: 'line',
+                        pointStyle: 'star',
+                        
+                        // Error bars
+                        errorBars: {
+                            label: '95% CI',
+                            plus: cvStds.map(std => std * 1.96),
+                            minus: cvStds.map(std => std * 1.96),
+                            color: 'rgba(0, 0, 0, 0.3)'
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    if (ctx.datasetIndex === 1) {
+                                        const mean = cvMeans[ctx.dataIndex];
+                                        const std = cvStds[ctx.dataIndex];
+                                        return `CV: ${mean.toFixed(3)} ± ${(std * 1.96).toFixed(3)}`;
+                                    }
+                                    return `Accuracy: ${ctx.raw.toFixed(3)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: { y: { min: 0, max: 1 } }
+                }
+            });
+
+            // Draw F1
+            const f1Ctx = document.getElementById('f1Chart').getContext('2d');
+            if (f1ChartInstance) f1ChartInstance.destroy();
+            f1ChartInstance = new Chart(f1Ctx, {
+                type: 'bar',
+                data: { labels: algoNames, datasets: [{ label: `${cat} F1-Score`, data: f1s, backgroundColor: '#764ba2' }] },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { min: 0, max: 1 } } }
+            });
+
+            // Draw Precision & Recall
+            const prCtx = document.getElementById('prChart').getContext('2d');
+            if (prChartInstance) prChartInstance.destroy();
+            prChartInstance = new Chart(prCtx, {
+                type: 'bar',
+                data: {
+                    labels: algoNames,
+                    datasets: [{
+                        label: 'Precision',
+                        data: precisions,
+                        backgroundColor: '#4caf50',
+                        order: 2
+                    }, {
+                        label: 'Recall',
+                        data: recalls,
+                        backgroundColor: '#ff9800',
+                        order: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    const metric = ctx.dataset.label;
+                                    const value = ctx.raw;
+                                    return `${metric}: ${value.toFixed(3)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: { y: { min: 0, max: 1 } }
+                }
+            });
+
+            // Draw Training & Inference Time
+            const timeCtx = document.getElementById('timeChart').getContext('2d');
+            if (timeChartInstance) timeChartInstance.destroy();
+            timeChartInstance = new Chart(timeCtx, {
+                type: 'bar',
+                data: {
+                    labels: algoNames,
+                    datasets: [{
+                        label: 'Training Time (ms)',
+                        data: trainTimes,
+                        backgroundColor: '#e91e63',
+                        order: 2
+                    }, {
+                        label: 'Inference Time (ms)',
+                        data: predictTimes,
+                        backgroundColor: '#03a9f4',
+                        order: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    const metric = ctx.dataset.label;
+                                    const value = ctx.raw;
+                                    return `${metric}: ${value.toFixed(1)} ms`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Time (ms)'
+                            },
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => value + 'ms'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Confusion matrix for selected algorithm (or best when viewing all)
+            const cmAlgoKey = showAll ? (catData.best_algorithm || algoNames[0]) : chosenAlgo;
+            const algoData = catData.algorithms[cmAlgoKey];
+            document.getElementById('cmTitle').textContent = `${cat} • ${cmAlgoKey}${showAll ? ' (best)' : ''}`;
+            renderConfusionMatrix(algoData?.confusion_matrix);
+        }
+
+        function renderConfusionMatrix(cm) {
+            const container = document.getElementById('cmContainer');
+            if (!cm || !cm.labels || !cm.matrix || cm.matrix.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">No confusion matrix available for this selection.</div>';
+                return;
+            }
+
+            const labels = cm.labels;
+            const matrix = cm.matrix;
+
+            // Compute stats
+            let maxVal = 0;
+            let totalCorrect = 0;
+            let totalSamples = 0;
+            matrix.forEach((row, i) => {
+                row.forEach((v, j) => {
+                    if (v > maxVal) maxVal = v;
+                    totalSamples += v;
+                    if (i === j) totalCorrect += v; // Diagonal = correct predictions
+                });
+            });
+            const accuracy = totalSamples > 0 ? (totalCorrect / totalSamples * 100).toFixed(1) : 0;
+
+            // Build improved table with better styling
+            let html = `<div style="overflow-x: auto; margin-bottom: 15px;">
+                <p style="font-size: 0.95rem; color: #666; margin-bottom: 10px;">
+                    <strong>Accuracy:</strong> ${accuracy}% • <strong>Samples:</strong> ${totalSamples} • <strong>Correct:</strong> ${totalCorrect}
+                </p>
+                <table style="border-collapse: collapse; font-family: 'Courier New', monospace; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">`;
+            
+            // Header row
+            html += '<tr>';
+            html += '<th style="padding:12px 15px; border:1px solid #ddd; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; font-weight:600; text-align:center; min-width:80px;">Actual \ Predicted</th>';
+            labels.forEach(l => {
+                html += `<th style="padding:12px 15px; border:1px solid #ddd; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; font-weight:600; text-align:center; min-width:80px;">${l}</th>`;
+            });
+            html += '</tr>';
+
+            // Data rows
+            for (let i = 0; i < labels.length; i++) {
+                html += '<tr>';
+                html += `<th style="padding:12px 15px; border:1px solid #ddd; background:#f5f5f7; font-weight:600; text-align:center;">${labels[i]}</th>`;
+                for (let j = 0; j < labels.length; j++) {
+                    const val = matrix[i][j] || 0;
+                    const intensity = maxVal ? (val / maxVal) : 0;
+                    const isCorrect = i === j; // Diagonal cells are true positives
+                    
+                    // Color scheme: green for true positives (diagonal), blue-purple gradient for others, lighter for lower values
+                    let bg, textColor, fontWeight;
+                    if (isCorrect) {
+                        // True positives: green gradient
+                        const greenIntensity = 0.2 + 0.7 * intensity;
+                        bg = `rgba(76, 175, 80, ${greenIntensity})`;
+                        textColor = intensity > 0.5 ? 'white' : '#1a1a1a';
+                        fontWeight = '700';
+                    } else {
+                        // False positives/negatives: blue-red gradient (errors)
+                        const errorIntensity = 0.2 + 0.6 * intensity;
+                        bg = `rgba(244, 67, 54, ${errorIntensity})`;
+                        textColor = intensity > 0.4 ? 'white' : '#1a1a1a';
+                        fontWeight = intensity > 0.3 ? '600' : '500';
+                    }
+                    
+                    html += `<td style="padding:12px 15px; border:1px solid #ddd; text-align:center; background:${bg}; color:${textColor}; font-weight:${fontWeight}; font-size:0.95rem; cursor:pointer; transition:all 0.2s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" title="True label: ${labels[i]}, Predicted: ${labels[j]}">${val}</td>`;
+                }
+                html += '</tr>';
+            }
+            html += '</table></div>';
+            
+            // Add legend
+            html += `<div style="display:flex; gap:20px; margin-top:15px; font-size:0.9rem;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:20px; height:20px; background:rgba(76, 175, 80, 0.7); border-radius:3px;"></div>
+                    <span>True Positives (Correct)</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:20px; height:20px; background:rgba(244, 67, 54, 0.7); border-radius:3px;"></div>
+                    <span>False Positives/Negatives (Errors)</span>
+                </div>
+            </div>`;
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
