@@ -99,3 +99,32 @@ instance/
 # Build output
 *.min.js
 *.min.css
+
+# --------------------------------------------------
+# Frontend (Vite + React)
+# --------------------------------------------------
+frontend-react/node_modules/
+frontend-react/dist/
+frontend-react/.vite/
+frontend-react/coverage/
+frontend-react/.eslintcache
+frontend-react/.parcel-cache/
+frontend-react/npm-debug.log*
+frontend-react/yarn-debug.log*
+frontend-react/yarn-error.log*
+frontend-react/pnpm-debug.log*
+frontend-react/.env
+frontend-react/.env.local
+frontend-react/.env.*.local
+
+# Node at repo root (if accidentally installed)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python tooling
+.python-version
+.mypy_cache/
+.ruff_cache/
