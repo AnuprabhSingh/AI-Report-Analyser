@@ -1,0 +1,536 @@
+{
+  "generated_at": 1761929393.724332,
+  "categories": {
+    "LV_HYPERTROPHY": {
+      "algorithms": {
+        "Random Forest": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "cv_mean": 0.95625,
+          "cv_std": 0.04677071733467427,
+          "train_time": 0.07194805145263672,
+          "predict_time": 0.013842105865478516,
+          "confusion_matrix": {
+            "labels": [
+              "Mild",
+              "None",
+              "Severe"
+            ],
+            "matrix": [
+              [
+                6,
+                0,
+                0
+              ],
+              [
+                0,
+                31,
+                0
+              ],
+              [
+                0,
+                0,
+                4
+              ]
+            ]
+          }
+        },
+        "Gradient Boosting": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "cv_mean": 0.9875,
+          "cv_std": 0.015309310892394862,
+          "train_time": 0.11204099655151367,
+          "predict_time": 0.0003788471221923828,
+          "confusion_matrix": {
+            "labels": [
+              "Mild",
+              "None",
+              "Severe"
+            ],
+            "matrix": [
+              [
+                6,
+                0,
+                0
+              ],
+              [
+                0,
+                31,
+                0
+              ],
+              [
+                0,
+                0,
+                4
+              ]
+            ]
+          }
+        },
+        "SVM (RBF)": {
+          "accuracy": 0.9024390243902439,
+          "precision": 0.8160278745644599,
+          "recall": 0.9024390243902439,
+          "f1_score": 0.8566149297856616,
+          "cv_mean": 0.8125,
+          "cv_std": 0.03423265984407288,
+          "train_time": 0.0009150505065917969,
+          "predict_time": 0.00019288063049316406,
+          "confusion_matrix": {
+            "labels": [
+              "Mild",
+              "None",
+              "Severe"
+            ],
+            "matrix": [
+              [
+                6,
+                0,
+                0
+              ],
+              [
+                0,
+                31,
+                0
+              ],
+              [
+                0,
+                4,
+                0
+              ]
+            ]
+          }
+        },
+        "Logistic Regression": {
+          "accuracy": 0.926829268292683,
+          "precision": 0.9216555801921655,
+          "recall": 0.926829268292683,
+          "f1_score": 0.9212563351282863,
+          "cv_mean": 0.84375,
+          "cv_std": 0.02795084971874737,
+          "train_time": 0.013202905654907227,
+          "predict_time": 7.200241088867188e-05,
+          "confusion_matrix": {
+            "labels": [
+              "Mild",
+              "None",
+              "Severe"
+            ],
+            "matrix": [
+              [
+                5,
+                0,
+                1
+              ],
+              [
+                0,
+                31,
+                0
+              ],
+              [
+                0,
+                2,
+                2
+              ]
+            ]
+          }
+        },
+        "K-Nearest Neighbors": {
+          "accuracy": 0.8292682926829268,
+          "precision": 0.7651567944250871,
+          "recall": 0.8292682926829268,
+          "f1_score": 0.7937915742793792,
+          "cv_mean": 0.81875,
+          "cv_std": 0.05,
+          "train_time": 0.0004069805145263672,
+          "predict_time": 0.013836145401000977,
+          "confusion_matrix": {
+            "labels": [
+              "Mild",
+              "None",
+              "Severe"
+            ],
+            "matrix": [
+              [
+                4,
+                2,
+                0
+              ],
+              [
+                0,
+                30,
+                1
+              ],
+              [
+                1,
+                3,
+                0
+              ]
+            ]
+          }
+        },
+        "Decision Tree": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "cv_mean": 0.975,
+          "cv_std": 0.023385358667337135,
+          "train_time": 0.0007610321044921875,
+          "predict_time": 7.081031799316406e-05,
+          "confusion_matrix": {
+            "labels": [
+              "Mild",
+              "None",
+              "Severe"
+            ],
+            "matrix": [
+              [
+                6,
+                0,
+                0
+              ],
+              [
+                0,
+                31,
+                0
+              ],
+              [
+                0,
+                0,
+                4
+              ]
+            ]
+          }
+        }
+      },
+      "best_algorithm": "Random Forest"
+    },
+    "LA_SIZE": {
+      "algorithms": {
+        "Random Forest": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "cv_mean": 0.975,
+          "cv_std": 0.03644344934278313,
+          "train_time": 0.057173967361450195,
+          "predict_time": 0.013568878173828125,
+          "confusion_matrix": {
+            "labels": [
+              "Enlarged",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                15,
+                0
+              ],
+              [
+                0,
+                25
+              ]
+            ]
+          }
+        },
+        "Gradient Boosting": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "cv_mean": 0.9875,
+          "cv_std": 0.024999999999999998,
+          "train_time": 0.02924513816833496,
+          "predict_time": 0.0001239776611328125,
+          "confusion_matrix": {
+            "labels": [
+              "Enlarged",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                15,
+                0
+              ],
+              [
+                0,
+                25
+              ]
+            ]
+          }
+        },
+        "SVM (RBF)": {
+          "accuracy": 0.775,
+          "precision": 0.796875,
+          "recall": 0.775,
+          "f1_score": 0.7545766590389016,
+          "cv_mean": 0.7875,
+          "cv_std": 0.04592793267718459,
+          "train_time": 0.0007798671722412109,
+          "predict_time": 0.00021409988403320312,
+          "confusion_matrix": {
+            "labels": [
+              "Enlarged",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                7,
+                8
+              ],
+              [
+                1,
+                24
+              ]
+            ]
+          }
+        },
+        "Logistic Regression": {
+          "accuracy": 0.6,
+          "precision": 0.5428571428571429,
+          "recall": 0.6,
+          "f1_score": 0.5333333333333333,
+          "cv_mean": 0.625,
+          "cv_std": 0.10269797953221865,
+          "train_time": 0.013105154037475586,
+          "predict_time": 5.602836608886719e-05,
+          "confusion_matrix": {
+            "labels": [
+              "Enlarged",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                2,
+                13
+              ],
+              [
+                3,
+                22
+              ]
+            ]
+          }
+        },
+        "K-Nearest Neighbors": {
+          "accuracy": 0.725,
+          "precision": 0.7536764705882353,
+          "recall": 0.725,
+          "f1_score": 0.687046004842615,
+          "cv_mean": 0.78125,
+          "cv_std": 0.05590169943749474,
+          "train_time": 0.0003681182861328125,
+          "predict_time": 0.01367497444152832,
+          "confusion_matrix": {
+            "labels": [
+              "Enlarged",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                5,
+                10
+              ],
+              [
+                1,
+                24
+              ]
+            ]
+          }
+        },
+        "Decision Tree": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "cv_mean": 0.9875,
+          "cv_std": 0.024999999999999998,
+          "train_time": 0.0009620189666748047,
+          "predict_time": 8.916854858398438e-05,
+          "confusion_matrix": {
+            "labels": [
+              "Enlarged",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                15,
+                0
+              ],
+              [
+                0,
+                25
+              ]
+            ]
+          }
+        }
+      },
+      "best_algorithm": "Random Forest"
+    },
+    "DIASTOLIC_FUNCTION": {
+      "algorithms": {
+        "Random Forest": {
+          "accuracy": 0.8775510204081632,
+          "precision": 0.8810884353741496,
+          "recall": 0.8775510204081632,
+          "f1_score": 0.8778581666780424,
+          "cv_mean": 0.7190283400809716,
+          "cv_std": 0.04297689454015763,
+          "train_time": 0.06817197799682617,
+          "predict_time": 0.011269092559814453,
+          "confusion_matrix": {
+            "labels": [
+              "Abnormal",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                23,
+                4
+              ],
+              [
+                2,
+                20
+              ]
+            ]
+          }
+        },
+        "Gradient Boosting": {
+          "accuracy": 0.9183673469387755,
+          "precision": 0.9218367346938776,
+          "recall": 0.9183673469387755,
+          "f1_score": 0.918572111118695,
+          "cv_mean": 0.854251012145749,
+          "cv_std": 0.042403954567696064,
+          "train_time": 0.0726461410522461,
+          "predict_time": 0.00023603439331054688,
+          "confusion_matrix": {
+            "labels": [
+              "Abnormal",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                24,
+                3
+              ],
+              [
+                1,
+                21
+              ]
+            ]
+          }
+        },
+        "SVM (RBF)": {
+          "accuracy": 0.673469387755102,
+          "precision": 0.673469387755102,
+          "recall": 0.673469387755102,
+          "f1_score": 0.673469387755102,
+          "cv_mean": 0.6195681511470985,
+          "cv_std": 0.04966811857117575,
+          "train_time": 0.0009968280792236328,
+          "predict_time": 0.00032830238342285156,
+          "confusion_matrix": {
+            "labels": [
+              "Abnormal",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                19,
+                8
+              ],
+              [
+                8,
+                14
+              ]
+            ]
+          }
+        },
+        "Logistic Regression": {
+          "accuracy": 0.5102040816326531,
+          "precision": 0.5017189671567551,
+          "recall": 0.5102040816326531,
+          "f1_score": 0.502603800140746,
+          "cv_mean": 0.5937921727395412,
+          "cv_std": 0.09350483661733222,
+          "train_time": 0.013134002685546875,
+          "predict_time": 5.888938903808594e-05,
+          "confusion_matrix": {
+            "labels": [
+              "Abnormal",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                17,
+                10
+              ],
+              [
+                14,
+                8
+              ]
+            ]
+          }
+        },
+        "K-Nearest Neighbors": {
+          "accuracy": 0.5714285714285714,
+          "precision": 0.5834535834535833,
+          "recall": 0.5714285714285714,
+          "f1_score": 0.5714285714285714,
+          "cv_mean": 0.5572199730094467,
+          "cv_std": 0.06875098459267175,
+          "train_time": 0.00036597251892089844,
+          "predict_time": 0.013878107070922852,
+          "confusion_matrix": {
+            "labels": [
+              "Abnormal",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                14,
+                13
+              ],
+              [
+                8,
+                14
+              ]
+            ]
+          }
+        },
+        "Decision Tree": {
+          "accuracy": 0.7959183673469388,
+          "precision": 0.7995918367346939,
+          "recall": 0.7959183673469388,
+          "f1_score": 0.7964302777967375,
+          "cv_mean": 0.8284750337381916,
+          "cv_std": 0.05263227100828778,
+          "train_time": 0.0011839866638183594,
+          "predict_time": 7.915496826171875e-05,
+          "confusion_matrix": {
+            "labels": [
+              "Abnormal",
+              "Normal"
+            ],
+            "matrix": [
+              [
+                21,
+                6
+              ],
+              [
+                4,
+                18
+              ]
+            ]
+          }
+        }
+      },
+      "best_algorithm": "Gradient Boosting"
+    }
+  }
+}
