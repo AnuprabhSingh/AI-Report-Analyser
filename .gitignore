@@ -51,13 +51,13 @@ data/processed/*.json
 !data/sample_reports/.gitkeep
 !data/processed/.gitkeep
 
-# Models (trained models are large)
-models/*.pkl
-models/*.h5
-models/*.pt
-models/*.pth
-models/*.joblib
-# But keep metadata files
+# Models - Allow trained models for deployment
+# models/*.pkl
+# models/*.h5
+# models/*.pt
+# models/*.pth
+# models/*.joblib
+# Keep metadata files
 !models/*.json
 
 # Logs
