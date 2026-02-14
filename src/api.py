@@ -148,25 +148,29 @@ def extract_class_labels(interpretations):
 
 @app.route('/')
 def index():
-    """Serve the frontend HTML page."""
-    # Check if static build exists (for production)
-    static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
-    if os.path.exists(os.path.join(static_dir, 'index.html')):
-        return send_from_directory(static_dir, 'index.html')
-    # Fall back to template (for development)
-    return render_template('index.html')
+    """API root endpoint - returns service information."""
+    return jsonify({
+        'service': 'Medical Report Interpretation API',
+        'version': '1.0.0',
+        'status': 'running',
+        'endpoints': {
+            'health': '/health',
+            'interpret': '/api/interpret',
+            'metrics': '/api/metrics',
+            'models': '/api/models'
+        },
+        'frontend': 'https://ai-report-analyser.vercel.app'
+    }), 200
 
 
 @app.route('/<path:path>')
 def serve_static(path):
-    """Serve static files from React build."""
-    static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
-    if os.path.exists(os.path.join(static_dir, path)):
-        return send_from_directory(static_dir, path)
-    # If file not found, return index.html for client-side routing
-    if os.path.exists(os.path.join(static_dir, 'index.html')):
-        return send_from_directory(static_dir, 'index.html')
-    return jsonify({'error': 'Not found'}), 404
+    """Fallback for unknown routes."""
+    return jsonify({
+        'error': 'Not found',
+        'message': 'This is an API-only backend. Frontend is hosted separately.',
+        'frontend_url': 'https://ai-report-analyser.vercel.app'
+    }), 404
 
 
 @app.route('/health', methods=['GET'])
