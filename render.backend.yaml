@@ -1,0 +1,23 @@
+# Render Backend Deployment Configuration
+services:
+  - type: web
+    name: medical-interpreter-backend
+    env: docker
+    dockerfilePath: ./Dockerfile.backend
+    plan: free
+    region: oregon
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_APP
+        value: src/api.py
+      - key: MAX_CONTENT_LENGTH
+        value: 16777216
+      - key: CORS_ORIGINS
+        value: https://your-frontend.vercel.app,https://your-frontend-*.vercel.app
+    disk:
+      name: medical-data
+      mountPath: /app/data
+      sizeGB: 1

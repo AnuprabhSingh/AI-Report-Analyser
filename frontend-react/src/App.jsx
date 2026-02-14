@@ -3,7 +3,7 @@ import { Chart, BarElement, BarController, CategoryScale, LinearScale, Legend, L
 
 Chart.register(BarElement, BarController, CategoryScale, LinearScale, Legend, LineElement, LineController, PointElement, Title, Tooltip)
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 function Alert({ type = 'info', message = '', hidden = false }) {
   if (hidden || !message) return null

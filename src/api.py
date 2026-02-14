@@ -35,7 +35,10 @@ static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
 app = Flask(__name__, 
             template_folder=template_dir,
             static_folder=static_dir if os.path.exists(static_dir) else None)
-CORS(app)  # Enable CORS for frontend integration
+
+# Configure CORS for Vercel frontend
+cors_origins = os.environ.get('CORS_ORIGINS', 'http://localhost:5173,http://localhost:3000').split(',')
+CORS(app, resources={r"/api/*": {"origins": cors_origins}}, supports_credentials=True)
 
 # Configuration
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
