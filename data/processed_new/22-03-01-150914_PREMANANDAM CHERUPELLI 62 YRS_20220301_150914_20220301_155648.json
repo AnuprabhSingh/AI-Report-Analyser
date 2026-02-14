@@ -1,0 +1,42 @@
+{
+  "file_name": "22-03-01-150914_PREMANANDAM CHERUPELLI 62 YRS_20220301_150914_20220301_155648.pdf",
+  "patient": {
+    "age": 62,
+    "sex": "M",
+    "name": "PREMANANDAM CHERUPELLI"
+  },
+  "measurements": {
+    "LVID_D": 5.92,
+    "LVID_S": 4.8,
+    "IVS_D": 0.748,
+    "IVS_S": 0.841,
+    "LVPW_D": 0.686,
+    "LVPW_S": 1.25,
+    "LV_MASS": 159.0,
+    "AORTIC_ROOT": 2.56,
+    "LA_DIMENSION": 3.61,
+    "LA_AO": 1.41,
+    "MV_E_A": 1.12,
+    "MV_E": 110.0,
+    "MV_A": 97.7,
+    "AI_MAX_VEL": 118.0,
+    "MAX_PG_AI": 5.53,
+    "PA_ACC_TIME": 0.135,
+    "PI_MAX_VEL": 101.0,
+    "MAX_PG_PI": 4.1,
+    "EDV": 208.0,
+    "ESV": 111.0,
+    "SV": 111.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.92 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.80 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.75 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.69 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.61 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.12)",
+    "LV Mass": "Normal LV mass (LVmass: 159 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 21
+}

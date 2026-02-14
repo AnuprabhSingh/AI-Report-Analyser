@@ -1,0 +1,44 @@
+{
+  "file_name": "3787_22_NAGILLA RAMA DEVI 62 YRS_20220723_195732_20220723_202016.pdf",
+  "patient": {
+    "age": 62,
+    "sex": "F",
+    "name": "NAGILLA RAMA DEVI"
+  },
+  "measurements": {
+    "LVID_D": 4.31,
+    "LVID_S": 2.95,
+    "IVS_D": 1.25,
+    "IVS_S": 1.7,
+    "LVPW_D": 1.13,
+    "LVPW_S": 1.13,
+    "FS": 31.6,
+    "LV_MASS": 183.0,
+    "AORTIC_ROOT": 2.55,
+    "LA_DIMENSION": 3.91,
+    "LA_AO": 1.53,
+    "MV_E_A": 0.733,
+    "MV_E": 53.7,
+    "MV_A": 73.3,
+    "AI_MAX_VEL": 81.7,
+    "MAX_PG_AI": 2.67,
+    "PA_ACC_TIME": 0.189,
+    "PI_MAX_VEL": 80.3,
+    "MAX_PG_PI": 2.58,
+    "EDV": 79.8,
+    "ESV": 25.6,
+    "SV": 33.5
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.31 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 2.95 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.25 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.13 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.91 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.73)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 31.6%)",
+    "LV Mass": "Normal LV mass (LVmass: 183 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 22
+}

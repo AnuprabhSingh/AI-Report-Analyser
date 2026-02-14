@@ -1,0 +1,38 @@
+{
+  "file_name": "24-05-05-143834_NARASIMHA MURTHY GUJJA 69 YRS_20240505_143834_20240505_144454.pdf",
+  "patient": {
+    "age": 69,
+    "sex": "M",
+    "name": "NARASIMHA MURTHY GUJJA"
+  },
+  "measurements": {
+    "LVID_D": 5.01,
+    "LVID_S": 4.07,
+    "IVS_D": 0.949,
+    "IVS_S": 1.13,
+    "LVPW_D": 0.751,
+    "LVPW_S": 1.11,
+    "LV_MASS": 148.0,
+    "AORTIC_ROOT": 2.55,
+    "LA_DIMENSION": 5.21,
+    "LA_AO": 2.04,
+    "AI_MAX_VEL": 87.3,
+    "MAX_PG_AI": 3.05,
+    "PA_ACC_TIME": 0.108,
+    "PI_MAX_VEL": 106.0,
+    "MAX_PG_PI": 4.5,
+    "EDV": 126.0,
+    "ESV": 67.2,
+    "SV": 67.2
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.01 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.07 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.95 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.75 cm)",
+    "Left Atrium": "LA enlargement (LA: 5.21 cm)",
+    "LV Mass": "Normal LV mass (LVmass: 148 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 18
+}

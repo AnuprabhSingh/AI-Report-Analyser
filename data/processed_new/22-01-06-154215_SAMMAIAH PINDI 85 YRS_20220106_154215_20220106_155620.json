@@ -1,0 +1,35 @@
+{
+  "file_name": "22-01-06-154215_SAMMAIAH PINDI 85 YRS_20220106_154215_20220106_155620.pdf",
+  "patient": {
+    "age": 85,
+    "sex": "M",
+    "name": "SAMMAIAH PINDI"
+  },
+  "measurements": {
+    "LVID_D": 4.08,
+    "LVID_S": 2.21,
+    "LVPW_D": 1.47,
+    "LVPW_S": 1.08,
+    "FS": 45.8,
+    "LV_MASS": 247.0,
+    "AORTIC_ROOT": 2.78,
+    "LA_DIMENSION": 4.19,
+    "LA_AO": 1.51,
+    "AI_MAX_VEL": 96.6,
+    "MAX_PG_AI": 3.74,
+    "PA_ACC_TIME": 0.148,
+    "PI_MAX_VEL": 90.0,
+    "MAX_PG_PI": 3.24,
+    "EDV": 67.9
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.08 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 2.21 cm)",
+    "LV Posterior Wall": "Moderate posterior wall hypertrophy (LVPWd: 1.47 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.19 cm)",
+    "Fractional Shortening": "Severely reduced fractional shortening (FS: 45.8%)",
+    "LV Mass": "Mild LV hypertrophy (LVmass: 247 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 15
+}

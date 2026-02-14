@@ -4,15 +4,29 @@
 
 An intelligent system that automatically extracts measurements from medical PDF reports (echocardiography) and generates clinical interpretations using rule-based logic and machine learning.
 
+## 🆕 **NEW: Advanced Features (v2.0)**
+
+This system now includes cutting-edge features for clinical decision support:
+
+- 🔍 **Model Explainability** - SHAP values, PDP plots, feature importance
+- 📊 **Sensitivity Analysis** - Uncertainty quantification, robustness testing
+- 🎯 **Multi-Class Severity Grading** - Graduated disease classification (Grade 1/2/3)
+- ⚠️ **Risk Stratification** - Comprehensive cardiovascular risk assessment
+
+👉 **[See Advanced Features Guide](ADVANCED_FEATURES_GUIDE.md)** for detailed documentation
+
 ---
 
 ## 📋 Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
+- [Advanced Features (NEW)](#advanced-features-new)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
+- [Quick Start](#quick-start)
 - [Usage](#usage)
+- [Deployment](#deployment)
 - [System Architecture](#system-architecture)
 - [API Documentation](#api-documentation)
 - [Contributing](#contributing)
@@ -28,6 +42,7 @@ This system automates the interpretation of medical reports by:
 2. **Interpreting** measurements using clinical guidelines (ASE/EACVI)
 3. **Generating** doctor-like clinical summaries
 4. **Providing** REST API for integration with other systems
+5. **NEW: Advanced analytics** with explainability and risk assessment
 
 ### Key Parameters Supported
 
@@ -43,30 +58,114 @@ This system automates the interpretation of medical reports by:
 
 ## ✨ Features
 
-### 🔍 **Intelligent PDF Extraction**
+### Core Features
+
+#### 🔍 **Intelligent PDF Extraction**
 - Extracts text and tables from medical PDFs
 - Handles multiple report formats
 - Normalizes units and measurements
 
-### 📊 **Clinical Interpretation Engine**
+#### 📊 **Clinical Interpretation Engine**
 - Rule-based interpretation using medical guidelines
 - Sex and age-adjusted normal ranges
 - Severity classification (Normal, Mild, Moderate, Severe)
 
-### 🤖 **Machine Learning (Optional)**
+#### 🤖 **Machine Learning (Optional)**
 - Classifier for automated severity prediction
 - Supports training on custom datasets
 - Falls back to rule-based if ML unavailable
 
-### 🌐 **REST API**
+#### 🌐 **REST API**
 - Upload PDF and get instant interpretation
 - JSON input/output support
 - Batch processing capability
 
-### 📈 **Data Analysis**
+#### 📈 **Data Analysis**
 - Jupyter notebook for exploratory analysis
 - Visualization of measurement distributions
 - Correlation analysis
+
+---
+
+## 🚀 Advanced Features (NEW)
+
+### 1. 🔍 Model Explainability
+
+Understand *why* the model makes specific predictions:
+
+- **SHAP Values**: Feature contribution analysis
+- **Partial Dependence Plots**: Visualize feature effects
+- **ICE Curves**: Individual prediction responses
+- **Feature Importance**: Rank parameter influence
+
+```python
+from src.explainability import ModelExplainer
+
+explainer = ModelExplainer()
+explainer.plot_shap_summary(data, 'EF')
+explainer.plot_partial_dependence(data, 'EF', features=['EF', 'age'])
+```
+
+### 2. 📊 Sensitivity Analysis
+
+Test model robustness and quantify uncertainty:
+
+- **One-at-a-Time Analysis**: Parameter sensitivity testing
+- **Monte Carlo Simulation**: Uncertainty propagation
+- **Global Sensitivity**: Population-level feature ranking
+- **Robustness Scoring**: Model stability assessment
+
+```python
+from src.sensitivity_analysis import SensitivityAnalyzer
+
+analyzer = SensitivityAnalyzer()
+mc_results = analyzer.monte_carlo_simulation(data, 'EF', error_std=0.05)
+print(f"95% CI: {mc_results['confidence_interval_95']}")
+```
+
+### 3. 🎯 Multi-Class Severity Grading
+
+Graduated disease classification beyond binary detection:
+
+**Diastolic Dysfunction:**
+- Normal
+- Grade 1: Impaired Relaxation
+- Grade 2: Pseudonormal
+- Grade 3: Restrictive
+
+**LVH Grading:**
+- Normal
+- Mild LVH
+- Moderate LVH
+- Severe LVH
+
+```python
+from src.severity_grading import MultiClassSeverityGrader
+
+grader = MultiClassSeverityGrader()
+report = grader.comprehensive_grading(measurements, patient_info)
+print(f"Diastolic: {report['grades']['diastolic_dysfunction']['grade']}")
+print(f"Overall Severity: {report['severity_summary']['overall_score']}/10")
+```
+
+### 4. ⚠️ Risk Stratification
+
+Comprehensive cardiovascular risk assessment:
+
+- **CV Risk Score**: Overall cardiovascular risk (0-100)
+- **Heart Failure Risk**: 1-year and 5-year probabilities
+- **Mortality Risk**: 1, 5, and 10-year estimates
+- **Composite Risk Index**: Integrated assessment
+- **Personalized Recommendations**: Evidence-based guidance
+
+```python
+from src.risk_stratification import ClinicalRiskStratifier
+
+stratifier = ClinicalRiskStratifier()
+risk = stratifier.compute_composite_risk_index(measurements, patient_info, clinical_factors)
+print(f"Risk Tier: {risk['risk_tier']}")
+print(f"5-year HF Risk: {risk['heart_failure_risk']['five_year']}%")
+```
 
 ---
 
@@ -85,13 +184,21 @@ medical_interpreter/
 │   ├── model_trainer.py         # ML model training
 │   ├── predictor.py             # Prediction/inference
 │   ├── utils.py                 # Helper functions
-│   └── api.py                   # Flask REST API
+│   ├── api.py                   # Flask REST API
+│   ├── explainability.py        # NEW: Model explainability
+│   ├── sensitivity_analysis.py  # NEW: Sensitivity analysis
+│   ├── severity_grading.py      # NEW: Multi-class grading
+│   └── risk_stratification.py   # NEW: Risk assessment
 │
 ├── notebooks/
 │   └── data_analysis.ipynb      # EDA and visualization
 │
+├── outputs/                      # Generated visualizations
+│
 ├── requirements.txt              # Python dependencies
 ├── README.md                     # This file
+├── ADVANCED_FEATURES_GUIDE.md   # NEW: Detailed feature guide
+├── demo_advanced_features.py    # NEW: Complete demo
 └── main.py                       # CLI entry point
 ```
 
@@ -129,11 +236,75 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Step 4: Verify Installation
+### Step 4: Install Advanced Features Dependencies
+
+```bash
+# For full explainability features
+pip install shap scipy
+```
+
+### Step 5: Verify Installation
 
 ```bash
 python main.py --help
 ```
+
+---
+
+## ⚡ Quick Start
+
+### Try Advanced Features Demo
+
+Run the comprehensive demo to see all new features in action:
+
+```bash
+python demo_advanced_features.py
+```
+
+This will:
+- Demonstrate model explainability with SHAP plots
+- Run sensitivity analysis with Monte Carlo simulation
+- Show multi-class severity grading for sample patients
+- Compute risk stratification with visualizations
+- Generate outputs in `outputs/` directory
+
+### Basic Workflow
+
+```python
+# 1. Extract measurements from PDF
+from src.extractor import MedicalReportExtractor
+extractor = MedicalReportExtractor()
+data = extractor.extract_from_pdf('report.pdf')
+
+# 2. Get severity grading
+from src.severity_grading import MultiClassSeverityGrader
+grader = MultiClassSeverityGrader()
+severity = grader.comprehensive_grading(data['measurements'], data['patient'])
+
+# 3. Compute risk assessment
+from src.risk_stratification import ClinicalRiskStratifier
+stratifier = ClinicalRiskStratifier()
+risk = stratifier.compute_composite_risk_index(
+    data['measurements'], 
+    data['patient']
+)
+
+# 4. Generate visualizations
+severity_report = grader.plot_severity_dashboard(severity)
+risk_dashboard = stratifier.plot_risk_dashboard(risk, data['patient'])
+
+print(f"Severity Level: {severity['severity_summary']['severity_level']}")
+print(f"Risk Tier: {risk['risk_tier']}")
+print(f"Recommendations: {risk['recommendations']}")
+```
+
+### For Detailed Examples
+
+See [ADVANCED_FEATURES_GUIDE.md](ADVANCED_FEATURES_GUIDE.md) for:
+- Complete API documentation
+- Usage examples for each feature
+- Clinical interpretation guidelines
+- Troubleshooting tips
 
 ---
 
@@ -428,6 +599,48 @@ self.normal_ranges = {
 - `pdfplumber` documentation
 - scikit-learn for ML models
 - Flask REST API best practices
+
+---
+
+## 🚀 Deployment
+
+This application is production-ready and can be deployed to various platforms:
+
+### Quick Deploy Options
+
+1. **Render.com** (Recommended - Free tier)
+   ```bash
+   # Push to GitHub, then connect on render.com
+   # render.yaml auto-configures everything
+   ```
+
+2. **Railway.app** (Easy - $5 free credit)
+   ```bash
+   # Push to GitHub, then deploy from dashboard
+   ```
+
+3. **Docker** (Any platform)
+   ```bash
+   docker-compose up --build
+   ```
+
+### 📚 Documentation
+
+- **[DEPLOYMENT_READY.md](DEPLOYMENT_READY.md)** - Complete setup summary
+- **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Detailed platform-specific instructions
+- **[QUICK_DEPLOY.md](QUICK_DEPLOY.md)** - Fast track deployment
+
+### Pre-Deployment Check
+
+```bash
+./test_deployment.sh
+```
+
+**See full deployment guide for:**
+- Environment configuration
+- Platform comparisons
+- Troubleshooting
+- Custom domain setup
 
 ---
 

@@ -1,0 +1,40 @@
+{
+  "file_name": "24-02-07-151824_MD NAZEER 72 YRS_20240207_151824_20240207_152652.pdf",
+  "patient": {
+    "age": 72,
+    "sex": "M",
+    "name": "MD NAZEER"
+  },
+  "measurements": {
+    "LVID_D": 3.84,
+    "LVID_S": 2.24,
+    "IVS_D": 1.46,
+    "IVS_S": 1.69,
+    "LVPW_S": 1.13,
+    "FS": 41.7,
+    "LV_MASS": 270.0,
+    "AORTIC_ROOT": 3.63,
+    "LA_DIMENSION": 3.68,
+    "LA_AO": 1.02,
+    "MV_E_A": 0.512,
+    "MV_E": 45.4,
+    "MV_A": 88.6,
+    "AI_MAX_VEL": 126.0,
+    "MAX_PG_AI": 6.38,
+    "PA_ACC_TIME": 0.169,
+    "PI_MAX_VEL": 46.8,
+    "MAX_PG_PI": 0.875,
+    "EDV": 56.7
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 3.84 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 2.24 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.46 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.68 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.51)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 41.7%)",
+    "LV Mass": "Moderate LV hypertrophy (LVmass: 270 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 19
+}

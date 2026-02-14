@@ -1,0 +1,37 @@
+{
+  "file_name": "22-03-24-195528_KARMAKONDA SAROJA 65 YRS_20220324_195528_20220324_201817.pdf",
+  "patient": {
+    "age": 65,
+    "sex": "F",
+    "name": "KARMAKONDA SAROJA"
+  },
+  "measurements": {
+    "LVID_D": 3.4,
+    "LVID_S": 2.04,
+    "IVS_D": 1.22,
+    "IVS_S": 1.9,
+    "LVPW_D": 1.36,
+    "LVPW_S": 1.36,
+    "FS": 40.0,
+    "LV_MASS": 146.0,
+    "AORTIC_ROOT": 2.45,
+    "MV_E_A": 0.556,
+    "MV_E": 76.8,
+    "AI_MAX_VEL": 152.0,
+    "MAX_PG_AI": 9.26,
+    "PA_ACC_TIME": 0.155,
+    "PI_MAX_VEL": 133.0,
+    "MAX_PG_PI": 7.11
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 3.40 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 2.04 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.22 cm)",
+    "LV Posterior Wall": "Severe posterior wall hypertrophy (LVPWd: 1.36 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.56)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 40.0%)",
+    "LV Mass": "Normal LV mass (LVmass: 146 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 16
+}

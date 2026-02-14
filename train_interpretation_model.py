@@ -64,8 +64,8 @@ class InterpretationModelTrainer:
             for param in self.key_parameters:
                 sample[param] = measurements.get(param, 0)
             
-            # Extract labels from interpretations
-            sample['labels'] = self._extract_labels(interpretations)
+            # Extract labels from interpretations (fallback to measurements)
+            sample['labels'] = self._extract_labels(interpretations, measurements)
             
             samples.append(sample)
         
@@ -74,8 +74,8 @@ class InterpretationModelTrainer:
         
         return df
     
-    def _extract_labels(self, interpretations: Dict[str, str]) -> Dict[str, str]:
-        """Extract classification labels from interpretation text."""
+    def _extract_labels(self, interpretations: Dict[str, str], measurements: Dict[str, float]) -> Dict[str, str]:
+        """Extract classification labels from interpretation text with measurement fallback."""
         labels = {}
         
         # Parse LV Function
@@ -90,6 +90,28 @@ class InterpretationModelTrainer:
             labels['LV_FUNCTION'] = 'Severe'
         else:
             labels['LV_FUNCTION'] = 'Unknown'
+        # Fallback to EF/FS if LV_FUNCTION unknown
+        if labels['LV_FUNCTION'] == 'Unknown':
+            ef = measurements.get('EF', 0) or 0
+            fs = measurements.get('FS', 0) or 0
+            if ef > 0:
+                if ef >= 55:
+                    labels['LV_FUNCTION'] = 'Normal'
+                elif ef >= 45:
+                    labels['LV_FUNCTION'] = 'Mild'
+                elif ef >= 30:
+                    labels['LV_FUNCTION'] = 'Moderate'
+                else:
+                    labels['LV_FUNCTION'] = 'Severe'
+            elif fs > 0:
+                if fs >= 28:
+                    labels['LV_FUNCTION'] = 'Normal'
+                elif fs >= 22:
+                    labels['LV_FUNCTION'] = 'Mild'
+                elif fs >= 15:
+                    labels['LV_FUNCTION'] = 'Moderate'
+                else:
+                    labels['LV_FUNCTION'] = 'Severe'
         
         # Parse LV Size
         lv_size_text = interpretations.get('LV Diastolic Dimension', '')
@@ -99,6 +121,11 @@ class InterpretationModelTrainer:
             labels['LV_SIZE'] = 'Dilated'
         else:
             labels['LV_SIZE'] = 'Unknown'
+        # Fallback to LVID_D if LV_SIZE unknown
+        if labels['LV_SIZE'] == 'Unknown':
+            lvid_d = measurements.get('LVID_D', 0) or 0
+            if lvid_d > 0:
+                labels['LV_SIZE'] = 'Normal' if lvid_d <= 5.9 else 'Dilated'
         
         # Parse LV Hypertrophy
         ivs_text = interpretations.get('Interventricular Septum', '')
@@ -112,6 +139,18 @@ class InterpretationModelTrainer:
             labels['LV_HYPERTROPHY'] = 'Severe'
         else:
             labels['LV_HYPERTROPHY'] = 'Unknown'
+        # Fallback to IVS_D if LV_HYPERTROPHY unknown
+        if labels['LV_HYPERTROPHY'] == 'Unknown':
+            ivs_d = measurements.get('IVS_D', 0) or 0
+            if ivs_d > 0:
+                if ivs_d <= 1.0:
+                    labels['LV_HYPERTROPHY'] = 'None'
+                elif ivs_d <= 1.3:
+                    labels['LV_HYPERTROPHY'] = 'Mild'
+                elif ivs_d <= 1.6:
+                    labels['LV_HYPERTROPHY'] = 'Moderate'
+                else:
+                    labels['LV_HYPERTROPHY'] = 'Severe'
         
         # Parse LA Size
         la_text = interpretations.get('Left Atrium', '')
@@ -121,6 +160,11 @@ class InterpretationModelTrainer:
             labels['LA_SIZE'] = 'Enlarged'
         else:
             labels['LA_SIZE'] = 'Unknown'
+        # Fallback to LA_DIMENSION if LA_SIZE unknown
+        if labels['LA_SIZE'] == 'Unknown':
+            la_dim = measurements.get('LA_DIMENSION', 0) or 0
+            if la_dim > 0:
+                labels['LA_SIZE'] = 'Enlarged' if la_dim >= 4.0 else 'Normal'
         
         # Parse Diastolic Function
         diastolic_text = interpretations.get('Diastolic Function', '')
@@ -128,6 +172,13 @@ class InterpretationModelTrainer:
             labels['DIASTOLIC_FUNCTION'] = 'Normal'
         else:
             labels['DIASTOLIC_FUNCTION'] = 'Abnormal'
+        # Fallback to MV_E_A if diastolic label may be unreliable
+        mv_ea = measurements.get('MV_E_A', 0) or 0
+        if mv_ea > 0:
+            if 0.8 <= mv_ea <= 2.0:
+                labels['DIASTOLIC_FUNCTION'] = 'Normal'
+            else:
+                labels['DIASTOLIC_FUNCTION'] = 'Abnormal'
         
         return labels
     

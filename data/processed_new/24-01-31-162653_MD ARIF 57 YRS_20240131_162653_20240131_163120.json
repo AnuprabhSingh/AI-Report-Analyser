@@ -1,0 +1,33 @@
+{
+  "file_name": "24-01-31-162653_MD ARIF 57 YRS_20240131_162653_20240131_163120.pdf",
+  "patient": {
+    "age": 57,
+    "sex": "M",
+    "name": "MD ARIF"
+  },
+  "measurements": {
+    "IVS_D": 1.08,
+    "IVS_S": 1.64,
+    "LVPW_D": 1.22,
+    "LVPW_S": 1.13,
+    "FS": 47.6,
+    "LV_MASS": 100.0,
+    "MV_E_A": 0.779,
+    "MV_E": 78.9,
+    "MV_A": 101.0,
+    "AI_MAX_VEL": 121.0,
+    "MAX_PG_AI": 5.83,
+    "PA_ACC_TIME": 0.108,
+    "PI_MAX_VEL": 89.3,
+    "MAX_PG_PI": 3.19
+  },
+  "interpretations": {
+    "Interventricular Septum": "Severe septal hypertrophy (IVSd: 1.08 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.22 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.78)",
+    "Fractional Shortening": "Severely reduced fractional shortening (FS: 47.6%)",
+    "LV Mass": "Normal LV mass (LVmass: 100 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 14
+}

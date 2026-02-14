@@ -1,0 +1,42 @@
+{
+  "file_name": "22-03-26-180621_DODDA PADMA 61 YRS_20220326_180621_20220326_181450.pdf",
+  "patient": {
+    "age": 61,
+    "sex": "F",
+    "name": "DODDA PADMA"
+  },
+  "measurements": {
+    "LVID_D": 5.35,
+    "LVID_S": 3.81,
+    "IVS_D": 1.25,
+    "IVS_S": 1.61,
+    "LVPW_D": 1.25,
+    "FS": 28.9,
+    "LV_MASS": 276.0,
+    "AORTIC_ROOT": 2.62,
+    "LA_DIMENSION": 4.05,
+    "LA_AO": 1.55,
+    "MV_E_A": 0.779,
+    "MV_E": 106.0,
+    "AI_MAX_VEL": 330.0,
+    "MAX_PG_AI": 43.5,
+    "PA_ACC_TIME": 0.108,
+    "PI_MAX_VEL": 105.0,
+    "MAX_PG_PI": 4.44,
+    "EDV": 153.0,
+    "ESV": 55.2,
+    "SV": 55.2
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.35 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 3.81 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.25 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.25 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.05 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.78)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 28.9%)",
+    "LV Mass": "Moderate LV hypertrophy (LVmass: 276 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 20
+}

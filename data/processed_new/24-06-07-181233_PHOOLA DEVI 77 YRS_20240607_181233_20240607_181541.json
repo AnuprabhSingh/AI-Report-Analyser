@@ -1,0 +1,37 @@
+{
+  "file_name": "24-06-07-181233_PHOOLA DEVI 77 YRS_20240607_181233_20240607_181541.pdf",
+  "patient": {
+    "age": 77,
+    "sex": "F",
+    "name": "PHOOLA DEVI"
+  },
+  "measurements": {
+    "LVID_D": 5.5,
+    "LVID_S": 4.31,
+    "IVS_D": 0.85,
+    "IVS_S": 1.36,
+    "LVPW_D": 0.822,
+    "LVPW_S": 1.13,
+    "FS": 21.6,
+    "LV_MASS": 169.0,
+    "MV_E_A": 1.58,
+    "MV_E": 122.0,
+    "MV_A": 77.5,
+    "AI_MAX_VEL": 73.3,
+    "MAX_PG_AI": 2.15,
+    "EDV": 166.0,
+    "ESV": 79.8,
+    "SV": 79.8
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.50 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.31 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.85 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.82 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.58)",
+    "Fractional Shortening": "Mildly reduced fractional shortening (FS: 21.6%)",
+    "LV Mass": "Normal LV mass (LVmass: 169 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 16
+}

@@ -1,0 +1,42 @@
+{
+  "file_name": "22-02-28-183350_GANNU VENUGOPAL RAO 59 YRS_20220228_183350_20220228_185054.pdf",
+  "patient": {
+    "age": 59,
+    "sex": "M",
+    "name": "GANNU VENUGOPAL RAO"
+  },
+  "measurements": {
+    "LVID_D": 4.02,
+    "LVID_S": 2.89,
+    "IVS_S": 1.87,
+    "LVPW_D": 1.3,
+    "LVPW_S": 1.13,
+    "FS": 28.2,
+    "LV_MASS": 221.0,
+    "AORTIC_ROOT": 3.68,
+    "LA_DIMENSION": 3.57,
+    "LA_AO": 0.969,
+    "MV_E_A": 0.64,
+    "MV_E": 60.7,
+    "MV_A": 94.9,
+    "AI_MAX_VEL": 358.0,
+    "MAX_PG_AI": 51.2,
+    "PA_ACC_TIME": 0.162,
+    "PI_MAX_VEL": 105.0,
+    "MAX_PG_PI": 4.39,
+    "EDV": 65.1,
+    "ESV": 24.1,
+    "SV": 31.9
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.02 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 2.89 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.30 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.57 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.64)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 28.2%)",
+    "LV Mass": "Normal LV mass (LVmass: 221 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 21
+}

@@ -13,6 +13,10 @@ PyPDF2>=2.0.0
 scikit-learn>=1.0.0
 joblib>=1.1.0
 
+# Model Explainability & Advanced Analytics
+shap>=0.41.0
+scipy>=1.7.0
+
 # Deep Learning (Optional - for advanced models)
 # transformers>=4.20.0
 # torch>=1.12.0
@@ -20,6 +24,7 @@ joblib>=1.1.0
 # Web Framework
 flask>=2.0.0
 flask-cors>=3.0.10
+gunicorn>=20.1.0
 
 # Data Visualization
 matplotlib>=3.4.0

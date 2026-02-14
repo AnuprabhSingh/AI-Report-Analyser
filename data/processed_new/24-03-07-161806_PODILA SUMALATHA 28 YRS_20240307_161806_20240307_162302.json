@@ -1,0 +1,40 @@
+{
+  "file_name": "24-03-07-161806_PODILA SUMALATHA 28 YRS_20240307_161806_20240307_162302.pdf",
+  "patient": {
+    "age": 28,
+    "sex": "F",
+    "name": "PODILA SUMALATHA"
+  },
+  "measurements": {
+    "LVID_D": 5.93,
+    "LVID_S": 4.82,
+    "IVS_D": 0.699,
+    "IVS_S": 1.11,
+    "LVPW_S": 1.13,
+    "LV_MASS": 137.0,
+    "AORTIC_ROOT": 2.44,
+    "LA_DIMENSION": 3.12,
+    "LA_AO": 1.28,
+    "MV_E_A": 1.41,
+    "MV_E": 78.9,
+    "MV_A": 55.8,
+    "AI_MAX_VEL": 83.1,
+    "MAX_PG_AI": 2.76,
+    "PA_ACC_TIME": 0.108,
+    "PI_MAX_VEL": 74.0,
+    "MAX_PG_PI": 2.19,
+    "EDV": 209.0,
+    "ESV": 112.0,
+    "SV": 112.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.93 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.82 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.70 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.12 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.41)",
+    "LV Mass": "Normal LV mass (LVmass: 137 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 20
+}

@@ -1,0 +1,42 @@
+{
+  "file_name": "22-08-01-194031_ADEPU KIRAN KUMAR 65 YRS_20220801_194032_20220801_194353.pdf",
+  "patient": {
+    "age": 65,
+    "sex": "M",
+    "name": "ADEPU KIRAN KUMAR"
+  },
+  "measurements": {
+    "LVID_D": 6.15,
+    "LVID_S": 4.99,
+    "IVS_D": 0.68,
+    "IVS_S": 1.02,
+    "LVPW_D": 0.68,
+    "LVPW_S": 1.13,
+    "LV_MASS": 159.0,
+    "AORTIC_ROOT": 2.78,
+    "LA_DIMENSION": 3.85,
+    "LA_AO": 1.39,
+    "MV_E_A": 1.93,
+    "MV_E": 95.6,
+    "MV_A": 49.6,
+    "AI_MAX_VEL": 98.4,
+    "MAX_PG_AI": 3.87,
+    "PA_ACC_TIME": 0.128,
+    "PI_MAX_VEL": 66.3,
+    "MAX_PG_PI": 1.76,
+    "EDV": 232.0,
+    "ESV": 124.0,
+    "SV": 124.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 6.15 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.99 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.68 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.68 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.85 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.93)",
+    "LV Mass": "Normal LV mass (LVmass: 159 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 21
+}

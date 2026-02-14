@@ -1,0 +1,42 @@
+{
+  "file_name": "22-06-22-134622_ALLOJU HARITHA 33 YRS_20220622_134623_20220622_135240.pdf",
+  "patient": {
+    "age": 33,
+    "sex": "F",
+    "name": "ALLOJU HARITHA"
+  },
+  "measurements": {
+    "LVID_D": 6.64,
+    "LVID_S": 5.4,
+    "IVS_D": 0.793,
+    "IVS_S": 1.1,
+    "LVPW_D": 0.68,
+    "LVPW_S": 1.13,
+    "LV_MASS": 201.0,
+    "AORTIC_ROOT": 2.72,
+    "LA_DIMENSION": 3.97,
+    "LA_AO": 1.46,
+    "MV_E_A": 2.58,
+    "MV_E": 108.0,
+    "MV_A": 41.9,
+    "AI_MAX_VEL": 121.0,
+    "MAX_PG_AI": 6.21,
+    "PA_ACC_TIME": 0.128,
+    "PI_MAX_VEL": 57.9,
+    "MAX_PG_PI": 1.34,
+    "EDV": 227.0,
+    "ESV": 141.0,
+    "SV": 141.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 6.64 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 5.40 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.79 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.68 cm)",
+    "Left Atrium": "LA enlargement (LA: 3.97 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 2.58)",
+    "LV Mass": "Normal LV mass (LVmass: 201 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 21
+}

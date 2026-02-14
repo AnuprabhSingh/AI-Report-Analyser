@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  medical-interpreter:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount data directories for persistence
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./outputs:/app/outputs
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=src/api.py
+      - MAX_CONTENT_LENGTH=16777216
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

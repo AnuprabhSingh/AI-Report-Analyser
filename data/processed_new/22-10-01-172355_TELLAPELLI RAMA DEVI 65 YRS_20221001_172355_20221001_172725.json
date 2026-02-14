@@ -1,0 +1,41 @@
+{
+  "file_name": "22-10-01-172355_TELLAPELLI RAMA DEVI 65 YRS_20221001_172355_20221001_172725.pdf",
+  "patient": {
+    "age": 65,
+    "sex": "F",
+    "name": "TELLAPELLI RAMA DEVI"
+  },
+  "measurements": {
+    "LVID_D": 3.74,
+    "LVID_S": 2.1,
+    "IVS_D": 1.36,
+    "LVPW_D": 1.42,
+    "LVPW_S": 1.08,
+    "FS": 43.9,
+    "LV_MASS": 187.0,
+    "AORTIC_ROOT": 2.72,
+    "LA_DIMENSION": 4.25,
+    "LA_AO": 1.56,
+    "MV_E_A": 1.12,
+    "MV_E": 89.3,
+    "MV_A": 79.6,
+    "AI_MAX_VEL": 94.2,
+    "MAX_PG_AI": 3.55,
+    "PA_ACC_TIME": 0.202,
+    "PI_MAX_VEL": 105.0,
+    "MAX_PG_PI": 4.39,
+    "EDV": 52.3
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 3.74 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 2.10 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.36 cm)",
+    "LV Posterior Wall": "Moderate posterior wall hypertrophy (LVPWd: 1.42 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.25 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.12)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 43.9%)",
+    "LV Mass": "Normal LV mass (LVmass: 187 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 19
+}

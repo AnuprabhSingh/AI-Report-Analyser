@@ -1,0 +1,39 @@
+{
+  "file_name": "22-06-22-114818_THEEGALA VENKATESHWAR RAO 78 YRS_20220622_114818_20220622_121013.pdf",
+  "patient": {
+    "age": 78,
+    "sex": "M",
+    "name": "THEEGALA VENKATESHWAR RAO"
+  },
+  "measurements": {
+    "LVID_D": 5.33,
+    "LVID_S": 4.42,
+    "LVPW_D": 0.68,
+    "LVPW_S": 1.13,
+    "LV_MASS": 105.0,
+    "AORTIC_ROOT": 2.89,
+    "LA_DIMENSION": 3.4,
+    "LA_AO": 1.18,
+    "MV_E_A": 0.538,
+    "MV_E": 48.9,
+    "MV_A": 90.7,
+    "AI_MAX_VEL": 64.9,
+    "MAX_PG_AI": 1.69,
+    "PA_ACC_TIME": 0.074,
+    "PI_MAX_VEL": 52.4,
+    "MAX_PG_PI": 1.1,
+    "EDV": 151.0,
+    "ESV": 86.3,
+    "SV": 86.3
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.33 cm)",
+    "LV Systolic Dimension": "Moderate increase in LV systolic dimension (LVIDs: 4.42 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.68 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.40 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.54)",
+    "LV Mass": "Normal LV mass (LVmass: 105 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 19
+}

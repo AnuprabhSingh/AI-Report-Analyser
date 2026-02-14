@@ -1,0 +1,41 @@
+{
+  "file_name": "22-01-24-184858_MD SALEEM PASHA 52 YRS_20220124_184858_20220124_190539.pdf",
+  "patient": {
+    "age": 52,
+    "sex": "M",
+    "name": "MD SALEEM PASHA"
+  },
+  "measurements": {
+    "LVID_D": 6.54,
+    "LVID_S": 5.52,
+    "IVS_D": 0.697,
+    "LVPW_D": 0.782,
+    "LVPW_S": 1.36,
+    "LV_MASS": 197.0,
+    "AORTIC_ROOT": 2.45,
+    "LA_DIMENSION": 3.26,
+    "LA_AO": 1.33,
+    "MV_E_A": 2.16,
+    "MV_E": 125.0,
+    "MV_A": 57.9,
+    "AI_MAX_VEL": 118.0,
+    "MAX_PG_AI": 5.54,
+    "PA_ACC_TIME": 0.175,
+    "PI_MAX_VEL": 82.4,
+    "MAX_PG_PI": 2.71,
+    "EDV": 219.0,
+    "ESV": 149.0,
+    "SV": 149.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 6.54 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 5.52 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.70 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.78 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.26 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 2.16)",
+    "LV Mass": "Normal LV mass (LVmass: 197 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 20
+}

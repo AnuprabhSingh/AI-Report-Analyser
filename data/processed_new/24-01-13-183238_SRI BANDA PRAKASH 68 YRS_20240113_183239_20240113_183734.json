@@ -1,0 +1,41 @@
+{
+  "file_name": "24-01-13-183238_SRI BANDA PRAKASH 68 YRS_20240113_183239_20240113_183734.pdf",
+  "patient": {
+    "age": 68,
+    "sex": "M",
+    "name": "SRI BANDA PRAKASH"
+  },
+  "measurements": {
+    "LVID_D": 5.5,
+    "LVID_S": 4.39,
+    "LVPW_D": 0.68,
+    "LVPW_S": 1.1,
+    "FS": 20.1,
+    "LV_MASS": 117.0,
+    "AORTIC_ROOT": 2.55,
+    "LA_DIMENSION": 4.19,
+    "LA_AO": 1.64,
+    "MV_E_A": 0.605,
+    "MV_E": 54.4,
+    "MV_A": 90.0,
+    "AI_MAX_VEL": 65.6,
+    "MAX_PG_AI": 1.72,
+    "PA_ACC_TIME": 0.155,
+    "PI_MAX_VEL": 71.9,
+    "MAX_PG_PI": 2.07,
+    "EDV": 166.0,
+    "ESV": 84.7,
+    "SV": 84.7
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.50 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.39 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.68 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.19 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.60)",
+    "Fractional Shortening": "Mildly reduced fractional shortening (FS: 20.1%)",
+    "LV Mass": "Normal LV mass (LVmass: 117 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 20
+}

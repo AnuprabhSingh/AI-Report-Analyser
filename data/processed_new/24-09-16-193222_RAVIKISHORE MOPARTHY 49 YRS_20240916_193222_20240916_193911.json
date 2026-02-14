@@ -1,0 +1,39 @@
+{
+  "file_name": "24-09-16-193222_RAVIKISHORE MOPARTHY 49 YRS_20240916_193222_20240916_193911.pdf",
+  "patient": {
+    "age": 49,
+    "sex": "M",
+    "name": "RAVIKISHORE MOPARTHY"
+  },
+  "measurements": {
+    "LVID_D": 6.18,
+    "LVID_S": 4.99,
+    "IVS_D": 1.13,
+    "IVS_S": 1.42,
+    "LVPW_D": 1.13,
+    "LVPW_S": 1.13,
+    "LV_MASS": 305.0,
+    "AORTIC_ROOT": 2.95,
+    "LA_DIMENSION": 3.57,
+    "LA_AO": 1.21,
+    "MV_E_A": 0.684,
+    "MV_E": 44.4,
+    "MV_A": 65.0,
+    "AI_MAX_VEL": 68.1,
+    "MAX_PG_AI": 1.87,
+    "EDV": 236.0,
+    "ESV": 124.0,
+    "SV": 124.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 6.18 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.99 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.13 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.13 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.57 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.68)",
+    "LV Mass": "Severe LV hypertrophy (LVmass: 305 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 18
+}

@@ -1,0 +1,42 @@
+{
+  "file_name": "22-02-28-203953_ERUKALA VENKANNA 55 YRS_20220228_203953_20220228_210523.pdf",
+  "patient": {
+    "age": 55,
+    "sex": "M",
+    "name": "ERUKALA VENKANNA"
+  },
+  "measurements": {
+    "LVID_D": 5.33,
+    "LVID_S": 4.53,
+    "IVS_D": 1.13,
+    "IVS_S": 1.22,
+    "LVPW_D": 0.935,
+    "LVPW_S": 1.13,
+    "LV_MASS": 211.0,
+    "AORTIC_ROOT": 2.78,
+    "LA_DIMENSION": 3.68,
+    "LA_AO": 1.33,
+    "MV_E_A": 1.07,
+    "MV_E": 77.5,
+    "MV_A": 72.6,
+    "AI_MAX_VEL": 94.2,
+    "MAX_PG_AI": 3.55,
+    "PA_ACC_TIME": 0.148,
+    "PI_MAX_VEL": 79.6,
+    "MAX_PG_PI": 2.53,
+    "EDV": 151.0,
+    "ESV": 93.1,
+    "SV": 93.1
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.33 cm)",
+    "LV Systolic Dimension": "Moderate increase in LV systolic dimension (LVIDs: 4.53 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.13 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.94 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.68 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.07)",
+    "LV Mass": "Normal LV mass (LVmass: 211 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 21
+}

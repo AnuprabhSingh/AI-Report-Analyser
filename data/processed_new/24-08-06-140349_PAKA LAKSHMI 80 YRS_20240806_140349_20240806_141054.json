@@ -1,0 +1,42 @@
+{
+  "file_name": "24-08-06-140349_PAKA LAKSHMI 80 YRS_20240806_140349_20240806_141054.pdf",
+  "patient": {
+    "age": 80,
+    "sex": "F",
+    "name": "PAKA LAKSHMI"
+  },
+  "measurements": {
+    "LVID_D": 6.19,
+    "LVID_S": 5.16,
+    "IVS_D": 0.992,
+    "IVS_S": 1.22,
+    "LVPW_D": 0.779,
+    "LVPW_S": 1.13,
+    "LV_MASS": 223.0,
+    "AORTIC_ROOT": 2.61,
+    "LA_DIMENSION": 4.76,
+    "LA_AO": 1.83,
+    "MV_E_A": 1.51,
+    "MV_E": 97.7,
+    "MV_A": 64.9,
+    "AI_MAX_VEL": 108.0,
+    "MAX_PG_AI": 4.7,
+    "PA_ACC_TIME": 0.074,
+    "PI_MAX_VEL": 58.6,
+    "MAX_PG_PI": 1.38,
+    "EDV": 237.0,
+    "ESV": 137.0,
+    "SV": 137.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 6.19 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 5.16 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.99 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.78 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.76 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.51)",
+    "LV Mass": "Normal LV mass (LVmass: 223 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 21
+}

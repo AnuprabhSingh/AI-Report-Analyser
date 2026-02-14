@@ -1,0 +1,43 @@
+{
+  "file_name": "24-03-19-123233_DR PINDI LAKSHMAIAH 76 YRS_20240319_123233_20240319_123808.pdf",
+  "patient": {
+    "age": 76,
+    "sex": "M",
+    "name": "DR PINDI LAKSHMAIAH"
+  },
+  "measurements": {
+    "LVID_D": 4.88,
+    "LVID_S": 3.74,
+    "IVS_D": 0.771,
+    "IVS_S": 0.997,
+    "LVPW_D": 0.623,
+    "LVPW_S": 1.13,
+    "FS": 23.4,
+    "LV_MASS": 110.0,
+    "AORTIC_ROOT": 3.17,
+    "LA_DIMENSION": 3.23,
+    "LA_AO": 1.02,
+    "MV_E_A": 0.562,
+    "MV_E": 69.8,
+    "AI_MAX_VEL": 102.0,
+    "MAX_PG_AI": 4.15,
+    "PA_ACC_TIME": 0.128,
+    "PI_MAX_VEL": 75.4,
+    "MAX_PG_PI": 2.27,
+    "EDV": 116.0,
+    "ESV": 52.3,
+    "SV": 52.3
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.88 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 3.74 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.77 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.62 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.23 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.56)",
+    "Fractional Shortening": "Mildly reduced fractional shortening (FS: 23.4%)",
+    "LV Mass": "Normal LV mass (LVmass: 110 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 21
+}

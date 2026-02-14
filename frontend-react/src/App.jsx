@@ -303,10 +303,537 @@ function CatBar({ title, labels, data, color }) {
   </>)
 }
 
+function LineChart({ title, labels, data, color = '#4f46e5', yLabel = 'Prediction' }) {
+  const ref = useRef()
+  useChart(ref, () => ({
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: title,
+        data,
+        borderColor: color,
+        backgroundColor: 'rgba(79, 70, 229, 0.15)',
+        tension: 0.35,
+        pointRadius: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      aspectRatio: 1.8,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        x: { ticks: { maxRotation: 0, autoSkip: true } },
+        y: { beginAtZero: false, title: { display: true, text: yLabel } }
+      }
+    }
+  }), [JSON.stringify(labels), JSON.stringify(data), title, color, yLabel])
+  return (
+    <>
+      <h4>{title}</h4>
+      <canvas ref={ref} className="chart-canvas" />
+    </>
+  )
+}
+
+function SeverityGrader({ severity_grading, measurements, interpretations }) {
+  if (!severity_grading || !severity_grading.grades) {
+    // Fallback to old text-based parsing if no severity_grading data
+    return <SeverityGraderLegacy measurements={measurements} interpretations={interpretations} />
+  }
+
+  const grades = severity_grading.grades || {}
+  const severity_summary = severity_grading.severity_summary || {}
+  
+  const getSeverityInfo = (grade) => {
+    let label = 'Unknown'
+    let color = '#9ca3af'
+    let numericGrade = 0
+    
+    // Parse grade for numeric value
+    if (typeof grade === 'number') {
+      numericGrade = grade
+    } else if (grade?.numeric_grade !== undefined) {
+      numericGrade = grade.numeric_grade
+    } else if (typeof grade === 'string') {
+      if (grade.includes('Indeterminate')) {
+        numericGrade = 0
+        label = 'Insufficient data'
+        color = '#9ca3af'
+      } else if (grade.includes('Grade 3') || grade.includes('Severe')) {
+        numericGrade = 3
+        label = 'Severe'
+        color = '#ef4444'
+      } else if (grade.includes('Grade 2') || grade.includes('Moderate')) {
+        numericGrade = 2
+        label = 'Moderate'
+        color = '#f59e0b'
+      } else if (grade.includes('Grade 1') || grade.includes('Mild')) {
+        numericGrade = 1
+        label = 'Mild'
+        color = '#eab308'
+      } else if (grade.includes('Normal') || grade === 'Normal') {
+        numericGrade = 0
+        label = 'Normal'
+        color = '#10b981'
+      }
+    }
+    
+    return { numericGrade, label: label !== 'Unknown' ? label : (grade?.grade || 'Normal'), color }
+  }
+
+  const diastolic_info = getSeverityInfo(grades.diastolic_dysfunction?.grade)
+  const lvh_info = getSeverityInfo(grades.lvh?.grade)
+  const systolic_info = getSeverityInfo(grades.systolic_function?.grade)
+  const diastolic_numeric = grades.diastolic_dysfunction?.numeric_grade ?? diastolic_info.numericGrade ?? 0
+  const lvh_numeric = grades.lvh?.numeric_grade ?? lvh_info.numericGrade ?? 0
+  const systolic_numeric = grades.systolic_function?.numeric_grade ?? systolic_info.numericGrade ?? 0
+  
+  return (
+    <div className="result-card" style={{ marginTop: 24 }}>
+      <div className="result-title">📊 Disease Severity Grading</div>
+      <div className="severity-grid">
+        {/* Diastolic Function */}
+        {grades.diastolic_dysfunction && (
+          <div className="severity-item" style={{ borderColor: diastolic_info.color }}>
+            <div className="severity-header">
+              <span className="severity-name">Diastolic Function</span>
+              <span className="severity-grade" style={{ backgroundColor: diastolic_info.color }}>Grade {diastolic_numeric}</span>
+            </div>
+            <div className="severity-label" style={{ color: diastolic_info.color }}>{diastolic_info.label}</div>
+            <div className="severity-bar">
+              <div className="severity-bar-fill" style={{ width: `${(diastolic_numeric / 3) * 100}%`, backgroundColor: diastolic_info.color }} />
+            </div>
+            <div style={{ fontSize: '0.8rem', color: '#666', marginTop: 8 }}>
+              Confidence: {((grades.diastolic_dysfunction.confidence ?? 0) * 100).toFixed(0)}%
+            </div>
+          </div>
+        )}
+        
+        {/* LVH */}
+        {grades.lvh && (
+          <div className="severity-item" style={{ borderColor: lvh_info.color }}>
+            <div className="severity-header">
+              <span className="severity-name">LV Hypertrophy</span>
+              <span className="severity-grade" style={{ backgroundColor: lvh_info.color }}>Grade {lvh_numeric}</span>
+            </div>
+            <div className="severity-label" style={{ color: lvh_info.color }}>{lvh_info.label}</div>
+            {grades.lvh.geometry && <div style={{ fontSize: '0.8rem', color: '#666', marginTop: 4 }}>{grades.lvh.geometry}</div>}
+            <div className="severity-bar">
+              <div className="severity-bar-fill" style={{ width: `${(lvh_numeric / 3) * 100}%`, backgroundColor: lvh_info.color }} />
+            </div>
+            <div style={{ fontSize: '0.8rem', color: '#666', marginTop: 8 }}>
+              Confidence: {((grades.lvh.confidence ?? 0) * 100).toFixed(0)}%
+            </div>
+          </div>
+        )}
+        
+        {/* Systolic Function */}
+        {grades.systolic_function && (
+          <div className="severity-item" style={{ borderColor: systolic_info.color }}>
+            <div className="severity-header">
+              <span className="severity-name">Systolic Function</span>
+              <span className="severity-grade" style={{ backgroundColor: systolic_info.color }}>Grade {systolic_numeric}</span>
+            </div>
+            <div className="severity-label" style={{ color: systolic_info.color }}>{systolic_info.label}</div>
+            <div className="severity-bar">
+              <div className="severity-bar-fill" style={{ width: `${(systolic_numeric / 3) * 100}%`, backgroundColor: systolic_info.color }} />
+            </div>
+            <div style={{ fontSize: '0.8rem', color: '#666', marginTop: 8 }}>
+              Confidence: {((grades.systolic_function.confidence ?? 0) * 100).toFixed(0)}%
+            </div>
+          </div>
+        )}
+      </div>
+      
+      {/* Overall Summary */}
+      {severity_summary.overall_score !== undefined && (
+        <div style={{ marginTop: 20, padding: 15, backgroundColor: '#f3f4f6', borderRadius: 8 }}>
+          <div style={{ fontSize: '0.9rem', color: '#666', marginBottom: 8 }}>
+            <strong>Overall Severity Score:</strong> {severity_summary.overall_score.toFixed(1)}/10 - <span style={{ color: severity_summary.severity_level === 'Severe' ? '#ef4444' : severity_summary.severity_level === 'Moderate' ? '#f59e0b' : severity_summary.severity_level === 'Mild' ? '#eab308' : '#10b981', fontWeight: 600 }}>{severity_summary.severity_level}</span>
+          </div>
+          {severity_summary.primary_concerns && severity_summary.primary_concerns.length > 0 && (
+            <div style={{ fontSize: '0.9rem', color: '#666' }}>
+              <strong>Primary Concerns:</strong>
+              <ul style={{ marginTop: 8, paddingLeft: 20 }}>
+                {severity_summary.primary_concerns.map((concern, i) => (
+                  <li key={i} style={{ color: '#555' }}>{concern}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function SeverityGraderLegacy({ measurements, interpretations }) {
+  const determineSeverity = (category, value, interpretation) => {
+    const text = (interpretation || '').toLowerCase()
+    
+    // LV Hypertrophy severity
+    if (category === 'Interventricular Septum' || category === 'LV_HYPERTROPHY') {
+      if (text.includes('severe')) return { grade: 3, label: 'Severe', color: '#ef4444' }
+      if (text.includes('moderate')) return { grade: 2, label: 'Moderate', color: '#f59e0b' }
+      if (text.includes('mild')) return { grade: 1, label: 'Mild', color: '#eab308' }
+      return { grade: 0, label: 'Normal', color: '#10b981' }
+    }
+    
+    // Diastolic Dysfunction severity
+    if (category === 'Diastolic Function' || category === 'DIASTOLIC_FUNCTION') {
+      if (text.includes('restrictive')) return { grade: 3, label: 'Grade 3 (Restrictive)', color: '#ef4444' }
+      if (text.includes('pseudonormal')) return { grade: 2, label: 'Grade 2 (Pseudonormal)', color: '#f59e0b' }
+      if (text.includes('impaired relaxation') || text.includes('mild')) return { grade: 1, label: 'Grade 1 (Impaired Relaxation)', color: '#eab308' }
+      if (text.includes('normal')) return { grade: 0, label: 'Normal', color: '#10b981' }
+      return { grade: 0, label: 'Normal', color: '#10b981' }
+    }
+    
+    // LA Enlargement
+    if (category === 'Left Atrium' || category === 'LA_SIZE') {
+      if (text.includes('severe')) return { grade: 3, label: 'Severe', color: '#ef4444' }
+      if (text.includes('moderate')) return { grade: 2, label: 'Moderate', color: '#f59e0b' }
+      if (text.includes('mild')) return { grade: 1, label: 'Mild', color: '#eab308' }
+      return { grade: 0, label: 'Normal', color: '#10b981' }
+    }
+    
+    // LV Function
+    if (category === 'Left Ventricular Function' || category === 'LV_FUNCTION') {
+      if (text.includes('severely reduced')) return { grade: 3, label: 'Severe', color: '#ef4444' }
+      if (text.includes('moderately reduced')) return { grade: 2, label: 'Moderate', color: '#f59e0b' }
+      if (text.includes('mildly reduced')) return { grade: 1, label: 'Mild', color: '#eab308' }
+      if (text.includes('normal')) return { grade: 0, label: 'Normal', color: '#10b981' }
+      return { grade: 0, label: 'Normal', color: '#10b981' }
+    }
+    
+    return { grade: 0, label: 'Normal', color: '#10b981' }
+  }
+
+  return (
+    <div className="result-card" style={{ marginTop: 24 }}>
+      <div className="result-title">📊 Disease Severity Grading</div>
+      <div className="severity-grid">
+        {Object.entries(interpretations).map(([category, interpretation]) => {
+          const severity = determineSeverity(category, null, interpretation)
+          return (
+            <div key={category} className="severity-item" style={{ borderColor: severity.color }}>
+              <div className="severity-header">
+                <span className="severity-name">{category}</span>
+                <span className="severity-grade" style={{ backgroundColor: severity.color }}>Grade {severity.grade}</span>
+              </div>
+              <div className="severity-label" style={{ color: severity.color }}>{severity.label}</div>
+              <div className="severity-bar">
+                <div className="severity-bar-fill" style={{ width: `${(severity.grade / 3) * 100}%`, backgroundColor: severity.color }} />
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function RiskStratificationPanel({ risk, loading, error }) {
+  if (!risk) return null
+
+  const getRiskColor = (score) => {
+    if (score < 25) return '#10b981'
+    if (score < 50) return '#eab308'
+    if (score < 75) return '#f59e0b'
+    return '#ef4444'
+  }
+
+  const overall = risk.overall || {}
+  const hf = risk.heart_failure || {}
+  const mort = risk.mortality || {}
+
+  return (
+    <div className="result-card" style={{ marginTop: 24 }}>
+      <div className="result-title">⚠️ Risk Stratification</div>
+      
+      {loading && <div className="mini-loading">Calculating risk scores...</div>}
+      {error && <div className="analysis-error">{error}</div>}
+      
+      {!loading && !error && (
+        <>
+          <div className="risk-cards">
+            {/* Overall CVD Risk */}
+            <div className="risk-card">
+              <div className="risk-card__header">Cardiovascular Risk</div>
+              <div className="risk-card__score" style={{ color: getRiskColor(overall.overall_score || 0) }}>
+                {(overall.overall_score || 0).toFixed(1)}/100
+              </div>
+              <div className="risk-card__category">{overall.category || 'Unknown'}</div>
+              <div className="risk-card__bar">
+                <span style={{ width: `${Math.min(100, overall.overall_score || 0)}%`, backgroundColor: getRiskColor(overall.overall_score || 0) }} />
+              </div>
+              {overall.percentile && (
+                <div className="risk-card__detail">Percentile: {overall.percentile.toFixed(1)}%</div>
+              )}
+            </div>
+
+            {/* Heart Failure Risk */}
+            <div className="risk-card">
+              <div className="risk-card__header">Heart Failure Risk</div>
+              <div className="risk-card__score" style={{ color: getRiskColor(hf.risk_score || 0) }}>
+                {(hf.risk_score || 0).toFixed(1)}/100
+              </div>
+              <div className="risk-card__category">{hf.risk_category || 'Unknown'}</div>
+              {hf.one_year_risk_percent !== undefined && (
+                <div className="risk-card__detail">1-Year Risk: {hf.one_year_risk_percent.toFixed(1)}%</div>
+              )}
+              {hf.five_year_risk_percent !== undefined && (
+                <div className="risk-card__detail">5-Year Risk: {hf.five_year_risk_percent.toFixed(1)}%</div>
+              )}
+            </div>
+
+            {/* Mortality Risk */}
+            <div className="risk-card">
+              <div className="risk-card__header">Mortality Risk</div>
+              <div className="risk-card__score" style={{ color: getRiskColor(mort.one_year_mortality || 0) }}>
+                {(mort.one_year_mortality || 0).toFixed(1)}%
+              </div>
+              <div className="risk-card__category">{mort.risk_category || 'Unknown'}</div>
+              {mort.five_year_mortality !== undefined && (
+                <div className="risk-card__detail">5-Year: {mort.five_year_mortality.toFixed(1)}%</div>
+              )}
+              {mort.ten_year_mortality !== undefined && (
+                <div className="risk-card__detail">10-Year: {mort.ten_year_mortality.toFixed(1)}%</div>
+              )}
+            </div>
+          </div>
+
+          {/* Contributing Factors */}
+          {overall.contributing_factors && Object.keys(overall.contributing_factors).length > 0 && (
+            <div style={{ marginTop: 24 }}>
+              <h4>Contributing Risk Factors</h4>
+              <div className="factors-grid">
+                {Object.entries(overall.contributing_factors).map(([factor, score]) => (
+                  <div key={factor} className="factor-item">
+                    <span>{factor.replace(/_/g, ' ')}</span>
+                    <div className="factor-bar">
+                      <span style={{ width: `${Math.min(100, Math.max(0, (score / 100) * 100))}%` }} />
+                    </div>
+                    <span className="factor-score">{(score || 0).toFixed(1)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Recommendations */}
+          {overall.recommendations && overall.recommendations.length > 0 && (
+            <div style={{ marginTop: 24 }}>
+              <h4>Clinical Recommendations</h4>
+              <ul className="recommendations-list">
+                {overall.recommendations.map((rec, idx) => (
+                  <li key={idx}>
+                    <span className="rec-icon">→</span>
+                    {rec}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
+function ExplainabilityPanel({ explainability, featureImportance, loading, error }) {
+  const [plots, setPlots] = useState({ v2: [] })
+  const [selectedCategory, setSelectedCategory] = useState(null)
+
+  // Load SHAP plots on mount
+  React.useEffect(() => {
+    const loadPlots = async () => {
+      try {
+        const categories = ['LV_FUNCTION', 'LV_SIZE', 'LV_HYPERTROPHY', 'LA_SIZE', 'DIASTOLIC_FUNCTION']
+        const plotTypes = ['feature_importance', 'shap_summary_bar', 'shap_summary_dot']
+        
+        const v2Plots = categories.flatMap(cat => 
+          plotTypes.map(type => ({
+            name: `${type}_${cat}`,
+            path: `${API_BASE}/outputs/comparison_plots/v2_expanded/${type}_${cat}.png`,
+            category: cat,
+            type: type
+          }))
+        )
+        
+        setPlots({ v2: v2Plots })
+        if (categories.length > 0) setSelectedCategory(categories[0])
+      } catch (err) {
+        console.error('Error loading plots:', err)
+      }
+    }
+    loadPlots()
+  }, [])
+
+  // Only show if explainability data exists
+  if (!explainability && (!featureImportance || featureImportance.length === 0)) return null
+
+  const filteredPlots = selectedCategory 
+    ? plots.v2.filter(p => p.category === selectedCategory)
+    : []
+
+  return (
+    <div className="result-card" style={{ marginTop: 24 }}>
+      <div className="result-title">🧠 Explainability & Feature Importance</div>
+      
+      {loading && <div className="mini-loading">Computing explainability analysis...</div>}
+      {error && <div className="analysis-error">{error}</div>}
+      
+      {!loading && !error && (
+        <div>
+          <div className="explain-grid">
+          {/* SHAP-like Top Contributors */}
+          {explainability?.top_contributors && explainability.top_contributors.length > 0 && (
+            <div className="explain-panel">
+              <h4>Top Contributing Features (SHAP-based)</h4>
+              <div className="contributors-list">
+                {explainability.top_contributors.map(([feature, value], idx) => (
+                  <div key={feature} className="contributor-item">
+                    <div className="contributor-rank">#{idx + 1}</div>
+                    <div className="contributor-name">{feature}</div>
+                    <div className="contributor-bar">
+                      <span 
+                        className={value >= 0 ? 'pos' : 'neg'}
+                        style={{ width: `${Math.min(100, Math.abs(value) * 100)}%` }}
+                      />
+                    </div>
+                    <div className="contributor-value">{value >= 0 ? '+' : ''}{Number(value).toFixed(4)}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Prediction Info */}
+          {explainability?.prediction && (
+            <div className="explain-panel" style={{ gridColumn: '1 / -1' }}>
+              <h4>Model Prediction</h4>
+              <div style={{ padding: 12, backgroundColor: '#f3f4f6', borderRadius: 6, marginTop: 8 }}>
+                <div style={{ fontSize: '1.1rem', fontWeight: 600, color: '#333' }}>
+                  Predicted Category: <span style={{ color: '#8b5cf6' }}>{explainability.prediction}</span>
+                </div>
+                {explainability.feature_values && (
+                  <div style={{ fontSize: '0.85rem', color: '#666', marginTop: 8 }}>
+                    <strong>Input Values:</strong>
+                    <div style={{ marginTop: 6, maxHeight: 120, overflowY: 'auto', fontSize: '0.8rem' }}>
+                      {Object.entries(explainability.feature_values).map(([k, v]) => (
+                        <div key={k} style={{ padding: '2px 0', display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #e5e7eb' }}>
+                          <span>{k}:</span>
+                          <span style={{ fontFamily: 'monospace', color: '#555' }}>{typeof v === 'number' ? v.toFixed(2) : v}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+          </div>
+
+          {/* SHAP Plots Section */}
+          {plots.v2.length > 0 && (
+            <div style={{ marginTop: 24, paddingTop: 24, borderTop: '2px solid #e5e7eb' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                <h4 style={{ margin: 0 }}>📊 SHAP Model Explainability Plots</h4>
+                <select 
+                  value={selectedCategory || ''} 
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  style={{ padding: '6px 12px', borderRadius: 4, border: '1px solid #d1d5db', fontSize: '0.9rem' }}
+                >
+                  {['LV_FUNCTION', 'LV_SIZE', 'LV_HYPERTROPHY', 'LA_SIZE', 'DIASTOLIC_FUNCTION'].map(cat => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: 16 }}>
+                {filteredPlots.map((plot, idx) => (
+                  <div 
+                    key={idx}
+                    style={{ 
+                      border: '1px solid #e5e7eb',
+                      borderRadius: 8,
+                      overflow: 'hidden',
+                      background: 'white'
+                    }}
+                  >
+                    <div style={{ 
+                      padding: 10, 
+                      background: '#f9fafb',
+                      borderBottom: '1px solid #e5e7eb',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      color: '#666'
+                    }}>
+                      {plot.type === 'feature_importance' && '🎯 Feature Importance'}
+                      {plot.type === 'shap_summary_bar' && '📊 SHAP Summary (Bar)'}
+                      {plot.type === 'shap_summary_dot' && '🌐 SHAP Summary (Beeswarm)'}
+                    </div>
+                    <div style={{ padding: 8, background: '#fafafa', maxHeight: 450, overflow: 'auto' }}>
+                      <img 
+                        src={plot.path} 
+                        alt={plot.name}
+                        style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 4 }}
+                        onError={(e) => {
+                          e.target.style.display = 'none'
+                          e.target.parentElement.innerHTML = `<div style="padding: 40px 20px; text-align: center; color: #999; font-size: 0.85rem;">Plot not found</div>`
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: 12, fontSize: '0.8rem', color: '#999' }}>
+                💡 <strong>About SHAP Plots:</strong> Feature Importance shows top model features. SHAP Summary (Bar) displays mean feature impacts. SHAP Summary (Beeswarm) shows individual sample contributions color-coded by feature values.
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function SensitivityPanel({ sensitivity, loading, error }) {
+  if (!sensitivity || Object.keys(sensitivity).length === 0) return null
+
+  return (
+    <div className="result-card" style={{ marginTop: 24 }}>
+      <div className="result-title">📈 Sensitivity Analysis</div>
+      <p style={{ color: '#666', marginBottom: 16, fontSize: '0.9rem' }}>Shows how predictions change when input parameters vary ±15%</p>
+      
+      {loading && <div className="mini-loading">Running sensitivity analysis...</div>}
+      {error && <div className="analysis-error">{error}</div>}
+      
+      {!loading && !error && (
+        <div className="sensitivity-grid">
+          {Object.entries(sensitivity).map(([feature, rows]) => {
+            const labels = rows.map(r => (r.variation_percent ?? 0).toFixed(0))
+            const data = rows.map(r => r.prediction ?? 0)
+            return (
+              <div key={feature} className="sensitivity-chart">
+                <LineChart title={feature} labels={labels} data={data} color="#06b6d4" yLabel="Prediction Robustness" />
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function MetricsTab() {
   const [info, setInfo] = useState('Fetching model performance metrics...')
   const [error, setError] = useState('')
-  const [metrics, setMetrics] = useState(null)
+  const [metricsV1, setMetricsV1] = useState(null)
+  const [metricsV2, setMetricsV2] = useState(null)
+  const [comparison, setComparison] = useState(null)
+  const [version, setVersion] = useState('v2')
   const [cat, setCat] = useState('OVERALL')
   const [algo, setAlgo] = useState('ALL')
 
@@ -315,11 +842,42 @@ function MetricsTab() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/model-metrics`)
-        const json = await res.json()
-        if (!res.ok) throw new Error(json.error || 'Failed to load metrics')
-        setMetrics(json)
-        setInfo(`Metrics generated at ${new Date((json.generated_at || Date.now()) * 1000).toLocaleString()}`)
+        const [v1Res, v2Res, compRes] = await Promise.allSettled([
+          fetch(`${API_BASE}/api/model-metrics`),
+          fetch(`${API_BASE}/api/model-metrics?version=v2`),
+          fetch(`${API_BASE}/api/model-comparison`)
+        ])
+
+        let v1Json = null
+        let v2Json = null
+        let compJson = null
+        
+        if (v1Res.status === 'fulfilled') {
+          const res = v1Res.value
+          const json = await res.json()
+          if (res.ok) v1Json = json
+        }
+        if (v2Res.status === 'fulfilled') {
+          const res = v2Res.value
+          const json = await res.json()
+          if (res.ok) v2Json = json
+        }
+        if (compRes.status === 'fulfilled') {
+          const res = compRes.value
+          const json = await res.json()
+          if (res.ok) compJson = json
+        }
+
+        if (!v1Json && !v2Json) throw new Error('Failed to load metrics for v1 and v2')
+
+        if (v1Json) setMetricsV1(v1Json)
+        if (v2Json) setMetricsV2(v2Json)
+        if (compJson) setComparison(compJson)
+
+        const parts = []
+        if (v1Json?.generated_at) parts.push(`v1: ${new Date(v1Json.generated_at * 1000).toLocaleString()}`)
+        if (v2Json?.generated_at) parts.push(`v2: ${new Date(v2Json.generated_at * 1000).toLocaleString()}`)
+        setInfo(parts.length ? `Metrics generated at ${parts.join(' • ')}` : '')
         setError('')
       } catch (e) {
         setError(`❌ ${e.message}`)
@@ -328,6 +886,7 @@ function MetricsTab() {
     })()
   }, [])
 
+  const metrics = version === 'v2' ? metricsV2 : metricsV1
   const categories = useMemo(() => Object.keys(metrics?.categories || {}), [metrics])
   const algorithms = useMemo(() => {
     if (!metrics) return []
@@ -338,6 +897,24 @@ function MetricsTab() {
     }
     return Object.keys(metrics.categories?.[cat]?.algorithms || {})
   }, [metrics, cat])
+
+  const computeOverall = (m) => {
+    if (!m) return null
+    let totalAcc=0, totalPrec=0, totalRec=0, totalF1=0, totalTrain=0, totalPred=0, count=0
+    const catEntries = Object.entries(m.categories || {})
+    for (const [, cdata] of catEntries) {
+      const algoNames = Object.keys(cdata.algorithms || {})
+      for (const a of algoNames) {
+        const d = cdata.algorithms[a]
+        const acc = +d.accuracy || 0, prec=+d.precision||0, rec=+d.recall||0, f1=+d.f1_score||0, tr=+d.train_time||0, prd=+d.predict_time||0
+        totalAcc+=acc; totalPrec+=prec; totalRec+=rec; totalF1+=f1; totalTrain+=tr; totalPred+=prd; count++
+      }
+    }
+    return { acc: count? totalAcc/count:0, prec: count? totalPrec/count:0, rec: count? totalRec/count:0, f1: count? totalF1/count:0, tr: count? totalTrain/count:0, prd: count? totalPred/count:0 }
+  }
+
+  const overallV1 = useMemo(() => computeOverall(metricsV1), [metricsV1])
+  const overallV2 = useMemo(() => computeOverall(metricsV2), [metricsV2])
 
   const { overall, series } = useMemo(() => {
     if (!metrics) return { overall: null, series: null }
@@ -403,6 +980,141 @@ function MetricsTab() {
     <div className="tab-content active">
       {info && <Alert type="info" message={info} hidden={false} />}
 
+      {comparison && (
+        <div className="card" style={{ marginBottom: 20, background: '#f8f9fa', border: '1px solid #e0e0e0' }}>
+          <div className="result-title" style={{ color: '#2c3e50', marginBottom: 20, borderBottom: '2px solid #3498db', paddingBottom: 10 }}>
+            Model Performance Comparison
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginBottom: 20 }}>
+            {/* V1 Stats */}
+            <div style={{ background: 'white', padding: 20, borderRadius: 6, border: '2px solid #95a5a6', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+              <div style={{ fontSize: '0.9rem', color: '#7f8c8d', marginBottom: 15, fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Version 1 (Original)
+              </div>
+              <div style={{ display: 'grid', gap: 12, fontSize: '0.9rem', color: '#2c3e50' }}>
+                <div>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Test Accuracy</div>
+                  <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#34495e' }}>
+                    {comparison.v1?.avg_test_accuracy ? (comparison.v1.avg_test_accuracy * 100).toFixed(1) + '%' : 'N/A'}
+                  </div>
+                </div>
+                <div>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>F1-Score</div>
+                  <div style={{ fontSize: '1.1rem', fontWeight: '600', color: '#34495e' }}>
+                    {comparison.v1?.avg_test_f1 ? (comparison.v1.avg_test_f1).toFixed(3) : 'N/A'}
+                  </div>
+                </div>
+                <div style={{ borderTop: '1px solid #ecf0f1', paddingTop: 10 }}>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Training Samples</div>
+                  <div style={{ fontSize: '1rem', fontWeight: '600', color: '#34495e' }}>{comparison.v1?.total_train_samples || 0}</div>
+                </div>
+                <div>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Test Samples</div>
+                  <div style={{ fontSize: '1rem', fontWeight: '600', color: '#34495e' }}>{comparison.v1?.total_test_samples || 0}</div>
+                </div>
+                <div style={{ borderTop: '1px solid #ecf0f1', paddingTop: 10 }}>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Generalization Gap</div>
+                  <div style={{ fontSize: '1rem', fontWeight: '600', color: comparison.v1?.avg_generalization_gap > 0.05 ? '#e67e22' : '#27ae60' }}>
+                    {comparison.v1?.avg_generalization_gap !== null ? (comparison.v1.avg_generalization_gap).toFixed(3) : 'N/A'}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#95a5a6', marginTop: 3 }}>(train - test accuracy)</div>
+                </div>
+              </div>
+            </div>
+
+            {/* V2 Stats */}
+            <div style={{ background: 'white', padding: 20, borderRadius: 6, border: '2px solid #3498db', boxShadow: '0 4px 8px rgba(52,152,219,0.15)' }}>
+              <div style={{ fontSize: '0.9rem', color: '#3498db', marginBottom: 15, fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Version 2 (Expanded)
+              </div>
+              <div style={{ display: 'grid', gap: 12, fontSize: '0.9rem', color: '#2c3e50' }}>
+                <div>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Test Accuracy</div>
+                  <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#2980b9' }}>
+                    {comparison.v2?.avg_test_accuracy ? (comparison.v2.avg_test_accuracy * 100).toFixed(1) + '%' : 'N/A'}
+                  </div>
+                </div>
+                <div>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>F1-Score</div>
+                  <div style={{ fontSize: '1.1rem', fontWeight: '600', color: '#2980b9' }}>
+                    {comparison.v2?.avg_test_f1 ? (comparison.v2.avg_test_f1).toFixed(3) : 'N/A'}
+                  </div>
+                </div>
+                <div style={{ borderTop: '1px solid #ecf0f1', paddingTop: 10 }}>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Training Samples</div>
+                  <div style={{ fontSize: '1rem', fontWeight: '600', color: '#2980b9' }}>{comparison.v2?.total_train_samples || 0}</div>
+                </div>
+                <div>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Test Samples</div>
+                  <div style={{ fontSize: '1rem', fontWeight: '600', color: '#2980b9' }}>{comparison.v2?.total_test_samples || 0}</div>
+                </div>
+                <div style={{ borderTop: '1px solid #ecf0f1', paddingTop: 10 }}>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Generalization Gap</div>
+                  <div style={{ fontSize: '1rem', fontWeight: '600', color: comparison.v2?.avg_generalization_gap > 0.05 ? '#e67e22' : '#27ae60' }}>
+                    {comparison.v2?.avg_generalization_gap !== null ? (comparison.v2.avg_generalization_gap).toFixed(3) : 'N/A'}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#95a5a6', marginTop: 3 }}>(train - test accuracy)</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Improvement Metrics */}
+            <div style={{ background: 'white', padding: 20, borderRadius: 6, border: '2px solid #27ae60', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+              <div style={{ fontSize: '0.9rem', color: '#27ae60', marginBottom: 15, fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Improvements
+              </div>
+              <div style={{ display: 'grid', gap: 12, fontSize: '0.9rem', color: '#2c3e50' }}>
+                <div>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Winner</div>
+                  <div style={{ fontSize: '1.1rem', fontWeight: '700', color: '#27ae60', textTransform: 'uppercase' }}>
+                    Version {comparison.comparison?.winner === 'v2' ? '2' : '1'}
+                  </div>
+                </div>
+                <div>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Accuracy Improvement</div>
+                  <div style={{ fontSize: '1.3rem', fontWeight: '700', color: '#27ae60' }}>
+                    {comparison.comparison?.accuracy_improvement !== undefined 
+                      ? (comparison.comparison.accuracy_improvement >= 0 ? '+' : '') + (comparison.comparison.accuracy_improvement * 100).toFixed(2) + '%' 
+                      : 'N/A'}
+                  </div>
+                </div>
+                <div>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Relative Improvement</div>
+                  <div style={{ fontSize: '1.1rem', fontWeight: '600', color: '#27ae60' }}>
+                    {comparison.comparison?.relative_improvement_percent !== undefined 
+                      ? (comparison.comparison.relative_improvement_percent >= 0 ? '+' : '') + (comparison.comparison.relative_improvement_percent).toFixed(1) + '%' 
+                      : 'N/A'}
+                  </div>
+                </div>
+                <div style={{ borderTop: '1px solid #ecf0f1', paddingTop: 10 }}>
+                  <div style={{ color: '#7f8c8d', fontSize: '0.85rem', marginBottom: 4 }}>Additional Training Data</div>
+                  <div style={{ fontSize: '1rem', fontWeight: '600', color: '#27ae60' }}>
+                    +{(comparison.v2?.total_train_samples || 0) - (comparison.v1?.total_train_samples || 0)} samples
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ background: '#e8f4f8', padding: 15, borderRadius: 6, fontSize: '0.88rem', color: '#2c3e50', border: '1px solid #d0e8f0' }}>
+            <strong style={{ color: '#2980b9' }}>Analysis:</strong> Version {comparison.comparison?.winner === 'v2' ? '2' : '1'} demonstrates superior performance. 
+            The generalization gap (difference between training and test accuracy) indicates overfitting risk. Values near zero suggest good generalization, 
+            while values exceeding 0.05 may indicate the model is memorizing training data rather than learning patterns.
+          </div>
+        </div>
+      )}
+
+      <div className="card" style={{ marginBottom: 20, background: 'linear-gradient(135deg, #2a5298 0%, #1e3c72 100%)', color: 'white' }}>
+        <div className="result-title" style={{ color: 'white', marginBottom: 15 }}>🧪 Algorithm Performance Comparison (v1 vs v2)</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 15 }}>
+          <MetricTile label="v1 Avg Accuracy" value={`${((overallV1?.acc||0) * 100).toFixed(1)}%`} />
+          <MetricTile label="v2 Avg Accuracy" value={`${((overallV2?.acc||0) * 100).toFixed(1)}%`} />
+          <MetricTile label="Δ Accuracy (v2 - v1)" value={`${(((overallV2?.acc||0) - (overallV1?.acc||0)) * 100).toFixed(1)}%`} />
+          <MetricTile label="Δ F1-Score (v2 - v1)" value={`${(((overallV2?.f1||0) - (overallV1?.f1||0))).toFixed(3)}`} />
+        </div>
+      </div>
+
       <div className="card" style={{ marginBottom: 20, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
         <div className="result-title" style={{ color: 'white', marginBottom: 15 }}>📊 Overall Model Performance</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 15 }}>
@@ -421,6 +1133,13 @@ function MetricsTab() {
       </div>
 
       <div className="grid" style={{ alignItems: 'end', marginBottom: 15 }}>
+        <div className="form-group">
+          <label htmlFor="metricsVersion">Version</label>
+          <select id="metricsVersion" value={version} onChange={e => setVersion(e.target.value)}>
+            <option value="v1">v1 (Original)</option>
+            <option value="v2">v2 (Expanded)</option>
+          </select>
+        </div>
         <div className="form-group">
           <label htmlFor="metricsCategory">Category</label>
           <select id="metricsCategory" value={cat} onChange={e => { setCat(e.target.value); setAlgo('ALL') }}>
@@ -526,8 +1245,17 @@ function ResultsCard({ results }) {
   const patient = results.patient || {}
   const measurements = results.measurements || {}
   const interpretations = results.interpretations || {}
+  const severity_grading = results.severity_grading || {}
   const [q, setQ] = useState('')
   const [sort, setSort] = useState('alpha') // alpha | value
+  const [analysisCategory, setAnalysisCategory] = useState('')
+  const [availableCategories, setAvailableCategories] = useState([])
+  const [explainability, setExplainability] = useState(null)
+  const [featureImportance, setFeatureImportance] = useState([])
+  const [sensitivity, setSensitivity] = useState(null)
+  const [risk, setRisk] = useState(null)
+  const [analysisLoading, setAnalysisLoading] = useState({ explain: false, importance: false, sensitivity: false, risk: false })
+  const [analysisError, setAnalysisError] = useState({ explain: '', importance: '', sensitivity: '', risk: '' })
 
   const UNITS = {
     EF: '%', FS: '%',
@@ -570,6 +1298,110 @@ function ResultsCard({ results }) {
     navigator.clipboard.writeText(JSON.stringify(results, null, 2))
       .then(() => alert('JSON copied to clipboard!'))
   }
+
+  async function fetchExplainability(categoryOverride) {
+    setAnalysisLoading(s => ({ ...s, explain: true }))
+    setAnalysisError(s => ({ ...s, explain: '' }))
+    try {
+      const res = await fetch(`${API_BASE}/api/explainability`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ measurements, patient, category: categoryOverride || analysisCategory || undefined })
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Explainability failed')
+      
+      const report = json.report || null
+      const importance = report?.feature_importance || []
+      
+      setExplainability(report)
+      setFeatureImportance(importance)
+      setAvailableCategories(json.available_categories || [])
+      if (!analysisCategory && json.category) setAnalysisCategory(json.category)
+    } catch (e) {
+      setAnalysisError(s => ({ ...s, explain: `❌ ${e.message}` }))
+      setExplainability(null)
+      setFeatureImportance([])
+    } finally {
+      setAnalysisLoading(s => ({ ...s, explain: false }))
+    }
+  }
+
+  async function fetchFeatureImportance(categoryOverride) {
+    setAnalysisLoading(s => ({ ...s, importance: true }))
+    setAnalysisError(s => ({ ...s, importance: '' }))
+    try {
+      const res = await fetch(`${API_BASE}/api/feature-importance`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category: categoryOverride || analysisCategory || undefined, top_n: 10 })
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Feature importance failed')
+      setFeatureImportance(json.feature_importance || [])
+      setAvailableCategories(json.available_categories || [])
+      if (!analysisCategory && json.category) setAnalysisCategory(json.category)
+    } catch (e) {
+      setAnalysisError(s => ({ ...s, importance: `❌ ${e.message}` }))
+      setFeatureImportance([])
+    } finally {
+      setAnalysisLoading(s => ({ ...s, importance: false }))
+    }
+  }
+
+  async function fetchSensitivity(categoryOverride) {
+    setAnalysisLoading(s => ({ ...s, sensitivity: true }))
+    setAnalysisError(s => ({ ...s, sensitivity: '' }))
+    try {
+      const res = await fetch(`${API_BASE}/api/sensitivity-analysis`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ measurements, patient, category: categoryOverride || analysisCategory || undefined, variation_range: [-0.15, 0.15], n_steps: 12, max_features: 8 })
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Sensitivity analysis failed')
+      setSensitivity(json.results || null)
+      setAvailableCategories(json.available_categories || [])
+      if (!analysisCategory && json.category) setAnalysisCategory(json.category)
+    } catch (e) {
+      setAnalysisError(s => ({ ...s, sensitivity: `❌ ${e.message}` }))
+      setSensitivity(null)
+    } finally {
+      setAnalysisLoading(s => ({ ...s, sensitivity: false }))
+    }
+  }
+
+  async function fetchRisk() {
+    setAnalysisLoading(s => ({ ...s, risk: true }))
+    setAnalysisError(s => ({ ...s, risk: '' }))
+    try {
+      const res = await fetch(`${API_BASE}/api/risk-stratification`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ measurements, patient })
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Risk stratification failed')
+      setRisk(json)
+    } catch (e) {
+      setAnalysisError(s => ({ ...s, risk: `❌ ${e.message}` }))
+      setRisk(null)
+    } finally {
+      setAnalysisLoading(s => ({ ...s, risk: false }))
+    }
+  }
+
+  useEffect(() => {
+    setExplainability(null)
+    setFeatureImportance([])
+    setSensitivity(null)
+    setRisk(null)
+    setAnalysisCategory('')
+    setAvailableCategories([])
+    if (!results) return
+    // Don't auto-fetch - user clicks to load
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results])
 
   const measEntries = useMemo(() => {
     const entries = Object.entries(measurements)
@@ -639,6 +1471,22 @@ function ResultsCard({ results }) {
           </div>
         </div>
       </div>
+      <SeverityGrader severity_grading={severity_grading} measurements={measurements} interpretations={interpretations} />
+
+      <div className="result-card" style={{ marginTop: 24 }}>
+        <div className="result-title">🔬 Advanced Analysis Tools</div>
+        <div className="analysis-buttons">
+          <button className="btn btn-secondary" onClick={() => fetchExplainability()}>🧠 Explainability & Feature Importance</button>
+          <button className="btn btn-secondary" onClick={() => fetchSensitivity()}>📈 Sensitivity Analysis</button>
+          <button className="btn btn-secondary" onClick={() => fetchRisk()}>⚠️ Risk Stratification</button>
+        </div>
+      </div>
+
+      <ExplainabilityPanel explainability={explainability} featureImportance={featureImportance} loading={analysisLoading.explain || analysisLoading.importance} error={analysisError.explain || analysisError.importance} />
+
+      <SensitivityPanel sensitivity={sensitivity} loading={analysisLoading.sensitivity} error={analysisError.sensitivity} />
+
+      <RiskStratificationPanel risk={risk} loading={analysisLoading.risk} error={analysisError.risk} />
       <div style={{ marginTop: 30 }}>
         <h3 style={{ marginBottom: 15 }}>📋 JSON Response</h3>
         <button className="btn btn-secondary copy-btn" onClick={copyJSON}>📋 Copy JSON</button>

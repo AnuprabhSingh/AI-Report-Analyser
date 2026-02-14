@@ -1,0 +1,44 @@
+{
+  "file_name": "22-03-23-191928_BABA SHAREEF 67 YRS_20220323_191928_20220323_193307.pdf",
+  "patient": {
+    "age": 67,
+    "sex": "M",
+    "name": "BABA SHAREEF"
+  },
+  "measurements": {
+    "EF": 67.0,
+    "LVID_D": 5.67,
+    "LVID_S": 4.59,
+    "IVS_D": 1.05,
+    "IVS_S": 1.42,
+    "LVPW_D": 1.16,
+    "LVPW_S": 1.13,
+    "LV_MASS": 256.0,
+    "AORTIC_ROOT": 2.49,
+    "LA_DIMENSION": 4.7,
+    "LA_AO": 1.89,
+    "MV_E_A": 1.39,
+    "MV_E": 102.0,
+    "MV_A": 73.3,
+    "AI_MAX_VEL": 134.0,
+    "MAX_PG_AI": 7.21,
+    "PA_ACC_TIME": 0.115,
+    "PI_MAX_VEL": 78.2,
+    "MAX_PG_PI": 2.44,
+    "EDV": 182.0,
+    "ESV": 96.7,
+    "SV": 96.7
+  },
+  "interpretations": {
+    "Left Ventricular Function": "Normal LV systolic function (EF: 67.0%)",
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.67 cm)",
+    "LV Systolic Dimension": "Moderate increase in LV systolic dimension (LVIDs: 4.59 cm)",
+    "Interventricular Septum": "Severe septal hypertrophy (IVSd: 1.05 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.16 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.70 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.39)",
+    "LV Mass": "Mild LV hypertrophy (LVmass: 256 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 22
+}

@@ -1,0 +1,39 @@
+{
+  "file_name": "24-08-21-162359_DAMERA JALENDER 38 YRS_20240821_162359_20240821_163118.pdf",
+  "patient": {
+    "age": 38,
+    "sex": "M",
+    "name": "DAMERA JALENDER"
+  },
+  "measurements": {
+    "LVID_D": 5.41,
+    "LVID_S": 4.42,
+    "IVS_D": 0.708,
+    "IVS_S": 1.02,
+    "LVPW_D": 0.737,
+    "LVPW_S": 1.13,
+    "LV_MASS": 137.0,
+    "AORTIC_ROOT": 2.61,
+    "LA_DIMENSION": 4.48,
+    "LA_AO": 1.72,
+    "MV_E": 96.0,
+    "AI_MAX_VEL": 57.9,
+    "MAX_PG_AI": 1.34,
+    "PA_ACC_TIME": 0.121,
+    "PI_MAX_VEL": 48.9,
+    "MAX_PG_PI": 0.955,
+    "EDV": 158.0,
+    "ESV": 86.3,
+    "SV": 86.3
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.41 cm)",
+    "LV Systolic Dimension": "Moderate increase in LV systolic dimension (LVIDs: 4.42 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.71 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.74 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.48 cm)",
+    "LV Mass": "Normal LV mass (LVmass: 137 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 19
+}

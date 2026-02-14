@@ -6,12 +6,13 @@ Extracts measurements and generates interpretations for training.
 
 import os
 import json
+import argparse
 from pathlib import Path
 from tqdm import tqdm
 from src.extractor import MedicalReportExtractor
 from src.predictor import ClinicalPredictor
 
-def prepare_training_data():
+def prepare_training_data(input_dir: str, output_dir: str, dataset_filename: str):
     """Process all PDFs and create training dataset."""
     
     print("=" * 80)
@@ -23,12 +24,12 @@ def prepare_training_data():
     predictor = ClinicalPredictor()
     
     # Paths
-    input_dir = Path('data/sample_reports')
-    output_dir = Path('data/processed')
-    output_dir.mkdir(exist_ok=True)
+    input_dir = Path(input_dir)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
     
-    # Get all PDF files
-    pdf_files = list(input_dir.glob('*.pdf'))
+    # Get all PDF files (recursive)
+    pdf_files = list(input_dir.rglob('*.pdf'))
     print(f"\nFound {len(pdf_files)} PDF files to process")
     
     if len(pdf_files) == 0:
@@ -87,7 +88,7 @@ def prepare_training_data():
     
     if training_data:
         # Save consolidated dataset
-        dataset_path = output_dir / 'training_dataset.json'
+        dataset_path = output_dir / dataset_filename
         with open(dataset_path, 'w') as f:
             json.dump(training_data, f, indent=2)
         print(f"\n✓ Training dataset saved: {dataset_path}")
@@ -124,5 +125,25 @@ def prepare_training_data():
     
     return training_data
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Prepare training dataset from PDF reports")
+    parser.add_argument(
+        "--input-dir",
+        default="data/sample_reports",
+        help="Folder containing PDF reports"
+    )
+    parser.add_argument(
+        "--output-dir",
+        default="data/processed",
+        help="Folder to write processed JSON files"
+    )
+    parser.add_argument(
+        "--dataset-filename",
+        default="training_dataset.json",
+        help="Filename for consolidated dataset JSON"
+    )
+    return parser.parse_args()
+
 if __name__ == '__main__':
-    prepare_training_data()
+    args = parse_args()
+    prepare_training_data(args.input_dir, args.output_dir, args.dataset_filename)

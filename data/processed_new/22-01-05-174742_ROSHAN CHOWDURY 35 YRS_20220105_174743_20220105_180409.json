@@ -1,0 +1,41 @@
+{
+  "file_name": "22-01-05-174742_ROSHAN CHOWDURY 35 YRS_20220105_174743_20220105_180409.pdf",
+  "patient": {
+    "age": 35,
+    "sex": "M",
+    "name": "ROSHAN CHOWDURY"
+  },
+  "measurements": {
+    "LVID_D": 4.99,
+    "LVID_S": 3.0,
+    "IVS_D": 1.47,
+    "LVPW_S": 1.13,
+    "FS": 39.8,
+    "LV_MASS": 340.0,
+    "AORTIC_ROOT": 3.12,
+    "LA_DIMENSION": 5.55,
+    "LA_AO": 1.78,
+    "MV_E_A": 2.51,
+    "MV_E": 147.0,
+    "MV_A": 58.6,
+    "AI_MAX_VEL": 92.8,
+    "MAX_PG_AI": 3.44,
+    "PA_ACC_TIME": 0.155,
+    "PI_MAX_VEL": 83.1,
+    "MAX_PG_PI": 2.76,
+    "EDV": 124.0,
+    "ESV": 27.1,
+    "SV": 35.1
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.99 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 3.00 cm)",
+    "Interventricular Septum": "Severe septal hypertrophy (IVSd: 1.47 cm)",
+    "Left Atrium": "LA enlargement (LA: 5.55 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 2.51)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 39.8%)",
+    "LV Mass": "Severe LV hypertrophy (LVmass: 340 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 20
+}

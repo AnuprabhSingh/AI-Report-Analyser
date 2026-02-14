@@ -1,0 +1,42 @@
+{
+  "file_name": "24-02-13-120246_THUMMALAPELLY JANARDHAN 70 YRS_20240213_120247_20240213_121019.pdf",
+  "patient": {
+    "age": 70,
+    "sex": "M",
+    "name": "THUMMALAPELLY JANARDHAN"
+  },
+  "measurements": {
+    "LVID_D": 4.59,
+    "LVID_S": 3.6,
+    "IVS_D": 0.793,
+    "IVS_S": 1.08,
+    "LVPW_D": 0.661,
+    "LVPW_S": 0.963,
+    "FS": 21.6,
+    "LV_MASS": 104.0,
+    "AORTIC_ROOT": 3.0,
+    "LA_DIMENSION": 2.83,
+    "LA_AO": 0.943,
+    "MV_E": 46.1,
+    "MV_A": 117.0,
+    "AI_MAX_VEL": 105.0,
+    "MAX_PG_AI": 4.44,
+    "PA_ACC_TIME": 0.094,
+    "PI_MAX_VEL": 74.0,
+    "MAX_PG_PI": 2.19,
+    "EDV": 96.7,
+    "ESV": 46.6,
+    "SV": 46.6
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.59 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 3.60 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.79 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.66 cm)",
+    "Left Atrium": "LA enlargement (LA: 2.83 cm)",
+    "Fractional Shortening": "Mildly reduced fractional shortening (FS: 21.6%)",
+    "LV Mass": "Normal LV mass (LVmass: 104 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 21
+}

@@ -1,0 +1,38 @@
+{
+  "file_name": "22-07-02-205605_THAKKALAPELLY SAMPATH RAO 75 YRS_20220702_205605_20220702_210610.pdf",
+  "patient": {
+    "age": 75,
+    "sex": "M",
+    "name": "THAKKALAPELLY SAMPATH RAO"
+  },
+  "measurements": {
+    "LVID_D": 3.12,
+    "IVS_D": 1.36,
+    "LVPW_D": 1.25,
+    "LVPW_S": 1.13,
+    "FS": 38.2,
+    "LV_MASS": 131.0,
+    "AORTIC_ROOT": 2.66,
+    "LA_DIMENSION": 4.08,
+    "LA_AO": 1.53,
+    "MV_E_A": 0.77,
+    "MV_E": 66.3,
+    "MV_A": 86.2,
+    "AI_MAX_VEL": 81.4,
+    "MAX_PG_AI": 2.65,
+    "PA_ACC_TIME": 0.169,
+    "PI_MAX_VEL": 74.7,
+    "MAX_PG_PI": 2.23
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 3.12 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.36 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.25 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.08 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.77)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 38.2%)",
+    "LV Mass": "Normal LV mass (LVmass: 131 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 17
+}

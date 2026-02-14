@@ -1,0 +1,35 @@
+{
+  "feature_names": [
+    "age",
+    "sex",
+    "EF",
+    "FS",
+    "LVID_D",
+    "LVID_S",
+    "IVS_D",
+    "LVPW_D",
+    "LA_DIMENSION",
+    "AORTIC_ROOT",
+    "MV_E_A",
+    "LV_MASS"
+  ],
+  "categories": [
+    "LV_FUNCTION",
+    "LV_SIZE",
+    "LV_HYPERTROPHY",
+    "LA_SIZE",
+    "DIASTOLIC_FUNCTION"
+  ],
+  "key_parameters": [
+    "EF",
+    "FS",
+    "LVID_D",
+    "LVID_S",
+    "IVS_D",
+    "LVPW_D",
+    "LA_DIMENSION",
+    "AORTIC_ROOT",
+    "MV_E_A",
+    "LV_MASS"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "file_name": "24-05-23-123052_PULUGU SANDHYA 28 YRS_20240523_123052_20240523_124116.pdf",
+  "patient": {
+    "age": 28,
+    "sex": "F",
+    "name": "PULUGU SANDHYA"
+  },
+  "measurements": {
+    "LVID_D": 5.78,
+    "LVID_S": 4.8,
+    "IVS_D": 1.0,
+    "IVS_S": 1.25,
+    "LVPW_D": 0.869,
+    "LVPW_S": 1.13,
+    "LV_MASS": 212.0,
+    "AORTIC_ROOT": 2.27,
+    "LA_DIMENSION": 4.02,
+    "LA_AO": 1.78,
+    "MV_E": 138.0,
+    "MV_A": 30.0,
+    "AI_MAX_VEL": 72.9,
+    "MAX_PG_AI": 2.13,
+    "PA_ACC_TIME": 0.067,
+    "PI_MAX_VEL": 61.4,
+    "MAX_PG_PI": 1.51,
+    "EDV": 193.0,
+    "ESV": 110.0,
+    "SV": 110.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.78 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.80 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 1.00 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.87 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.02 cm)",
+    "LV Mass": "Normal LV mass (LVmass: 212 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 20
+}

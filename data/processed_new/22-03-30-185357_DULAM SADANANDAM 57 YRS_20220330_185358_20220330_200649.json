@@ -1,0 +1,37 @@
+{
+  "file_name": "22-03-30-185357_DULAM SADANANDAM 57 YRS_20220330_185358_20220330_200649.pdf",
+  "patient": {
+    "age": 57,
+    "sex": "M",
+    "name": "DULAM SADANANDAM"
+  },
+  "measurements": {
+    "LVID_S": 5.92,
+    "IVS_D": 0.892,
+    "IVS_S": 1.04,
+    "LVPW_D": 0.892,
+    "LVPW_S": 1.19,
+    "LV_MASS": 293.0,
+    "AORTIC_ROOT": 3.27,
+    "LA_DIMENSION": 3.75,
+    "LA_AO": 1.15,
+    "MV_E_A": 0.716,
+    "MV_E": 84.5,
+    "MV_A": 118.0,
+    "AI_MAX_VEL": 109.0,
+    "MAX_PG_AI": 4.8,
+    "PA_ACC_TIME": 0.142,
+    "PI_MAX_VEL": 99.8,
+    "MAX_PG_PI": 3.99
+  },
+  "interpretations": {
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 5.92 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.89 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.89 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.75 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.72)",
+    "LV Mass": "Severe LV hypertrophy (LVmass: 293 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 17
+}

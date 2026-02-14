@@ -1,0 +1,39 @@
+{
+  "file_name": "24-07-18-135702_POTLAPALLI SARASWATHI DEVI 70 YRS_20240718_135702_20240718_140325.pdf",
+  "patient": {
+    "age": 70,
+    "sex": "F",
+    "name": "POTLAPALLI SARASWATHI DEVI"
+  },
+  "measurements": {
+    "LVID_D": 5.4,
+    "LVID_S": 4.72,
+    "IVS_D": 1.06,
+    "IVS_S": 1.17,
+    "LVPW_D": 0.982,
+    "LVPW_S": 1.13,
+    "LV_MASS": 212.0,
+    "AORTIC_ROOT": 2.66,
+    "LA_DIMENSION": 3.74,
+    "LA_AO": 1.4,
+    "MV_E": 43.3,
+    "AI_MAX_VEL": 138.0,
+    "MAX_PG_AI": 7.64,
+    "PA_ACC_TIME": 0.101,
+    "PI_MAX_VEL": 86.6,
+    "MAX_PG_PI": 3.0,
+    "EDV": 158.0,
+    "ESV": 105.0,
+    "SV": 105.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.40 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.72 cm)",
+    "Interventricular Septum": "Severe septal hypertrophy (IVSd: 1.06 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.98 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.74 cm)",
+    "LV Mass": "Normal LV mass (LVmass: 212 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 19
+}

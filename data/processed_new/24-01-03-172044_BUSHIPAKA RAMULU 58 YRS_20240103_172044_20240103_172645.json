@@ -1,0 +1,42 @@
+{
+  "file_name": "24-01-03-172044_BUSHIPAKA RAMULU 58 YRS_20240103_172044_20240103_172645.pdf",
+  "patient": {
+    "age": 58,
+    "sex": "M",
+    "name": "BUSHIPAKA RAMULU"
+  },
+  "measurements": {
+    "LVID_D": 4.48,
+    "LVID_S": 2.78,
+    "IVS_D": 1.42,
+    "LVPW_D": 1.19,
+    "LVPW_S": 1.13,
+    "FS": 38.0,
+    "LV_MASS": 222.0,
+    "AORTIC_ROOT": 3.99,
+    "LA_DIMENSION": 3.29,
+    "LA_AO": 0.823,
+    "MV_E_A": 1.2,
+    "MV_E": 76.1,
+    "MV_A": 63.5,
+    "AI_MAX_VEL": 101.0,
+    "MAX_PG_AI": 4.1,
+    "PA_ACC_TIME": 0.148,
+    "PI_MAX_VEL": 59.3,
+    "MAX_PG_PI": 1.41,
+    "EDV": 89.7,
+    "ESV": 21.4
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.48 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 2.78 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.42 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.19 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.29 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.20)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 38.0%)",
+    "LV Mass": "Normal LV mass (LVmass: 222 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 20
+}

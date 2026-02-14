@@ -1,0 +1,40 @@
+{
+  "file_name": "22-01-14-152636_TIRUNAHARI PRAMELA 70 YRS_20220114_152636_20220114_153307.pdf",
+  "patient": {
+    "age": 70,
+    "sex": "F",
+    "name": "TIRUNAHARI PRAMELA"
+  },
+  "measurements": {
+    "LVID_D": 4.87,
+    "LVID_S": 3.06,
+    "IVS_S": 1.53,
+    "LVPW_D": 1.3,
+    "LVPW_S": 1.13,
+    "FS": 37.2,
+    "AORTIC_ROOT": 2.89,
+    "LA_DIMENSION": 3.4,
+    "LA_AO": 1.18,
+    "MV_E_A": 0.6,
+    "MV_E": 64.9,
+    "MV_A": 108.0,
+    "AI_MAX_VEL": 126.0,
+    "MAX_PG_AI": 6.38,
+    "PA_ACC_TIME": 0.121,
+    "PI_MAX_VEL": 128.0,
+    "MAX_PG_PI": 6.6,
+    "EDV": 116.0,
+    "ESV": 28.6,
+    "SV": 36.7
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.87 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 3.06 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.30 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.40 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.60)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 37.2%)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 20
+}

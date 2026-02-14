@@ -1,0 +1,44 @@
+{
+  "file_name": "22-12-17-145426_GOPIREDDY RAVINDER 58 YRS_20221217_145426_20221217_154918.pdf",
+  "patient": {
+    "age": 58,
+    "sex": "M",
+    "name": "GOPIREDDY RAVINDER"
+  },
+  "measurements": {
+    "LVID_D": 4.99,
+    "LVID_S": 3.4,
+    "IVS_D": 1.36,
+    "IVS_S": 1.64,
+    "LVPW_D": 1.25,
+    "LVPW_S": 1.13,
+    "FS": 31.8,
+    "LV_MASS": 262.0,
+    "AORTIC_ROOT": 2.66,
+    "LA_DIMENSION": 3.74,
+    "LA_AO": 1.4,
+    "MV_E_A": 0.772,
+    "MV_E": 80.3,
+    "MV_A": 104.0,
+    "AI_MAX_VEL": 129.0,
+    "MAX_PG_AI": 6.61,
+    "PA_ACC_TIME": 0.182,
+    "PI_MAX_VEL": 110.0,
+    "MAX_PG_PI": 4.87,
+    "EDV": 124.0,
+    "ESV": 39.3,
+    "SV": 39.3
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.99 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 3.40 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.36 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.25 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.74 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.77)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 31.8%)",
+    "LV Mass": "Moderate LV hypertrophy (LVmass: 262 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 22
+}

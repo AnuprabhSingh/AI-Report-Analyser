@@ -1,0 +1,42 @@
+{
+  "file_name": "24-01-16-195136_KHUSHAL CHAND GOSAR 66 YRS_20240116_195137_20240116_195713.pdf",
+  "patient": {
+    "age": 66,
+    "sex": "M",
+    "name": "KHUSHAL CHAND GOSAR"
+  },
+  "measurements": {
+    "LVID_D": 5.21,
+    "LVID_S": 4.21,
+    "IVS_D": 0.822,
+    "IVS_S": 1.01,
+    "LVPW_D": 0.68,
+    "LVPW_S": 1.11,
+    "LV_MASS": 135.0,
+    "AORTIC_ROOT": 3.12,
+    "LA_DIMENSION": 3.8,
+    "LA_AO": 1.22,
+    "MV_E_A": 1.18,
+    "MV_E": 93.5,
+    "MV_A": 79.6,
+    "AI_MAX_VEL": 76.4,
+    "MAX_PG_AI": 2.34,
+    "PA_ACC_TIME": 0.148,
+    "PI_MAX_VEL": 77.5,
+    "MAX_PG_PI": 2.4,
+    "EDV": 142.0,
+    "ESV": 74.4,
+    "SV": 74.4
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.21 cm)",
+    "LV Systolic Dimension": "Mild increase in LV systolic dimension (LVIDs: 4.21 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.82 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.68 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.80 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.18)",
+    "LV Mass": "Normal LV mass (LVmass: 135 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 21
+}

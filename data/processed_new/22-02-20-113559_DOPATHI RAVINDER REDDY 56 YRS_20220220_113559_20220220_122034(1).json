@@ -1,0 +1,41 @@
+{
+  "file_name": "22-02-20-113559_DOPATHI RAVINDER REDDY 56 YRS_20220220_113559_20220220_122034(1).pdf",
+  "patient": {
+    "age": 56,
+    "sex": "M",
+    "name": "DOPATHI RAVINDER REDDY"
+  },
+  "measurements": {
+    "LVID_D": 5.72,
+    "LVID_S": 4.82,
+    "IVS_D": 0.793,
+    "IVS_S": 0.85,
+    "LVPW_D": 0.737,
+    "LV_MASS": 162.0,
+    "AORTIC_ROOT": 3.0,
+    "LA_DIMENSION": 3.0,
+    "LA_AO": 1.0,
+    "MV_E_A": 2.43,
+    "MV_E": 79.6,
+    "MV_A": 32.8,
+    "AI_MAX_VEL": 81.0,
+    "MAX_PG_AI": 2.62,
+    "PA_ACC_TIME": 0.121,
+    "PI_MAX_VEL": 60.0,
+    "MAX_PG_PI": 1.44,
+    "EDV": 187.0,
+    "ESV": 112.0,
+    "SV": 112.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.72 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.82 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.79 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.74 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.00 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 2.43)",
+    "LV Mass": "Normal LV mass (LVmass: 162 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 20
+}

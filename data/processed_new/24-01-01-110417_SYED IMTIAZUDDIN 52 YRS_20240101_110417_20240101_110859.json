@@ -1,0 +1,39 @@
+{
+  "file_name": "24-01-01-110417_SYED IMTIAZUDDIN 52 YRS_20240101_110417_20240101_110859.pdf",
+  "patient": {
+    "age": 52,
+    "sex": "M",
+    "name": "SYED IMTIAZUDDIN"
+  },
+  "measurements": {
+    "LVID_D": 4.76,
+    "LVID_S": 3.2,
+    "LVPW_S": 1.13,
+    "FS": 32.7,
+    "LV_MASS": 377.0,
+    "AORTIC_ROOT": 3.97,
+    "LA_DIMENSION": 4.93,
+    "LA_AO": 1.24,
+    "MV_E_A": 0.65,
+    "MV_E": 53.0,
+    "MV_A": 81.7,
+    "AI_MAX_VEL": 93.5,
+    "MAX_PG_AI": 3.5,
+    "PA_ACC_TIME": 0.142,
+    "PI_MAX_VEL": 64.2,
+    "MAX_PG_PI": 1.65,
+    "EDV": 108.0,
+    "ESV": 32.8,
+    "SV": 32.8
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.76 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 3.20 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.93 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.65)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 32.7%)",
+    "LV Mass": "Severe LV hypertrophy (LVmass: 377 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 19
+}

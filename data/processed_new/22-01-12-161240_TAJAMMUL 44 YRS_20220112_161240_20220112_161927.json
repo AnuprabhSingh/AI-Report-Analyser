@@ -1,0 +1,40 @@
+{
+  "file_name": "22-01-12-161240_TAJAMMUL 44 YRS_20220112_161240_20220112_161927.pdf",
+  "patient": {
+    "age": 44,
+    "sex": "M",
+    "name": "TAJAMMUL"
+  },
+  "measurements": {
+    "LVID_D": 4.59,
+    "LVID_S": 3.77,
+    "IVS_S": 1.13,
+    "LVPW_D": 0.963,
+    "LVPW_S": 1.13,
+    "LV_MASS": 298.0,
+    "AORTIC_ROOT": 2.89,
+    "LA_DIMENSION": 3.23,
+    "LA_AO": 1.12,
+    "MV_E_A": 1.2,
+    "MV_E": 75.4,
+    "MV_A": 62.8,
+    "AI_MAX_VEL": 113.0,
+    "MAX_PG_AI": 5.12,
+    "PA_ACC_TIME": 0.148,
+    "PI_MAX_VEL": 83.1,
+    "MAX_PG_PI": 2.76,
+    "EDV": 96.7,
+    "ESV": 53.5,
+    "SV": 53.5
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.59 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 3.77 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.96 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.23 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.20)",
+    "LV Mass": "Severe LV hypertrophy (LVmass: 298 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 20
+}

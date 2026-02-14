@@ -129,13 +129,13 @@ class AlgorithmComparator:
             for param in self.key_parameters:
                 sample[param] = measurements.get(param, 0)
             
-            sample['labels'] = self._extract_labels(interpretations)
+            sample['labels'] = self._extract_labels(interpretations, measurements)
             samples.append(sample)
         
         return pd.DataFrame(samples)
     
-    def _extract_labels(self, interpretations: dict) -> dict:
-        """Extract classification labels from interpretation text."""
+    def _extract_labels(self, interpretations: dict, measurements: dict) -> dict:
+        """Extract classification labels from interpretation text with measurement fallback."""
         labels = {}
         
         # LV_HYPERTROPHY
@@ -150,6 +150,17 @@ class AlgorithmComparator:
             labels['LV_HYPERTROPHY'] = 'Severe'
         else:
             labels['LV_HYPERTROPHY'] = 'Unknown'
+        if labels['LV_HYPERTROPHY'] == 'Unknown':
+            ivs_d = measurements.get('IVS_D', 0) or 0
+            if ivs_d > 0:
+                if ivs_d <= 1.0:
+                    labels['LV_HYPERTROPHY'] = 'None'
+                elif ivs_d <= 1.3:
+                    labels['LV_HYPERTROPHY'] = 'Mild'
+                elif ivs_d <= 1.6:
+                    labels['LV_HYPERTROPHY'] = 'Moderate'
+                else:
+                    labels['LV_HYPERTROPHY'] = 'Severe'
         
         # LA_SIZE
         la_text = interpretations.get('Left Atrium', '')
@@ -159,6 +170,10 @@ class AlgorithmComparator:
             labels['LA_SIZE'] = 'Enlarged'
         else:
             labels['LA_SIZE'] = 'Unknown'
+        if labels['LA_SIZE'] == 'Unknown':
+            la_dim = measurements.get('LA_DIMENSION', 0) or 0
+            if la_dim > 0:
+                labels['LA_SIZE'] = 'Enlarged' if la_dim >= 4.0 else 'Normal'
         
         # DIASTOLIC_FUNCTION
         diastolic_text = interpretations.get('Diastolic Function', '')
@@ -166,6 +181,12 @@ class AlgorithmComparator:
             labels['DIASTOLIC_FUNCTION'] = 'Normal'
         else:
             labels['DIASTOLIC_FUNCTION'] = 'Abnormal'
+        mv_ea = measurements.get('MV_E_A', 0) or 0
+        if mv_ea > 0:
+            if 0.8 <= mv_ea <= 2.0:
+                labels['DIASTOLIC_FUNCTION'] = 'Normal'
+            else:
+                labels['DIASTOLIC_FUNCTION'] = 'Abnormal'
         
         return labels
     

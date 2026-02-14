@@ -1,0 +1,40 @@
+{
+  "file_name": "22-01-13-113338_MALABANTI VIJAY KUMAR 59 YRS_20220113_113338_20220113_131202.pdf",
+  "patient": {
+    "age": 59,
+    "sex": "M",
+    "name": "MALABANTI VIJAY KUMAR"
+  },
+  "measurements": {
+    "LVID_D": 4.93,
+    "LVID_S": 4.14,
+    "IVS_S": 0.907,
+    "LVPW_D": 0.793,
+    "LVPW_S": 1.13,
+    "LV_MASS": 111.0,
+    "AORTIC_ROOT": 2.83,
+    "LA_DIMENSION": 3.34,
+    "LA_AO": 1.18,
+    "MV_E_A": 0.804,
+    "MV_E": 60.0,
+    "MV_A": 74.7,
+    "AI_MAX_VEL": 79.6,
+    "MAX_PG_AI": 2.53,
+    "PA_ACC_TIME": 0.135,
+    "PI_MAX_VEL": 77.5,
+    "MAX_PG_PI": 2.4,
+    "EDV": 120.0,
+    "ESV": 70.8,
+    "SV": 70.8
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.93 cm)",
+    "LV Systolic Dimension": "Mild increase in LV systolic dimension (LVIDs: 4.14 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.79 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.34 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.80)",
+    "LV Mass": "Normal LV mass (LVmass: 111 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 20
+}

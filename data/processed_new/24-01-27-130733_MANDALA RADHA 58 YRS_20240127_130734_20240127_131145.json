@@ -1,0 +1,42 @@
+{
+  "file_name": "24-01-27-130733_MANDALA RADHA 58 YRS_20240127_130734_20240127_131145.pdf",
+  "patient": {
+    "age": 58,
+    "sex": "F",
+    "name": "MANDALA RADHA"
+  },
+  "measurements": {
+    "LVID_D": 5.82,
+    "LVID_S": 4.8,
+    "IVS_D": 0.812,
+    "IVS_S": 1.13,
+    "LVPW_D": 0.699,
+    "LVPW_S": 1.13,
+    "LV_MASS": 164.0,
+    "AORTIC_ROOT": 3.23,
+    "LA_DIMENSION": 5.04,
+    "LA_AO": 1.56,
+    "MV_E_A": 1.96,
+    "MV_E": 95.6,
+    "MV_A": 48.9,
+    "AI_MAX_VEL": 64.9,
+    "MAX_PG_AI": 1.69,
+    "PA_ACC_TIME": 0.142,
+    "PI_MAX_VEL": 59.3,
+    "MAX_PG_PI": 1.41,
+    "EDV": 197.0,
+    "ESV": 110.0,
+    "SV": 110.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.82 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.80 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.81 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.70 cm)",
+    "Left Atrium": "LA enlargement (LA: 5.04 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.96)",
+    "LV Mass": "Normal LV mass (LVmass: 164 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 21
+}

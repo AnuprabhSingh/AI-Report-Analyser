@@ -1,0 +1,39 @@
+{
+  "file_name": "22-08-10-121803_ARV RAJA RAO 76 YRS_20220810_121803_20220810_122518.pdf",
+  "patient": {
+    "age": 76,
+    "sex": "M",
+    "name": "ARV RAJA RAO"
+  },
+  "measurements": {
+    "LVID_D": 5.27,
+    "LVID_S": 4.34,
+    "IVS_D": 0.718,
+    "IVS_S": 0.812,
+    "LVPW_D": 0.774,
+    "LVPW_S": 1.13,
+    "LV_MASS": 136.0,
+    "AORTIC_ROOT": 2.66,
+    "MV_E_A": 1.29,
+    "MV_E": 75.4,
+    "MV_A": 58.6,
+    "AI_MAX_VEL": 85.2,
+    "MAX_PG_AI": 2.9,
+    "PA_ACC_TIME": 0.162,
+    "PI_MAX_VEL": 57.2,
+    "MAX_PG_PI": 1.31,
+    "EDV": 146.0,
+    "ESV": 82.0,
+    "SV": 82.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.27 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.34 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.72 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.77 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.29)",
+    "LV Mass": "Normal LV mass (LVmass: 136 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 19
+}

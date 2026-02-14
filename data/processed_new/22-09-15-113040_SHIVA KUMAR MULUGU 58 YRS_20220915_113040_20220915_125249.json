@@ -1,0 +1,42 @@
+{
+  "file_name": "22-09-15-113040_SHIVA KUMAR MULUGU 58 YRS_20220915_113040_20220915_125249.pdf",
+  "patient": {
+    "age": 58,
+    "sex": "M",
+    "name": "SHIVA KUMAR MULUGU"
+  },
+  "measurements": {
+    "LVID_D": 3.74,
+    "LVID_S": 2.38,
+    "IVS_D": 1.25,
+    "IVS_S": 1.42,
+    "LVPW_D": 1.02,
+    "LVPW_S": 1.13,
+    "FS": 36.4,
+    "LV_MASS": 137.0,
+    "AORTIC_ROOT": 2.66,
+    "LA_DIMENSION": 3.68,
+    "LA_AO": 1.38,
+    "MV_E_A": 1.27,
+    "MV_E": 84.5,
+    "MV_A": 66.3,
+    "AI_MAX_VEL": 114.0,
+    "MAX_PG_AI": 5.15,
+    "PA_ACC_TIME": 0.135,
+    "PI_MAX_VEL": 72.6,
+    "MAX_PG_PI": 2.11,
+    "EDV": 52.3
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 3.74 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 2.38 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.25 cm)",
+    "LV Posterior Wall": "Severe posterior wall hypertrophy (LVPWd: 1.02 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.68 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.27)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 36.4%)",
+    "LV Mass": "Normal LV mass (LVmass: 137 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 20
+}

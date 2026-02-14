@@ -1,0 +1,41 @@
+{
+  "file_name": "22-09-19-201811_KHAJA BEE_75 YRS_20220919_201811_20220919_202500.pdf",
+  "patient": {
+    "age": 75,
+    "sex": "F"
+  },
+  "measurements": {
+    "LVID_D": 3.97,
+    "LVID_S": 2.55,
+    "IVS_D": 1.25,
+    "IVS_S": 1.81,
+    "LVPW_D": 1.13,
+    "LVPW_S": 1.13,
+    "FS": 35.7,
+    "LV_MASS": 161.0,
+    "AORTIC_ROOT": 2.21,
+    "LA_DIMENSION": 3.97,
+    "LA_AO": 1.79,
+    "MV_E_A": 0.763,
+    "MV_E": 101.0,
+    "AI_MAX_VEL": 123.0,
+    "MAX_PG_AI": 6.06,
+    "PA_ACC_TIME": 0.182,
+    "PI_MAX_VEL": 112.0,
+    "MAX_PG_PI": 5.05,
+    "EDV": 62.4,
+    "ESV": 23.4
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 3.97 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 2.55 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.25 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.13 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.97 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.76)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 35.7%)",
+    "LV Mass": "Normal LV mass (LVmass: 161 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 20
+}

@@ -1,0 +1,42 @@
+{
+  "file_name": "22-02-21-150838_MD NASEERUDDIN 71 YRS_20220221_150838_20220221_154823(1).pdf",
+  "patient": {
+    "age": 71,
+    "sex": "M",
+    "name": "MD NASEERUDDIN"
+  },
+  "measurements": {
+    "LVID_D": 5.81,
+    "LVID_S": 4.79,
+    "IVS_D": 0.822,
+    "IVS_S": 1.02,
+    "LVPW_D": 0.963,
+    "LVPW_S": 1.13,
+    "LV_MASS": 202.0,
+    "AORTIC_ROOT": 3.0,
+    "LA_DIMENSION": 3.97,
+    "LA_AO": 1.32,
+    "MV_E_A": 0.514,
+    "MV_E": 49.6,
+    "MV_A": 96.3,
+    "AI_MAX_VEL": 95.4,
+    "MAX_PG_AI": 3.64,
+    "PA_ACC_TIME": 0.135,
+    "PI_MAX_VEL": 71.2,
+    "MAX_PG_PI": 2.03,
+    "EDV": 196.0,
+    "ESV": 110.0,
+    "SV": 110.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.81 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.79 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.82 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.96 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.97 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.51)",
+    "LV Mass": "Normal LV mass (LVmass: 202 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 21
+}

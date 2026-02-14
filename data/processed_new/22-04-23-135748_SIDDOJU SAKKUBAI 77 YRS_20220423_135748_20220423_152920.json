@@ -1,0 +1,38 @@
+{
+  "file_name": "22-04-23-135748_SIDDOJU SAKKUBAI 77 YRS_20220423_135748_20220423_152920.pdf",
+  "patient": {
+    "age": 77,
+    "sex": "F",
+    "name": "SIDDOJU SAKKUBAI"
+  },
+  "measurements": {
+    "LVID_D": 6.23,
+    "LVID_S": 5.07,
+    "IVS_D": 1.19,
+    "IVS_S": 1.39,
+    "LVPW_D": 1.05,
+    "LVPW_S": 1.13,
+    "AORTIC_ROOT": 2.49,
+    "LA_DIMENSION": 4.14,
+    "LA_AO": 1.66,
+    "MV_E_A": 1.5,
+    "MV_E": 109.0,
+    "MV_A": 72.6,
+    "AI_MAX_VEL": 202.0,
+    "MAX_PG_AI": 16.3,
+    "PA_ACC_TIME": 0.148,
+    "PI_MAX_VEL": 74.0,
+    "MAX_PG_PI": 2.19,
+    "SV": 74.1
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 6.23 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 5.07 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.19 cm)",
+    "LV Posterior Wall": "Severe posterior wall hypertrophy (LVPWd: 1.05 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.14 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.50)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 18
+}

@@ -1,0 +1,31 @@
+{
+  "file_name": "24-03-18-120248_DASARI RAVINDER 45 YRS_20240318_120248_20240318_120949.pdf",
+  "patient": {
+    "age": 45,
+    "sex": "M",
+    "name": "DASARI RAVINDER"
+  },
+  "measurements": {
+    "IVS_D": 0.623,
+    "IVS_S": 0.963,
+    "LVPW_D": 0.708,
+    "LVPW_S": 1.13,
+    "LV_MASS": 229.0,
+    "MV_E_A": 1.24,
+    "MV_E": 90.0,
+    "MV_A": 72.6,
+    "AI_MAX_VEL": 86.1,
+    "MAX_PG_AI": 2.97,
+    "PA_ACC_TIME": 0.142,
+    "PI_MAX_VEL": 55.8,
+    "MAX_PG_PI": 1.25
+  },
+  "interpretations": {
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.62 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.71 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.24)",
+    "LV Mass": "Mild LV hypertrophy (LVmass: 229 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 13
+}

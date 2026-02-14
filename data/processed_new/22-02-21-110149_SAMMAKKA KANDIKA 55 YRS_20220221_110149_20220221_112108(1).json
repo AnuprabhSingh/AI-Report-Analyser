@@ -1,0 +1,37 @@
+{
+  "file_name": "22-02-21-110149_SAMMAKKA KANDIKA 55 YRS_20220221_110149_20220221_112108(1).pdf",
+  "patient": {
+    "age": 55,
+    "sex": "F",
+    "name": "SAMMAKKA KANDIKA"
+  },
+  "measurements": {
+    "IVS_D": 1.19,
+    "IVS_S": 1.7,
+    "LVPW_D": 1.25,
+    "LVPW_S": 1.13,
+    "FS": 34.6,
+    "LV_MASS": 109.0,
+    "AORTIC_ROOT": 2.32,
+    "LA_DIMENSION": 2.72,
+    "LA_AO": 1.17,
+    "MV_E_A": 0.758,
+    "MV_E": 69.8,
+    "MV_A": 92.1,
+    "AI_MAX_VEL": 151.0,
+    "MAX_PG_AI": 9.18,
+    "PA_ACC_TIME": 0.169,
+    "PI_MAX_VEL": 103.0,
+    "MAX_PG_PI": 4.27
+  },
+  "interpretations": {
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.19 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.25 cm)",
+    "Left Atrium": "LA enlargement (LA: 2.72 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.76)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 34.6%)",
+    "LV Mass": "Normal LV mass (LVmass: 109 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 17
+}

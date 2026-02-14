@@ -1,0 +1,41 @@
+{
+  "file_name": "22-05-09-104223_MALABANDI RAJKUMAR 64 YRS_20220509_104223_20220509_104655.pdf",
+  "patient": {
+    "age": 64,
+    "sex": "M",
+    "name": "MALABANDI RAJKUMAR"
+  },
+  "measurements": {
+    "LVID_D": 4.48,
+    "LVID_S": 3.74,
+    "IVS_D": 0.652,
+    "LVPW_D": 0.68,
+    "LVPW_S": 1.13,
+    "LV_MASS": 88.9,
+    "AORTIC_ROOT": 2.72,
+    "LA_DIMENSION": 3.46,
+    "LA_AO": 1.27,
+    "MV_E_A": 1.12,
+    "MV_E": 76.1,
+    "MV_A": 67.7,
+    "AI_MAX_VEL": 99.1,
+    "MAX_PG_AI": 3.93,
+    "PA_ACC_TIME": 0.074,
+    "PI_MAX_VEL": 94.9,
+    "MAX_PG_PI": 3.6,
+    "EDV": 89.7,
+    "ESV": 52.3,
+    "SV": 52.3
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.48 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 3.74 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.65 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.68 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.46 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.12)",
+    "LV Mass": "Normal LV mass (LVmass: 89 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 20
+}

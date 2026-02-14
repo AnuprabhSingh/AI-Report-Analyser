@@ -1,0 +1,42 @@
+{
+  "file_name": "24-05-11-162009_SAINI VENKATESHWAR RAO 63 YRS_20240511_162009_20240511_162518.pdf",
+  "patient": {
+    "age": 63,
+    "sex": "M",
+    "name": "SAINI VENKATESHWAR RAO"
+  },
+  "measurements": {
+    "LVID_D": 5.21,
+    "LVID_S": 4.19,
+    "IVS_D": 0.737,
+    "IVS_S": 0.85,
+    "LVPW_D": 0.661,
+    "LVPW_S": 1.13,
+    "LV_MASS": 123.0,
+    "AORTIC_ROOT": 2.1,
+    "LA_DIMENSION": 3.91,
+    "LA_AO": 1.86,
+    "MV_E_A": 1.55,
+    "MV_E": 90.0,
+    "MV_A": 57.9,
+    "AI_MAX_VEL": 101.0,
+    "MAX_PG_AI": 4.1,
+    "PA_ACC_TIME": 0.108,
+    "PI_MAX_VEL": 82.4,
+    "MAX_PG_PI": 2.71,
+    "EDV": 142.0,
+    "ESV": 73.7,
+    "SV": 73.7
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.21 cm)",
+    "LV Systolic Dimension": "Mild increase in LV systolic dimension (LVIDs: 4.19 cm)",
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.74 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.66 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.91 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 1.55)",
+    "LV Mass": "Normal LV mass (LVmass: 123 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 21
+}

@@ -1,0 +1,62 @@
+Loading dataset from: data/processed/combined_training_dataset.json
+Loaded 379 samples
+Created dataframe with 379 samples and 14 features
+
+========================================================================================================================
+MODEL COMPARISON REPORT - Version 1 vs Version 2
+========================================================================================================================
+
+📊 TRAINING DATA SUMMARY
+------------------------------------------------------------------------------------------------------------------------
+Total samples used: 379
+  └─ Training set: 303 samples
+  └─ Test set: 76 samples
+  └─ Train/Test ratio: 4.0:1
+
+📈 VERSION 1 (Original Model)
+------------------------------------------------------------------------------------------------------------------------
+Training samples: 1101
+Test samples: 325
+
+🚀 VERSION 2 (Expanded Model)
+------------------------------------------------------------------------------------------------------------------------
+Training samples: 1326
+Test samples: 325
+
+📋 PER-CATEGORY PERFORMANCE METRICS
+------------------------------------------------------------------------------------------------------------------------
+Category             | V1 Test Acc  | V2 Test Acc  | Δ Accuracy   | V1 Train    | V2 Train    | V1 Gen Gap   | V2 Gen Gap  
+------------------------------------------------------------------------------------------------------------------------
+LV_FUNCTION          | N/A          | 1.000        | N/A          | N/A         | 1.000       | N/A          | 0.000       
+LV_SIZE              | 1.000        | 1.000        | +0.000       | 1.000       | 1.000       | 0.000        | 0.000       
+LV_HYPERTROPHY       | 1.000        | 0.984        | -0.016       | 0.996       | 1.000       | -0.004       | 0.016       
+LA_SIZE              | 1.000        | 1.000        | +0.000       | 1.000       | 1.000       | 0.000        | 0.000       
+DIASTOLIC_FUNCTION   | 0.750        | 0.921        | +0.171       | 0.703       | 1.000       | -0.047       | 0.079       
+------------------------------------------------------------------------------------------------------------------------
+
+📊 AGGREGATE METRICS
+------------------------------------------------------------------------------------------------------------------------
+Test Set Performance:
+  Version 1 (Original):
+    └─ Average Test Accuracy: 0.938 (across 325 test samples)
+    └─ Average F1-Macro: 0.936
+  Version 2 (Expanded):
+    └─ Average Test Accuracy: 0.981 (across 325 test samples)
+    └─ Average F1-Macro: 0.978
+  ✓ Improvement (Δ): +0.044 (+4.6% relative improvement)
+
+Overfitting Analysis (Generalization Gap: Train - Test):
+  Version 1 (Original):
+    └─ Average Train Accuracy: 0.925
+    └─ Average Generalization Gap: -0.013
+       (Lower gap = better generalization to unseen data)
+  Version 2 (Expanded):
+    └─ Average Train Accuracy: 1.000
+    └─ Average Generalization Gap: 0.019
+       (Lower gap = better generalization to unseen data)
+
+========================================================================================================================
+✅ WINNER: Version 2 (Expanded Model) with 0.981 avg test accuracy
+   • Better performance on test set
+   • Trained on more data (1326 samples vs 1101)
+========================================================================================================================

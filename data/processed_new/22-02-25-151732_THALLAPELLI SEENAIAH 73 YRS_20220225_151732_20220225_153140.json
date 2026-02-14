@@ -1,0 +1,42 @@
+{
+  "file_name": "22-02-25-151732_THALLAPELLI SEENAIAH 73 YRS_20220225_151732_20220225_153140.pdf",
+  "patient": {
+    "age": 73,
+    "sex": "M",
+    "name": "THALLAPELLI SEENAIAH"
+  },
+  "measurements": {
+    "LVID_D": 4.65,
+    "LVID_S": 2.61,
+    "IVS_D": 1.47,
+    "IVS_S": 1.93,
+    "LVPW_D": 1.36,
+    "LVPW_S": 1.13,
+    "FS": 43.9,
+    "LV_MASS": 265.0,
+    "AORTIC_ROOT": 3.23,
+    "LA_DIMENSION": 4.36,
+    "LA_AO": 1.35,
+    "MV_E_A": 0.788,
+    "MV_E": 104.0,
+    "AI_MAX_VEL": 110.0,
+    "MAX_PG_AI": 4.8,
+    "PA_ACC_TIME": 0.196,
+    "PI_MAX_VEL": 89.3,
+    "MAX_PG_PI": 3.19,
+    "EDV": 100.0,
+    "ESV": 24.8
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.65 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 2.61 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.47 cm)",
+    "LV Posterior Wall": "Severe posterior wall hypertrophy (LVPWd: 1.36 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.36 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.79)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 43.9%)",
+    "LV Mass": "Moderate LV hypertrophy (LVmass: 265 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 20
+}

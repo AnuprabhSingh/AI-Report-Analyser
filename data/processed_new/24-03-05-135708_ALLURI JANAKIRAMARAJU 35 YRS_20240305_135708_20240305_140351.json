@@ -1,0 +1,38 @@
+{
+  "file_name": "24-03-05-135708_ALLURI JANAKIRAMARAJU 35 YRS_20240305_135708_20240305_140351.pdf",
+  "patient": {
+    "age": 35,
+    "sex": "M",
+    "name": "ALLURI JANAKIRAMARAJU"
+  },
+  "measurements": {
+    "LVID_D": 4.36,
+    "LVID_S": 2.44,
+    "LVPW_S": 1.13,
+    "FS": 44.2,
+    "LV_MASS": 280.0,
+    "AORTIC_ROOT": 3.97,
+    "LA_DIMENSION": 3.74,
+    "LA_AO": 0.943,
+    "MV_E_A": 1.23,
+    "MV_E": 99.1,
+    "MV_A": 80.3,
+    "AI_MAX_VEL": 114.0,
+    "MAX_PG_AI": 5.2,
+    "PA_ACC_TIME": 0.162,
+    "PI_MAX_VEL": 78.2,
+    "MAX_PG_PI": 2.44,
+    "EDV": 83.0,
+    "ESV": 20.9
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.36 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 2.44 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.74 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.23)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 44.2%)",
+    "LV Mass": "Moderate LV hypertrophy (LVmass: 280 gm)",
+    "Overall Summary": "Overall: Echocardiographic parameters within normal limits"
+  },
+  "num_measurements": 18
+}

@@ -1,0 +1,41 @@
+{
+  "file_name": "22-08-17-143409_NAGANDLA KAMALA 56 YRS_20220817_143410_20220817_144707.pdf",
+  "patient": {
+    "age": 56,
+    "sex": "F",
+    "name": "NAGANDLA KAMALA"
+  },
+  "measurements": {
+    "LVID_D": 3.63,
+    "LVID_S": 2.04,
+    "IVS_D": 1.36,
+    "IVS_S": 1.81,
+    "LVPW_D": 1.36,
+    "FS": 43.8,
+    "LV_MASS": 174.0,
+    "AORTIC_ROOT": 2.83,
+    "LA_DIMENSION": 3.8,
+    "LA_AO": 1.34,
+    "MV_E_A": 0.69,
+    "MV_E": 40.5,
+    "MV_A": 58.6,
+    "AI_MAX_VEL": 107.0,
+    "MAX_PG_AI": 4.62,
+    "PA_ACC_TIME": 0.169,
+    "PI_MAX_VEL": 58.6,
+    "MAX_PG_PI": 1.38,
+    "EDV": 55.4
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 3.63 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 2.04 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.36 cm)",
+    "LV Posterior Wall": "Severe posterior wall hypertrophy (LVPWd: 1.36 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.80 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.69)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 43.8%)",
+    "LV Mass": "Normal LV mass (LVmass: 174 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 19
+}

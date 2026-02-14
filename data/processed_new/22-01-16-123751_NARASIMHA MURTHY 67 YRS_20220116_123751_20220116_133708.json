@@ -1,0 +1,38 @@
+{
+  "file_name": "22-01-16-123751_NARASIMHA MURTHY 67 YRS_20220116_123751_20220116_133708.pdf",
+  "patient": {
+    "age": 67,
+    "sex": "M",
+    "name": "NARASIMHA MURTHY"
+  },
+  "measurements": {
+    "LVID_D": 5.16,
+    "LVID_S": 4.36,
+    "IVS_D": 1.08,
+    "IVS_S": 1.27,
+    "LVPW_D": 0.992,
+    "LVPW_S": 1.1,
+    "LV_MASS": 200.0,
+    "AORTIC_ROOT": 2.21,
+    "LA_DIMENSION": 4.31,
+    "LA_AO": 1.95,
+    "AI_MAX_VEL": 87.3,
+    "MAX_PG_AI": 3.05,
+    "PA_ACC_TIME": 0.088,
+    "PI_MAX_VEL": 75.4,
+    "MAX_PG_PI": 2.27,
+    "EDV": 137.0,
+    "ESV": 83.0,
+    "SV": 83.0
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 5.16 cm)",
+    "LV Systolic Dimension": "Severe increase in LV systolic dimension (LVIDs: 4.36 cm)",
+    "Interventricular Septum": "Severe septal hypertrophy (IVSd: 1.08 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.99 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.31 cm)",
+    "LV Mass": "Normal LV mass (LVmass: 200 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 18
+}

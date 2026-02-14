@@ -1,0 +1,32 @@
+{
+  "file_name": "24-02-14-193321_CHINNALA YADAGIRI 73 YRS_20240214_193322_20240214_193951.pdf",
+  "patient": {
+    "age": 73,
+    "sex": "M",
+    "name": "CHINNALA YADAGIRI"
+  },
+  "measurements": {
+    "IVS_D": 0.652,
+    "IVS_S": 0.935,
+    "LVPW_D": 0.963,
+    "LVPW_S": 1.13,
+    "LV_MASS": 363.0,
+    "AORTIC_ROOT": 3.4,
+    "LA_DIMENSION": 4.82,
+    "LA_AO": 1.42,
+    "MV_E": 97.7,
+    "AI_MAX_VEL": 89.7,
+    "MAX_PG_AI": 3.22,
+    "PA_ACC_TIME": 0.047,
+    "PI_MAX_VEL": 70.5,
+    "MAX_PG_PI": 1.99
+  },
+  "interpretations": {
+    "Interventricular Septum": "Normal septal thickness (IVSd: 0.65 cm)",
+    "LV Posterior Wall": "Normal posterior wall thickness (LVPWd: 0.96 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.82 cm)",
+    "LV Mass": "Severe LV hypertrophy (LVmass: 363 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LA enlargement"
+  },
+  "num_measurements": 14
+}

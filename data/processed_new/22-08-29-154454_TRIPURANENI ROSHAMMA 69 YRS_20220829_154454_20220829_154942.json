@@ -1,0 +1,43 @@
+{
+  "file_name": "22-08-29-154454_TRIPURANENI ROSHAMMA 69 YRS_20220829_154454_20220829_154942.pdf",
+  "patient": {
+    "age": 69,
+    "sex": "F",
+    "name": "TRIPURANENI ROSHAMMA"
+  },
+  "measurements": {
+    "LVID_D": 4.82,
+    "LVID_S": 2.95,
+    "IVS_D": 1.47,
+    "LVPW_D": 1.13,
+    "LVPW_S": 1.13,
+    "FS": 38.8,
+    "LV_MASS": 248.0,
+    "AORTIC_ROOT": 3.0,
+    "LA_DIMENSION": 3.4,
+    "LA_AO": 1.13,
+    "MV_E_A": 1.22,
+    "MV_E": 113.0,
+    "MV_A": 92.8,
+    "AI_MAX_VEL": 89.5,
+    "MAX_PG_AI": 3.2,
+    "PA_ACC_TIME": 0.155,
+    "PI_MAX_VEL": 70.5,
+    "MAX_PG_PI": 1.99,
+    "EDV": 112.0,
+    "ESV": 25.6,
+    "SV": 33.5
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.82 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 2.95 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.47 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.13 cm)",
+    "Left Atrium": "Normal LA size (LA: 3.40 cm)",
+    "Diastolic Function": "Normal diastolic function (E/A: 1.22)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 38.8%)",
+    "LV Mass": "Mild LV hypertrophy (LVmass: 248 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy"
+  },
+  "num_measurements": 21
+}

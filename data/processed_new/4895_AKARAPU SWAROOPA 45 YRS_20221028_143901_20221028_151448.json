@@ -1,0 +1,43 @@
+{
+  "file_name": "4895_AKARAPU SWAROOPA 45 YRS_20221028_143901_20221028_151448.pdf",
+  "patient": {
+    "age": 45,
+    "sex": "F",
+    "name": "AKARAPU SWAROOPA"
+  },
+  "measurements": {
+    "LVID_D": 4.48,
+    "LVID_S": 2.95,
+    "IVS_D": 1.13,
+    "IVS_S": 1.64,
+    "LVPW_D": 1.25,
+    "LVPW_S": 1.13,
+    "FS": 34.2,
+    "LV_MASS": 194.0,
+    "AORTIC_ROOT": 2.27,
+    "LA_DIMENSION": 4.02,
+    "LA_AO": 1.78,
+    "MV_E_A": 0.75,
+    "MV_E": 101.0,
+    "AI_MAX_VEL": 146.0,
+    "MAX_PG_AI": 8.56,
+    "PA_ACC_TIME": 0.155,
+    "PI_MAX_VEL": 102.0,
+    "MAX_PG_PI": 4.15,
+    "EDV": 89.7,
+    "ESV": 25.6,
+    "SV": 33.5
+  },
+  "interpretations": {
+    "LV Diastolic Dimension": "Normal LV size (LVIDd: 4.48 cm)",
+    "LV Systolic Dimension": "Normal LV systolic dimension (LVIDs: 2.95 cm)",
+    "Interventricular Septum": "Mild septal hypertrophy (IVSd: 1.13 cm)",
+    "LV Posterior Wall": "Mild posterior wall hypertrophy (LVPWd: 1.25 cm)",
+    "Left Atrium": "LA enlargement (LA: 4.02 cm)",
+    "Diastolic Function": "Diastolic dysfunction (E/A: 0.75)",
+    "Fractional Shortening": "Normal fractional shortening (FS: 34.2%)",
+    "LV Mass": "Normal LV mass (LVmass: 194 gm)",
+    "Overall Summary": "Overall: Echocardiography shows LV hypertrophy, LA enlargement"
+  },
+  "num_measurements": 21
+}

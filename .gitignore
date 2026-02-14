@@ -57,6 +57,8 @@ models/*.h5
 models/*.pt
 models/*.pth
 models/*.joblib
+# But keep metadata files
+!models/*.json
 
 # Logs
 *.log
