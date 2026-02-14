@@ -17,20 +17,27 @@ This system now includes cutting-edge features for clinical decision support:
 
 ---
 
+## � Documentation
+
+- **[Quick Start Guide](docs/QUICKSTART.md)** - Get started in 5 minutes
+- **[Project Overview](docs/PROJECT_OVERVIEW.md)** - Complete project documentation
+- **[ML Training Guide](docs/ML_GUIDE.md)** - Train and use ML models
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Deploy to production
+- **[Architecture](ARCHITECTURE.md)** - System design and components
+- **[Advanced Features](ADVANCED_FEATURES_GUIDE.md)** - Explainability, risk stratification
+- **[Documentation Index](docs/INDEX.md)** - Full documentation directory
+
+---
+
 ## 📋 Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
-- [Advanced Features (NEW)](#advanced-features-new)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Usage](#usage)
 - [Deployment](#deployment)
-- [System Architecture](#system-architecture)
-- [API Documentation](#api-documentation)
+- [Documentation](#documentation-1)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -604,31 +611,15 @@ self.normal_ranges = {
 
 ## 🚀 Deployment
 
-This application is production-ready and can be deployed to various platforms:
+This application is production-ready and can be deployed to various platforms.
 
 ### Quick Deploy Options
 
 1. **Render.com** (Recommended - Free tier)
-   ```bash
-   # Push to GitHub, then connect on render.com
-   # render.yaml auto-configures everything
-   ```
-
 2. **Railway.app** (Easy - $5 free credit)
-   ```bash
-   # Push to GitHub, then deploy from dashboard
-   ```
-
 3. **Docker** (Any platform)
-   ```bash
-   docker-compose up --build
-   ```
 
-### 📚 Documentation
-
-- **[DEPLOYMENT_READY.md](DEPLOYMENT_READY.md)** - Complete setup summary
-- **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Detailed platform-specific instructions
-- **[QUICK_DEPLOY.md](QUICK_DEPLOY.md)** - Fast track deployment
+**📖 See [Deployment Guide](docs/DEPLOYMENT.md) for complete instructions**
 
 ### Pre-Deployment Check
 
@@ -636,11 +627,45 @@ This application is production-ready and can be deployed to various platforms:
 ./test_deployment.sh
 ```
 
-**See full deployment guide for:**
-- Environment configuration
-- Platform comparisons
-- Troubleshooting
-- Custom domain setup
+---
+
+## 📚 Full Documentation
+
+### Main Guides
+- **[Quick Start](docs/QUICKSTART.md)** - Get running in 5 minutes
+- **[Project Overview](docs/PROJECT_OVERVIEW.md)** - Complete project reference
+- **[ML Guide](docs/ML_GUIDE.md)** - Training and using ML models
+- **[Deployment](docs/DEPLOYMENT.md)** - Deploy to production
+- **[Architecture](ARCHITECTURE.md)** - System design
+- **[Advanced Features](ADVANCED_FEATURES_GUIDE.md)** - Explainability and risk assessment
+
+### Quick Links
+- **API Documentation**: See [Project Overview](docs/PROJECT_OVERVIEW.md#api-documentation)
+- **CLI Reference**: See [Project Overview](docs/PROJECT_OVERVIEW.md#cli-usage)
+- **Troubleshooting**: See respective guides or [Project Overview](docs/PROJECT_OVERVIEW.md)
+- **Full Index**: See [Documentation Index](docs/INDEX.md)
+
+---
+
+## 📊 Project Statistics
+
+- **Lines of Code**: 4,000+
+- **ML Accuracy**: 98.11% (v2)
+- **Training Samples**: 1,326
+- **Supported Parameters**: 15+
+- **Response Time**: <2 seconds
+- **Docker Ready**: ✅
+- **Cloud Ready**: ✅
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Areas for improvement:
+- Support for more PDF formats
+- Additional medical parameters
+- Multi-language support
+- UI/UX enhancements
 
 ---
 
