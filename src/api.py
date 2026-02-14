@@ -37,8 +37,19 @@ app = Flask(__name__,
             static_folder=static_dir if os.path.exists(static_dir) else None)
 
 # Configure CORS for Vercel frontend
-cors_origins = os.environ.get('CORS_ORIGINS', 'http://localhost:5173,http://localhost:3000').split(',')
-CORS(app, resources={r"/api/*": {"origins": cors_origins}}, supports_credentials=True)
+# Support both local development and production Vercel deployments
+default_origins = 'http://localhost:5173,http://localhost:3000,https://ai-report-analyser.vercel.app,https://*.vercel.app'
+cors_origins = os.environ.get('CORS_ORIGINS', default_origins).split(',')
+# Strip whitespace from origins
+cors_origins = [origin.strip() for origin in cors_origins]
+# Enable CORS for all routes (including /health and /api/*)
+CORS(app, 
+     resources={
+         r"/*": {"origins": cors_origins}
+     },
+     supports_credentials=True,
+     allow_headers=['Content-Type', 'Authorization'],
+     methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 
 # Configuration
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size

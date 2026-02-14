@@ -16,7 +16,7 @@ services:
       - key: MAX_CONTENT_LENGTH
         value: 16777216
       - key: CORS_ORIGINS
-        value: https://your-frontend.vercel.app,https://your-frontend-*.vercel.app
+        value: https://ai-report-analyser.vercel.app,https://*.vercel.app,http://localhost:5173,http://localhost:3000
     disk:
       name: medical-data
       mountPath: /app/data
