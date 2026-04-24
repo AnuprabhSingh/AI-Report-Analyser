@@ -14,9 +14,19 @@ import numpy as np
 import pandas as pd
 from werkzeug.utils import secure_filename
 from dataclasses import asdict
+from dotenv import load_dotenv
 
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Load environment variables from project root.
+_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_ENV_PATH = os.path.join(_ROOT_DIR, '.env')
+_ENV_EXAMPLE_PATH = os.path.join(_ROOT_DIR, '.env.example')
+if os.path.exists(_ENV_PATH):
+    load_dotenv(_ENV_PATH)
+elif os.path.exists(_ENV_EXAMPLE_PATH):
+    load_dotenv(_ENV_EXAMPLE_PATH)
 
 from src.extractor import MedicalReportExtractor
 from src.predictor import ClinicalPredictor
@@ -25,6 +35,7 @@ from src.explainability import ModelExplainer
 from src.sensitivity_analysis import SensitivityAnalyzer
 from src.risk_stratification import ClinicalRiskStratifier
 from src.severity_grading import MultiClassSeverityGrader
+from src.llm_narrator import GeminiNarrator, NarrationError
 from sklearn.metrics import confusion_matrix
 
 
@@ -64,6 +75,7 @@ explainer = ModelExplainer(model_dir='models')
 sensitivity_analyzer = SensitivityAnalyzer(model_dir='models')
 risk_stratifier = ClinicalRiskStratifier()
 severity_grader = MultiClassSeverityGrader()
+narrator = GeminiNarrator()
 
 
 def _load_model_metadata():
@@ -167,6 +179,7 @@ def index():
         'endpoints': {
             'health': '/health',
             'interpret': '/api/interpret',
+            'narrative': '/api/narrative',
             'metrics': '/api/metrics',
             'models': '/api/models'
         },
@@ -240,11 +253,16 @@ def interpret_report():
         
         interpretations = predictor.predict(measurements, patient_info)
         # Determine method and per-category sources
-        method = 'ML-Based' if getattr(predictor, 'last_used_ml', False) else 'Rule-Based'
+        method = getattr(
+            predictor,
+            'last_method_label',
+            'ML-Based' if getattr(predictor, 'last_used_ml', False) else 'Rule-Based'
+        )
         try:
             sources = predictor.get_sources_for(interpretations)
         except Exception:
             sources = {k: ('ML' if getattr(predictor, 'last_used_ml', False) else 'Rule') for k in interpretations.keys()}
+        routing_details = getattr(predictor, 'get_routing_details', lambda: {})()
         
         # Generate severity grading
         try:
@@ -265,6 +283,7 @@ def interpret_report():
             'interpretations': interpretations,
             'sources': sources,
             'method': method,
+            'routing_details': routing_details,
             'severity_grading': severity_grading
         }
         
@@ -306,11 +325,16 @@ def interpret_from_json():
         
         # Generate interpretation
         interpretations = predictor.predict(measurements, patient_info)
-        method = 'ML-Based' if getattr(predictor, 'last_used_ml', False) else 'Rule-Based'
+        method = getattr(
+            predictor,
+            'last_method_label',
+            'ML-Based' if getattr(predictor, 'last_used_ml', False) else 'Rule-Based'
+        )
         try:
             sources = predictor.get_sources_for(interpretations)
         except Exception:
             sources = {k: ('ML' if getattr(predictor, 'last_used_ml', False) else 'Rule') for k in interpretations.keys()}
+        routing_details = getattr(predictor, 'get_routing_details', lambda: {})()
         
         # Generate severity grading
         try:
@@ -325,6 +349,7 @@ def interpret_from_json():
             'interpretations': interpretations,
             'sources': sources,
             'method': method,
+            'routing_details': routing_details,
             'severity_grading': severity_grading
         }
         
@@ -475,6 +500,139 @@ def risk_stratification():
         return jsonify({'error': 'Internal server error', 'details': str(e)}), 500
 
 
+@app.route('/api/narrative', methods=['POST'])
+def generate_narrative():
+    """Generate clinician/patient-friendly narrative from structured model output."""
+    try:
+        data = request.get_json() or {}
+
+        # Allow passing a complete report object or flat fields.
+        report = data.get('report', data)
+        style = str(data.get('style', 'both')).lower()
+
+        patient_info = report.get('patient', {})
+        measurements = report.get('measurements', {})
+
+        if not measurements:
+            return jsonify({'error': 'No measurements provided'}), 400
+
+        # Recompute core outputs if caller omitted them.
+        interpretations = report.get('interpretations')
+        if not interpretations:
+            interpretations = predictor.predict(measurements, patient_info)
+
+        try:
+            sources = report.get('sources') or predictor.get_sources_for(interpretations)
+        except Exception:
+            sources = {k: ('ML' if getattr(predictor, 'last_used_ml', False) else 'Rule') for k in interpretations.keys()}
+
+        severity_grading = report.get('severity_grading')
+        if not severity_grading:
+            try:
+                severity_grading = severity_grader.comprehensive_grading(measurements, patient_info)
+            except Exception as e:
+                severity_grading = {'error': str(e)}
+
+        risk = report.get('risk')
+        if not risk:
+            try:
+                clinical_factors = report.get('clinical_factors', {})
+                overall = risk_stratifier.compute_cardiovascular_risk_score(
+                    measurements,
+                    patient_info,
+                    clinical_factors=clinical_factors
+                )
+                heart_failure = risk_stratifier.compute_heart_failure_risk(measurements, patient_info)
+                mortality = risk_stratifier.compute_mortality_risk(measurements, patient_info, clinical_factors)
+                risk = {
+                    'overall': asdict(overall),
+                    'heart_failure': heart_failure,
+                    'mortality': mortality,
+                }
+            except Exception as e:
+                risk = {'error': str(e)}
+
+        narrative_input = {
+            'patient': patient_info,
+            'measurements': measurements,
+            'interpretations': interpretations,
+            'sources': sources,
+            'severity_grading': severity_grading,
+            'risk': risk,
+        }
+
+        if not narrator.is_available():
+            return jsonify({
+                'error': 'LLM narrator is not enabled',
+                'details': 'Set LLM_ENABLED=true, LLM_PROVIDER=gemini, and GEMINI_API_KEY',
+            }), 503
+
+        narrative = narrator.generate_narrative(narrative_input, style=style)
+
+        return jsonify({
+            'success': True,
+            'provider': 'gemini',
+            'model': narrator.model,
+            'style': style,
+            'narrative': narrative,
+            'source_payload': narrative_input,
+        }), 200
+
+    except NarrationError as e:
+        return jsonify({'error': 'Narration failed', 'details': str(e)}), 502
+    except Exception as e:
+        return jsonify({'error': 'Internal server error', 'details': str(e)}), 500
+
+
+@app.route('/api/chat', methods=['POST'])
+def chat_with_report():
+    """Chat with the LLM about a specific report."""
+    try:
+        data = request.get_json() or {}
+        report = data.get('report', {})
+        message = data.get('message', '')
+        history = data.get('history', [])
+
+        if not message:
+            return jsonify({'error': 'Message is required'}), 400
+
+        # Ensure basic context exists
+        patient_info = report.get('patient', {})
+        measurements = report.get('measurements', {})
+        
+        # If bare minimum is missing, it's not a valid report context
+        if not measurements:
+             return jsonify({'error': 'Report context (measurements) is required'}), 400
+
+        # Construct context for the chat
+        # We can reuse the logic from generate_narrative to ensure we have severity/risk if available
+        # or just pass what the frontend sent if we trust it has full "results" object.
+        # For chat, the raw report + interpretations is usually enough.
+        
+        chat_context = {
+            'patient': patient_info,
+            'measurements': measurements,
+            'interpretations': report.get('interpretations', {}),
+            'severity_grading': report.get('severity_grading', {}),
+            'risk': report.get('risk', {})
+        }
+
+        if not narrator.is_available():
+            return jsonify({
+                'error': 'LLM narrator is not enabled',
+            }), 503
+
+        response_text = narrator.chat(chat_context, history, message)
+
+        return jsonify({
+            'success': True,
+            'response': response_text
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': 'Chat failed', 'details': str(e)}), 500
+
+
 @app.route('/api/parameters', methods=['GET'])
 def get_supported_parameters():
     """
@@ -578,11 +736,16 @@ def batch_process():
                     # Extract class labels for charting
                     class_labels = extract_class_labels(interpretations)
                     
-                    method = 'ML-Based' if getattr(predictor, 'last_used_ml', False) else 'Rule-Based'
+                    method = getattr(
+                        predictor,
+                        'last_method_label',
+                        'ML-Based' if getattr(predictor, 'last_used_ml', False) else 'Rule-Based'
+                    )
                     try:
                         sources = predictor.get_sources_for(interpretations)
                     except Exception:
                         sources = {k: ('ML' if getattr(predictor, 'last_used_ml', False) else 'Rule') for k in interpretations.keys()}
+                    routing_details = getattr(predictor, 'get_routing_details', lambda: {})()
 
                     results.append({
                         'file_name': filename,
@@ -591,6 +754,7 @@ def batch_process():
                         'interpretations': interpretations,
                         'sources': sources,
                         'method': method,
+                        'routing_details': routing_details,
                         'class_labels': class_labels,
                         'status': 'success'
                     })
@@ -1122,6 +1286,7 @@ if __name__ == '__main__':
     print("API Documentation:")
     print("  POST /api/interpret - Upload PDF and get interpretation")
     print("  POST /api/interpret/json - Send JSON data for interpretation")
+    print("  POST /api/narrative - Generate clinician/patient narrative using Gemini")
     print("  GET  /api/parameters - Get supported parameters")
     print("  POST /api/batch - Batch process multiple PDFs")
     print("  GET  /api/model-metrics - Get model performance metrics and confusion matrices")

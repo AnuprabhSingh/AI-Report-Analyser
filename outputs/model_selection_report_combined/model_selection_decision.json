@@ -1,0 +1,7 @@
+{
+  "best_f1_model": "Gradient Boosting",
+  "best_f1_mean": 0.9222959899871546,
+  "one_se_threshold": 0.8987706454352018,
+  "one_se_selected_model": "Decision Tree",
+  "selected_model_f1": 0.913017571939308
+}

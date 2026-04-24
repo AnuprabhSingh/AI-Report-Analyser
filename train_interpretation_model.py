@@ -13,7 +13,44 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, accuracy_score
 import joblib
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
+
+
+class LVSizeOneClassClassifier:
+    """One-class LV size detector used when only Normal class is available.
+
+    The model is trained on scaled features from the Normal-only training data and
+    predicts Dilated when either:
+    - scaled LVID_D exceeds the clinical threshold mapped into scaled space, or
+    - LVID_D is a strong outlier relative to the observed Normal distribution.
+    """
+
+    def __init__(self, lvid_d_index: int, scaled_dilation_threshold: float, z_threshold: float = 3.0):
+        self.lvid_d_index = lvid_d_index
+        self.scaled_dilation_threshold = scaled_dilation_threshold
+        self.z_threshold = z_threshold
+        self.normal_mean_ = 0.0
+        self.normal_std_ = 1.0
+        self.feature_importances_ = None
+
+    def fit(self, X, y=None):
+        lvid = X[:, self.lvid_d_index]
+        self.normal_mean_ = float(np.mean(lvid))
+        std = float(np.std(lvid))
+        self.normal_std_ = std if std > 1e-8 else 1.0
+
+        # Keep compatibility with existing feature-importance plotting.
+        importances = np.zeros(X.shape[1], dtype=float)
+        importances[self.lvid_d_index] = 1.0
+        self.feature_importances_ = importances
+        return self
+
+    def predict(self, X):
+        lvid = X[:, self.lvid_d_index]
+        z = np.abs((lvid - self.normal_mean_) / self.normal_std_)
+
+        is_dilated = (lvid > self.scaled_dilation_threshold) | (z > self.z_threshold)
+        return np.where(is_dilated, 'Dilated', 'Normal')
 
 class InterpretationModelTrainer:
     """Train models to predict clinical interpretations from measurements."""
@@ -32,7 +69,7 @@ class InterpretationModelTrainer:
         # Categories to predict
         self.categories = [
             'LV_FUNCTION',       # Normal, Mild, Moderate, Severe dysfunction
-            'LV_SIZE',           # Normal, Dilated
+            'LV_SIZE',           # Normal, Mild, Moderate, Severe dilatation
             'LV_HYPERTROPHY',    # None, Mild, Moderate, Severe
             'LA_SIZE',           # Normal, Enlarged
             'DIASTOLIC_FUNCTION' # Normal, Abnormal
@@ -65,7 +102,7 @@ class InterpretationModelTrainer:
                 sample[param] = measurements.get(param, 0)
             
             # Extract labels from interpretations (fallback to measurements)
-            sample['labels'] = self._extract_labels(interpretations, measurements)
+            sample['labels'] = self._extract_labels(interpretations, measurements, patient)
             
             samples.append(sample)
         
@@ -74,9 +111,16 @@ class InterpretationModelTrainer:
         
         return df
     
-    def _extract_labels(self, interpretations: Dict[str, str], measurements: Dict[str, float]) -> Dict[str, str]:
+    def _extract_labels(
+        self,
+        interpretations: Dict[str, str],
+        measurements: Dict[str, float],
+        patient_info: Dict[str, Any] = None
+    ) -> Dict[str, str]:
         """Extract classification labels from interpretation text with measurement fallback."""
         labels = {}
+        if patient_info is None:
+            patient_info = {}
         
         # Parse LV Function
         lv_function_text = interpretations.get('Left Ventricular Function', '')
@@ -113,19 +157,33 @@ class InterpretationModelTrainer:
                 else:
                     labels['LV_FUNCTION'] = 'Severe'
         
-        # Parse LV Size
-        lv_size_text = interpretations.get('LV Diastolic Dimension', '')
-        if 'Normal' in lv_size_text:
-            labels['LV_SIZE'] = 'Normal'
-        elif 'Dilated' in lv_size_text or 'enlargement' in lv_size_text:
-            labels['LV_SIZE'] = 'Dilated'
-        else:
-            labels['LV_SIZE'] = 'Unknown'
-        # Fallback to LVID_D if LV_SIZE unknown
-        if labels['LV_SIZE'] == 'Unknown':
-            lvid_d = measurements.get('LVID_D', 0) or 0
-            if lvid_d > 0:
-                labels['LV_SIZE'] = 'Normal' if lvid_d <= 5.9 else 'Dilated'
+        # LV Size grading: measurement-first to ensure consistent multiclass labels.
+        # We avoid text-first labeling here because report text is often compressed
+        # to "Normal" even when measurements support graded dilatation.
+        # Male: <=5.9 normal, <=6.3 mild, <=6.8 moderate, >6.8 severe
+        # Female: <=5.3 normal, <=5.7 mild, <=6.1 moderate, >6.1 severe
+        labels['LV_SIZE'] = 'Unknown'
+        lvid_d = measurements.get('LVID_D', 0) or 0
+        sex = str(patient_info.get('sex', 'M')).upper()
+        if lvid_d > 0:
+            if sex == 'M':
+                if lvid_d <= 5.9:
+                    labels['LV_SIZE'] = 'Normal'
+                elif lvid_d <= 6.3:
+                    labels['LV_SIZE'] = 'Mild'
+                elif lvid_d <= 6.8:
+                    labels['LV_SIZE'] = 'Moderate'
+                else:
+                    labels['LV_SIZE'] = 'Severe'
+            else:
+                if lvid_d <= 5.3:
+                    labels['LV_SIZE'] = 'Normal'
+                elif lvid_d <= 5.7:
+                    labels['LV_SIZE'] = 'Mild'
+                elif lvid_d <= 6.1:
+                    labels['LV_SIZE'] = 'Moderate'
+                else:
+                    labels['LV_SIZE'] = 'Severe'
         
         # Parse LV Hypertrophy
         ivs_text = interpretations.get('Interventricular Septum', '')
@@ -206,6 +264,26 @@ class InterpretationModelTrainer:
             y_dict[category] = df['labels'].apply(lambda x: x.get(category, 'Unknown'))
         
         return X, y_dict
+
+    def _random_oversample(self, X: np.ndarray, y: pd.Series) -> Tuple[np.ndarray, np.ndarray]:
+        """Randomly oversample minority classes to match the majority class size."""
+        y_np = y.to_numpy()
+        classes, counts = np.unique(y_np, return_counts=True)
+        max_count = int(np.max(counts))
+
+        rng = np.random.default_rng(42)
+        sampled_indices = []
+
+        for cls, count in zip(classes, counts):
+            cls_indices = np.where(y_np == cls)[0]
+            sampled_indices.extend(cls_indices.tolist())
+            if count < max_count:
+                extra = rng.choice(cls_indices, size=max_count - count, replace=True)
+                sampled_indices.extend(extra.tolist())
+
+        sampled_indices = np.array(sampled_indices)
+        rng.shuffle(sampled_indices)
+        return X[sampled_indices], y_np[sampled_indices]
     
     def train_models(self, dataset_path: str, test_size: float = 0.2):
         """Train models for each interpretation category."""
@@ -263,17 +341,88 @@ class InterpretationModelTrainer:
             if len(y_train_cat) < 10:
                 print(f"⚠ Too few samples for {category}, skipping...")
                 continue
+
+            # A classifier needs at least 2 classes; skip one-class targets.
+            n_train_classes = y_train_cat.nunique()
+            if n_train_classes < 2:
+                only_class = y_train_cat.iloc[0] if len(y_train_cat) > 0 else 'Unknown'
+
+                # For LV_SIZE only, train a one-class detector so we still have a model
+                # that can flag potentially dilated cases even without positive labels.
+                if category == 'LV_SIZE' and only_class == 'Normal':
+                    lvid_d_idx = self.feature_names.index('LVID_D')
+                    # Convert the clinical threshold (5.9 cm) into scaled feature space.
+                    lvid_d_mean = float(self.scaler.mean_[lvid_d_idx])
+                    lvid_d_scale = float(self.scaler.scale_[lvid_d_idx])
+                    scaled_threshold = (5.9 - lvid_d_mean) / lvid_d_scale if lvid_d_scale > 1e-8 else 5.9
+
+                    model = LVSizeOneClassClassifier(
+                        lvid_d_index=lvid_d_idx,
+                        scaled_dilation_threshold=scaled_threshold,
+                        z_threshold=3.0,
+                    )
+                    model.fit(X_train_cat, y_train_cat)
+
+                    y_pred = model.predict(X_test_cat)
+                    accuracy = accuracy_score(y_test_cat, y_pred)
+
+                    print(
+                        "⚠ Only one class observed for LV_SIZE (Normal). "
+                        "Training one-class detector with clinical threshold support instead "
+                        "of a supervised classifier."
+                    )
+                    print(f"✓ One-class LV_SIZE accuracy on current test split: {accuracy:.3f}")
+                    print("  Note: This metric is limited because test labels are single-class.")
+
+                    self.models[category] = model
+                    feature_importance = sorted(
+                        zip(self.feature_names, model.feature_importances_),
+                        key=lambda x: x[1],
+                        reverse=True
+                    )
+                    results[category] = {
+                        'accuracy': accuracy,
+                        'feature_importance': feature_importance,
+                        'model_type': 'one_class'
+                    }
+                    continue
+
+                print(
+                    f"⚠ Only one training class for {category} ({only_class}), "
+                    "skipping ML model and using rule-based interpretation for this category..."
+                )
+                continue
+
+            # Handle skew by up-weighting minority classes.
+            class_counts = y_train_cat.value_counts().to_dict()
+            max_count = max(class_counts.values())
+            min_count = min(class_counts.values())
+            imbalance_ratio = max_count / min_count if min_count > 0 else float('inf')
+            class_weight = {
+                cls: len(y_train_cat) / (n_train_classes * count)
+                for cls, count in class_counts.items()
+            }
+
+            print(f"Class distribution: {class_counts}")
+            print(f"Imbalance ratio (max/min): {imbalance_ratio:.2f}")
+
+            # Oversample only in training to reduce class skew for rare labels.
+            X_train_fit, y_train_fit = self._random_oversample(X_train_cat, y_train_cat)
+            fit_classes, fit_counts = np.unique(y_train_fit, return_counts=True)
+            fit_distribution = {str(c): int(n) for c, n in zip(fit_classes, fit_counts)}
+            print(f"Balanced training distribution (oversampled): {fit_distribution}")
             
             # Train Random Forest
             model = RandomForestClassifier(
                 n_estimators=100,
                 max_depth=10,
                 min_samples_split=5,
+                class_weight=class_weight,
                 random_state=42,
                 n_jobs=-1
             )
             
-            model.fit(X_train_cat, y_train_cat)
+            model.fit(X_train_fit, y_train_fit)
             
             # Evaluate
             y_pred = model.predict(X_test_cat)
@@ -312,6 +461,13 @@ class InterpretationModelTrainer:
         """Save trained models and scaler."""
         output_path = Path(output_dir)
         output_path.mkdir(exist_ok=True)
+
+        # Remove stale model files for categories that were skipped this run.
+        for category in self.categories:
+            model_path = output_path / f'model_{category}.pkl'
+            if category not in self.models and model_path.exists():
+                model_path.unlink()
+                print(f"✓ Removed stale model for {category} at {model_path}")
         
         # Save scaler
         joblib.dump(self.scaler, output_path / 'scaler.pkl')

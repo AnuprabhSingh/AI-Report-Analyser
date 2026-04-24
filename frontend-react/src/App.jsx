@@ -827,6 +827,245 @@ function SensitivityPanel({ sensitivity, loading, error }) {
   )
 }
 
+function AIAssistantPanel({ report }) {
+  const [activeTab, setActiveTab] = useState('clinician')
+  const [narrative, setNarrative] = useState(null)
+  const [narrativeLoading, setNarrativeLoading] = useState(false)
+  const [narrativeError, setNarrativeError] = useState(null)
+  const [messages, setMessages] = useState([])
+  const [chatInput, setChatInput] = useState('')
+  const [chatLoading, setChatLoading] = useState(false)
+  const scrollRef = useRef(null)
+
+  // Fetch narrative on mount
+  useEffect(() => {
+    if (!report) return
+    setNarrativeLoading(true)
+    setNarrativeError(null)
+    const fetchNarrative = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/narrative`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(report)
+        })
+        const json = await res.json()
+        if (!res.ok) throw new Error(json.error || json.details || 'Failed to generate narrative')
+        setNarrative(json.narrative)
+      } catch (e) {
+        setNarrativeError(e.message)
+      } finally {
+        setNarrativeLoading(false)
+      }
+    }
+    fetchNarrative()
+  }, [report])
+
+  // Auto-scroll chat
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+  }, [messages])
+
+  async function sendChat() {
+    if (!chatInput.trim()) return
+    const userMsg = { role: 'user', text: chatInput }
+    setMessages(prev => [...prev, userMsg])
+    setChatInput('')
+    setChatLoading(true)
+
+    try {
+      const res = await fetch(`${API_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          report,
+          message: userMsg.text,
+          history: messages.map(m => ({ role: m.role, text: m.text }))
+        })
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Failed to chat')
+      setMessages(prev => [...prev, { role: 'model', text: json.response }])
+    } catch (e) {
+      setMessages(prev => [...prev, { role: 'model', text: `Error: ${e.message}` }])
+    } finally {
+      setChatLoading(false)
+    }
+  }
+
+  const tabs = [
+    { key: 'clinician', label: '👨‍⚕️ Clinician Summary' },
+    { key: 'patient', label: '👤 Patient Explanation' },
+    { key: 'chat', label: '💬 Ask AI' }
+  ]
+
+  return (
+    <div className="result-card" style={{ marginTop: 24 }}>
+      <div className="result-title">🤖 AI Assistant</div>
+
+      {/* Tab Navigation */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20, borderBottom: '2px solid #e5e7eb', paddingBottom: 12 }}>
+        {tabs.map(t => (
+          <button
+            key={t.key}
+            onClick={() => setActiveTab(t.key)}
+            style={{
+              padding: '10px 20px',
+              border: 'none',
+              borderRadius: 8,
+              cursor: 'pointer',
+              fontWeight: 500,
+              transition: 'all 0.2s',
+              background: activeTab === t.key ? '#3b82f6' : '#f1f5f9',
+              color: activeTab === t.key ? 'white' : '#64748b'
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content */}
+      {narrativeLoading && (activeTab === 'clinician' || activeTab === 'patient') && (
+        <div style={{ textAlign: 'center', padding: 60 }}>
+          <div className="spinner" style={{ margin: '0 auto 15px' }}></div>
+          <p style={{ color: '#666' }}>Generating AI Summary...</p>
+        </div>
+      )}
+
+      {narrativeError && (activeTab === 'clinician' || activeTab === 'patient') && (
+        <Alert type="error" message={`Narrative Error: ${narrativeError}`} hidden={false} />
+      )}
+
+      {/* Clinician Summary Tab */}
+      {activeTab === 'clinician' && narrative && !narrativeLoading && (
+        <div style={{ background: '#f8fafc', padding: 24, borderRadius: 12, border: '1px solid #e2e8f0' }}>
+          <p style={{ whiteSpace: 'pre-line', fontSize: '1rem', color: '#334155', lineHeight: 1.8 }}>
+            {narrative.clinician_summary}
+          </p>
+          {narrative.bullet_findings && narrative.bullet_findings.length > 0 && (
+            <div style={{ marginTop: 20, paddingTop: 20, borderTop: '1px solid #e2e8f0' }}>
+              <h5 style={{ color: '#475569', marginBottom: 10 }}>Key Findings:</h5>
+              <ul style={{ margin: 0, paddingLeft: 20, color: '#475569' }}>
+                {narrative.bullet_findings.map((f, i) => <li key={i} style={{ marginBottom: 6 }}>{f}</li>)}
+              </ul>
+            </div>
+          )}
+          <div style={{ marginTop: 20, fontSize: '0.8rem', color: '#94a3b8', fontStyle: 'italic' }}>
+            {narrative.safety_note}
+          </div>
+        </div>
+      )}
+
+      {/* Patient Explanation Tab */}
+      {activeTab === 'patient' && narrative && !narrativeLoading && (
+        <div style={{ background: '#fef3c7', padding: 24, borderRadius: 12, border: '1px solid #fcd34d' }}>
+          <p style={{ whiteSpace: 'pre-line', fontSize: '1.05rem', color: '#78350f', lineHeight: 1.9 }}>
+            {narrative.patient_summary}
+          </p>
+          <div style={{ marginTop: 20, fontSize: '0.85rem', color: '#92400e', fontStyle: 'italic', background: '#fef9c3', padding: 12, borderRadius: 8 }}>
+            {narrative.safety_note}
+          </div>
+        </div>
+      )}
+
+      {/* Chat Tab */}
+      {activeTab === 'chat' && (
+        <div>
+          <div
+            ref={scrollRef}
+            style={{
+              height: 400,
+              overflowY: 'auto',
+              background: '#f9fafb',
+              border: '1px solid #e5e7eb',
+              padding: 15,
+              borderRadius: 12,
+              marginBottom: 15,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12
+            }}
+          >
+            {messages.length === 0 && (
+              <div style={{ textAlign: 'center', marginTop: 140, color: '#9ca3af' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>👋</div>
+                <p style={{ fontSize: '1.1rem' }}>I've analyzed the report. Ask me anything!</p>
+                <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
+                  {['Is the heart function normal?', 'Explain Ejection Fraction', 'Any critical findings?'].map(q => (
+                    <button
+                      key={q}
+                      onClick={() => setChatInput(q)}
+                      style={{ background: 'white', border: '1px solid #d1d5db', padding: '8px 16px', borderRadius: 20, fontSize: '0.9rem', cursor: 'pointer', color: '#4b5563' }}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {messages.map((m, i) => (
+              <div key={i} style={{
+                alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start',
+                maxWidth: '80%',
+              }}>
+                <div style={{
+                  fontSize: '0.75rem',
+                  color: '#6b7280',
+                  marginBottom: 4,
+                  textAlign: m.role === 'user' ? 'right' : 'left',
+                  marginLeft: m.role === 'user' ? 0 : 4,
+                  marginRight: m.role === 'user' ? 4 : 0
+                }}>
+                  {m.role === 'user' ? 'You' : 'AI Assistant'}
+                </div>
+                <div style={{
+                  padding: '12px 18px',
+                  borderRadius: 16,
+                  borderTopRightRadius: m.role === 'user' ? 4 : 16,
+                  borderTopLeftRadius: m.role === 'model' ? 4 : 16,
+                  backgroundColor: m.role === 'user' ? '#3b82f6' : 'white',
+                  color: m.role === 'user' ? 'white' : '#1f2937',
+                  boxShadow: m.role === 'model' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                  border: m.role === 'model' ? '1px solid #e5e7eb' : 'none',
+                  lineHeight: 1.6,
+                  fontSize: '0.95rem'
+                }}>
+                  {m.text}
+                </div>
+              </div>
+            ))}
+            {chatLoading && (
+              <div style={{ alignSelf: 'flex-start', background: 'white', padding: '12px 18px', borderRadius: 16, borderTopLeftRadius: 4, border: '1px solid #e5e7eb' }}>
+                <span className="typing-dots">Typing...</span>
+              </div>
+            )}
+          </div>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <input
+              type="text"
+              value={chatInput}
+              onChange={e => setChatInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && sendChat()}
+              placeholder="Type your medical question here..."
+              style={{ flex: 1, padding: '14px 18px', borderRadius: 10, border: '1px solid #d1d5db', fontSize: '1rem' }}
+              disabled={chatLoading}
+            />
+            <button
+              className="btn btn-primary"
+              onClick={sendChat}
+              disabled={chatLoading || !chatInput.trim()}
+              style={{ padding: '0 24px', background: '#3b82f6', borderColor: '#2563eb' }}
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function MetricsTab() {
   const [info, setInfo] = useState('Fetching model performance metrics...')
   const [error, setError] = useState('')
@@ -1472,6 +1711,8 @@ function ResultsCard({ results }) {
         </div>
       </div>
       <SeverityGrader severity_grading={severity_grading} measurements={measurements} interpretations={interpretations} />
+
+      <AIAssistantPanel report={results} />
 
       <div className="result-card" style={{ marginTop: 24 }}>
         <div className="result-title">🔬 Advanced Analysis Tools</div>

@@ -9,7 +9,7 @@ import json
 import joblib
 import numpy as np
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Tuple
 from .rule_engine import ClinicalRuleEngine
 
 
@@ -19,7 +19,16 @@ class ClinicalPredictor:
     Falls back to rule-based engine if ML models are not available.
     """
     
-    def __init__(self, model_dir: Optional[str] = None, use_ml: bool = True):
+    def __init__(
+        self,
+        model_dir: Optional[str] = None,
+        use_ml: bool = True,
+        routing_mode: str = 'adaptive',
+        ml_confidence_threshold: float = 0.70,
+        abstain_confidence_threshold: float = 0.45,
+        disagreement_margin: float = 0.10,
+        enable_abstain: bool = True,
+    ):
         """
         Initialize predictor.
         
@@ -37,8 +46,33 @@ class ClinicalPredictor:
         self.metadata = None
         self.ml_available = False
         self.use_ml_flag = use_ml
-        self.last_used_ml = False  # Tracks whether the last predict() used ML
+        self.last_used_ml = False  # Tracks whether the last predict() used any ML category
         self.last_sources: Dict[str, str] = {}  # Tracks per-category source for last prediction
+        self.last_routing_details: Dict[str, Dict[str, Any]] = {}
+        self.last_method_label: str = 'Rule-Based'
+
+        # Hybrid routing configuration for methodological novelty and safety.
+        self.routing_mode = routing_mode
+        self.ml_confidence_threshold = ml_confidence_threshold
+        self.abstain_confidence_threshold = abstain_confidence_threshold
+        self.disagreement_margin = disagreement_margin
+        self.enable_abstain = enable_abstain
+
+        self.TEXT_TO_MODEL_CATEGORY = {
+            'Left Ventricular Function': 'LV_FUNCTION',
+            'LV Diastolic Dimension': 'LV_SIZE',
+            'Interventricular Septum': 'LV_HYPERTROPHY',
+            'Left Atrium': 'LA_SIZE',
+            'Diastolic Function': 'DIASTOLIC_FUNCTION',
+        }
+        self.MODEL_TO_TEXT_CATEGORY = {v: k for k, v in self.TEXT_TO_MODEL_CATEGORY.items()}
+        self.REQUIRED_FEATURES = {
+            'Left Ventricular Function': ['EF', 'FS'],
+            'LV Diastolic Dimension': ['LVID_D'],
+            'Interventricular Septum': ['IVS_D'],
+            'Left Atrium': ['LA_DIMENSION'],
+            'Diastolic Function': ['MV_E_A'],
+        }
         # Categories produced by ML text generator
         self.ML_TEXT_CATEGORIES = set([
             'Left Ventricular Function',
@@ -123,16 +157,47 @@ class ClinicalPredictor:
         combined = dict(rule_interpretations)  # start with rules
         sources: Dict[str, str] = {k: 'Rule' for k in combined.keys()}
 
-        # Optionally compute ML interpretations and overlay on top of rules
+        # Optionally compute ML interpretations and route per category.
         ml_interpretations = None
+        routing_details: Dict[str, Dict[str, Any]] = {}
         if self.ml_available and self.use_ml_flag:
             try:
-                ml_interpretations = self._predict_with_ml(measurements, patient_info)
-                # Overlay ML results onto combined output
-                for k, v in ml_interpretations.items():
-                    combined[k] = v
-                    sources[k] = 'ML'
-                self.last_used_ml = True
+                ml_interpretations, ml_confidences = self._predict_with_ml(measurements, patient_info)
+
+                for category, ml_text in ml_interpretations.items():
+                    # Keep overall summary sourced from the routed per-category outputs.
+                    if category == 'Overall Summary':
+                        continue
+
+                    decision, reason = self._route_category(
+                        category=category,
+                        measurements=measurements,
+                        rule_text=combined.get(category),
+                        ml_text=ml_text,
+                        ml_confidence=float(ml_confidences.get(category, 0.0)),
+                    )
+
+                    routing_details[category] = {
+                        'source': decision,
+                        'reason': reason,
+                        'ml_confidence': float(ml_confidences.get(category, 0.0)),
+                    }
+
+                    if decision == 'ML':
+                        combined[category] = ml_text
+                        sources[category] = 'ML'
+                    elif decision == 'Abstain':
+                        combined[category] = (
+                            f"Uncertain automated interpretation for {category.lower()}; "
+                            "manual expert review recommended."
+                        )
+                        sources[category] = 'Abstain'
+                    else:
+                        sources[category] = 'Rule'
+
+                combined['Overall Summary'] = self._build_hybrid_summary(combined)
+                sources['Overall Summary'] = self._summary_source(sources)
+                self.last_used_ml = any(src == 'ML' for src in sources.values())
             except Exception as e:
                 print(f"⚠ ML prediction failed: {e}, using rule-based results only")
                 self.last_used_ml = False
@@ -141,10 +206,12 @@ class ClinicalPredictor:
 
         # Persist sources map for this prediction
         self.last_sources = sources
+        self.last_routing_details = routing_details
+        self.last_method_label = self._derive_method_label(sources)
         return combined
 
     def get_sources_for(self, interpretations: Dict[str, str]) -> Dict[str, str]:
-        """Return a map of category -> source ("ML" or "Rule").
+        """Return a map of category -> source ("ML", "Rule", or "Abstain").
         Uses last_used_ml flag and known ML categories to annotate.
 
         If last_used_ml is True, categories in ML_TEXT_CATEGORIES are marked as ML.
@@ -160,9 +227,99 @@ class ClinicalPredictor:
         for cat in interpretations.keys():
             sources[cat] = 'ML' if (self.last_used_ml and cat in self.ML_TEXT_CATEGORIES) else 'Rule'
         return sources
+
+    def get_routing_details(self) -> Dict[str, Dict[str, Any]]:
+        """Return detailed per-category routing diagnostics for the last prediction."""
+        return dict(self.last_routing_details)
+
+    def _route_category(
+        self,
+        category: str,
+        measurements: Dict[str, float],
+        rule_text: Optional[str],
+        ml_text: str,
+        ml_confidence: float,
+    ) -> Tuple[str, str]:
+        """Choose source per category using confidence, disagreement, and feature availability."""
+        if self.routing_mode == 'ml_only':
+            return 'ML', 'ml_only_mode'
+
+        if self.routing_mode == 'rule_only':
+            return 'Rule', 'rule_only_mode'
+
+        has_required = self._has_required_features(category, measurements)
+        if not has_required:
+            return 'Rule', 'missing_critical_features'
+
+        disagree = bool(rule_text and ml_text and rule_text != ml_text)
+        high_conf = ml_confidence >= self.ml_confidence_threshold
+        conflict_low_conf = disagree and ml_confidence < (self.ml_confidence_threshold + self.disagreement_margin)
+
+        if high_conf and not conflict_low_conf:
+            return 'ML', 'high_confidence_ml'
+
+        if self.enable_abstain and disagree and ml_confidence < self.abstain_confidence_threshold:
+            return 'Abstain', 'low_confidence_disagreement'
+
+        return 'Rule', 'fallback_to_rule'
+
+    def _has_required_features(self, category: str, measurements: Dict[str, float]) -> bool:
+        required = self.REQUIRED_FEATURES.get(category, [])
+        if not required:
+            return True
+        return any((measurements.get(feat, 0) or 0) > 0 for feat in required)
+
+    def _summary_source(self, sources: Dict[str, str]) -> str:
+        category_sources = [
+            src for key, src in sources.items()
+            if key in self.TEXT_TO_MODEL_CATEGORY
+        ]
+        if any(src == 'Abstain' for src in category_sources):
+            return 'Abstain'
+        if any(src == 'ML' for src in category_sources) and any(src == 'Rule' for src in category_sources):
+            return 'Hybrid'
+        if any(src == 'ML' for src in category_sources):
+            return 'ML'
+        return 'Rule'
+
+    def _derive_method_label(self, sources: Dict[str, str]) -> str:
+        vals = set(sources.values())
+        if 'Abstain' in vals:
+            return 'Hybrid-Abstain'
+        if 'ML' in vals and 'Rule' in vals:
+            return 'Hybrid-Adaptive'
+        if 'ML' in vals:
+            return 'ML-Based'
+        return 'Rule-Based'
+
+    def _build_hybrid_summary(self, interpretations: Dict[str, str]) -> str:
+        """Build summary from routed category outputs to keep summary-source consistency."""
+        summary_parts = []
+        lv_func = interpretations.get('Left Ventricular Function', '')
+        lv_size = interpretations.get('LV Diastolic Dimension', '')
+        lv_hyp = interpretations.get('Interventricular Septum', '')
+        la_size = interpretations.get('Left Atrium', '')
+        diastolic = interpretations.get('Diastolic Function', '')
+
+        if 'reduced' in lv_func.lower() or 'dysfunction' in lv_func.lower():
+            summary_parts.append('LV systolic dysfunction')
+        if 'dilat' in lv_size.lower():
+            summary_parts.append('LV dilatation')
+        if 'hypertrophy' in lv_hyp.lower():
+            summary_parts.append('septal hypertrophy')
+        if 'enlarg' in la_size.lower():
+            summary_parts.append('LA enlargement')
+        if 'dysfunction' in diastolic.lower() and 'normal' not in diastolic.lower():
+            summary_parts.append('diastolic dysfunction')
+        if 'manual expert review recommended' in ' '.join(interpretations.values()).lower():
+            summary_parts.append('one or more uncertain categories requiring expert review')
+
+        if summary_parts:
+            return f"Overall: Echocardiography shows {', '.join(summary_parts)}"
+        return "Overall: Echocardiographic parameters within normal limits"
     
     def _predict_with_ml(self, measurements: Dict[str, float],
-                         patient_info: Dict[str, Any]) -> Dict[str, str]:
+                         patient_info: Dict[str, Any]) -> Tuple[Dict[str, str], Dict[str, float]]:
         """
         Generate interpretations using ML models.
         
@@ -199,16 +356,31 @@ class ClinicalPredictor:
         # Scale
         X_scaled = self.scaler.transform(X)
         
-        # Predict each category
+        # Predict each category and capture confidence for routing.
         predictions = {}
+        confidences = {}
         for category, model in self.models.items():
             pred = model.predict(X_scaled)[0]
             predictions[category] = pred
+            confidence = 0.0
+            if hasattr(model, 'predict_proba'):
+                try:
+                    proba = model.predict_proba(X_scaled)[0]
+                    confidence = float(np.max(proba))
+                except Exception:
+                    confidence = 0.0
+            confidences[category] = confidence
         
         # Generate natural language interpretations
         interpretations = self._ml_to_text(predictions, measurements, patient_info)
-        
-        return interpretations
+
+        text_confidences = {}
+        for model_category, conf in confidences.items():
+            text_category = self.MODEL_TO_TEXT_CATEGORY.get(model_category)
+            if text_category:
+                text_confidences[text_category] = conf
+
+        return interpretations, text_confidences
     
     def _ml_to_text(self, predictions: Dict, measurements: Dict, 
                     patient_info: Dict) -> Dict[str, str]:
@@ -217,9 +389,9 @@ class ClinicalPredictor:
         interpretations = {}
         
         # LV Function
-        lv_func = predictions.get('LV_FUNCTION', 'Unknown')
+        lv_func = predictions.get('LV_FUNCTION')
         ef_value = measurements.get('EF', 0)
-        if ef_value > 0:
+        if lv_func is not None and ef_value > 0:
             if lv_func == 'Normal':
                 interpretations['Left Ventricular Function'] = \
                     f"Normal LV systolic function (EF: {ef_value:.1f}%)"
@@ -234,20 +406,26 @@ class ClinicalPredictor:
                     f"Severely reduced LV systolic function (EF: {ef_value:.1f}%)"
         
         # LV Size
-        lv_size = predictions.get('LV_SIZE', 'Unknown')
+        lv_size = predictions.get('LV_SIZE')
         lvid_d = measurements.get('LVID_D', 0)
-        if lvid_d > 0:
+        if lv_size is not None and lvid_d > 0:
             if lv_size == 'Normal':
                 interpretations['LV Diastolic Dimension'] = \
                     f"Normal LV size (LVIDd: {lvid_d:.2f} cm)"
-            else:
+            elif lv_size == 'Mild':
                 interpretations['LV Diastolic Dimension'] = \
-                    f"LV dilatation (LVIDd: {lvid_d:.2f} cm)"
+                    f"Mild LV dilatation (LVIDd: {lvid_d:.2f} cm)"
+            elif lv_size == 'Moderate':
+                interpretations['LV Diastolic Dimension'] = \
+                    f"Moderate LV dilatation (LVIDd: {lvid_d:.2f} cm)"
+            elif lv_size == 'Severe':
+                interpretations['LV Diastolic Dimension'] = \
+                    f"Severe LV dilatation (LVIDd: {lvid_d:.2f} cm)"
         
         # LV Hypertrophy
-        lv_hyp = predictions.get('LV_HYPERTROPHY', 'Unknown')
+        lv_hyp = predictions.get('LV_HYPERTROPHY')
         ivs_d = measurements.get('IVS_D', 0)
-        if ivs_d > 0:
+        if lv_hyp is not None and ivs_d > 0:
             if lv_hyp == 'None':
                 interpretations['Interventricular Septum'] = \
                     f"Normal septal thickness (IVSd: {ivs_d:.2f} cm)"
@@ -262,34 +440,34 @@ class ClinicalPredictor:
                     f"Severe septal hypertrophy (IVSd: {ivs_d:.2f} cm)"
         
         # LA Size
-        la_size = predictions.get('LA_SIZE', 'Unknown')
+        la_size = predictions.get('LA_SIZE')
         la_dim = measurements.get('LA_DIMENSION', 0)
-        if la_dim > 0:
+        if la_size is not None and la_dim > 0:
             if la_size == 'Normal':
                 interpretations['Left Atrium'] = \
                     f"Normal LA size (LA: {la_dim:.2f} cm)"
-            else:
+            elif la_size == 'Enlarged':
                 interpretations['Left Atrium'] = \
                     f"LA enlargement (LA: {la_dim:.2f} cm)"
         
         # Diastolic Function
-        diastolic = predictions.get('DIASTOLIC_FUNCTION', 'Unknown')
+        diastolic = predictions.get('DIASTOLIC_FUNCTION')
         mv_ea = measurements.get('MV_E_A', 0)
-        if mv_ea > 0:
+        if diastolic is not None and mv_ea > 0:
             if diastolic == 'Normal':
                 interpretations['Diastolic Function'] = \
                     f"Normal diastolic function (E/A: {mv_ea:.2f})"
-            else:
+            elif diastolic == 'Abnormal':
                 interpretations['Diastolic Function'] = \
                     f"Diastolic dysfunction (E/A: {mv_ea:.2f})"
         
         # Overall Summary
         summary_parts = []
-        if lv_func not in ['Normal', 'Unknown']:
+        if lv_func not in [None, 'Normal', 'Unknown']:
             summary_parts.append(f"{lv_func.lower()} LV dysfunction")
-        if lv_size == 'Dilated':
+        if lv_size in ['Mild', 'Moderate', 'Severe', 'Dilated']:
             summary_parts.append("LV dilatation")
-        if lv_hyp not in ['None', 'Unknown']:
+        if lv_hyp not in [None, 'None', 'Unknown']:
             summary_parts.append("LV hypertrophy")
         if la_size == 'Enlarged':
             summary_parts.append("LA enlargement")
@@ -331,7 +509,8 @@ class ClinicalPredictor:
             'measurements': measurements,
             'interpretations': interpretations,
             'sources': sources,
-            'method': 'ML-Based' if self.last_used_ml else 'Rule-Based'
+            'method': self.last_method_label,
+            'routing_details': self.get_routing_details(),
         }
         
         return result

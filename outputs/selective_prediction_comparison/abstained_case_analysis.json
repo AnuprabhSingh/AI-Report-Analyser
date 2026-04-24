@@ -1,0 +1,45 @@
+{
+  "per_category": {
+    "LV_SIZE": {
+      "n_abstained": 0,
+      "n_predicted": 41,
+      "abstain_rate": 0.0
+    },
+    "LV_HYPERTROPHY": {
+      "n_abstained": 4,
+      "n_predicted": 35,
+      "abstain_rate": 0.10256410256410256,
+      "abstained_mean_conf": 0.4743670634920635,
+      "abstained_ml_accuracy": 1.0,
+      "abstained_rule_accuracy": 0.0,
+      "abstained_disagreement_rate": 1.0
+    },
+    "LA_SIZE": {
+      "n_abstained": 1,
+      "n_predicted": 39,
+      "abstain_rate": 0.025,
+      "abstained_mean_conf": 0.536063492063492,
+      "abstained_ml_accuracy": 1.0,
+      "abstained_rule_accuracy": 0.0,
+      "abstained_disagreement_rate": 1.0
+    },
+    "DIASTOLIC_FUNCTION": {
+      "n_abstained": 1,
+      "n_predicted": 42,
+      "abstain_rate": 0.023255813953488372,
+      "abstained_mean_conf": 0.5264806267306266,
+      "abstained_ml_accuracy": 0.0,
+      "abstained_rule_accuracy": 1.0,
+      "abstained_disagreement_rate": 1.0
+    }
+  },
+  "overall": {
+    "n_abstained": 6,
+    "n_predicted": 157,
+    "abstained_mean_conf": 0.49333539546039545,
+    "predicted_mean_conf": 0.8324288467130149,
+    "abstained_would_be_correct": 0.8333333333333334,
+    "predicted_accuracy": 0.8407643312101911,
+    "confidence_gap": 0.3390934512526194
+  }
+}

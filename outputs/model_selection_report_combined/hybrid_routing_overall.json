@@ -1,0 +1,11 @@
+{
+  "ml_threshold": 0.7,
+  "abstain_threshold": 0.45,
+  "disagreement_margin": 0.1,
+  "weighted_coverage": 1.0,
+  "weighted_abstain_rate": 0.0,
+  "weighted_accuracy_covered": 0.8834355828220858,
+  "weighted_f1_macro_covered": 0.7370779067536659,
+  "weighted_risk_at_coverage": 0.11656441717791413,
+  "weighted_strict_accuracy": 0.8834355828220858
+}
